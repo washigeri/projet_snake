@@ -14,7 +14,7 @@ int main(){
 	test=getchar();
 	printf("%c\n",test);
 	//if(!strcmp(test,"EAGAIN")){
-	//	printf("lol_\n");
+	//coucou	printf("lol_\n");
 	//}
 	}
 	return 0;}
