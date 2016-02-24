@@ -1,5 +1,8 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include "jeu.h"
+#include "snake.h"
+
 /*les fonctions presentes ici correspondent à l'affichage des infos à l'écran*/
 
 /*affiche le plateau
@@ -41,11 +44,11 @@ void afficher_direction(){
 
 int main(){
 /*dimension du tableau*/
-	int dim;
-	printf("dimension du terrain:>7\n");
+	int dim=10;
+/*	printf("dimension du terrain:>7\n");
 	scanf("%d",&dim);
 	while( dim<7 ){	printf("dimension du terrain:>7\n");scanf("%d",&dim);}
-
+*/
 
 /*initialisation*/
 	int i;
@@ -65,15 +68,14 @@ int main(){
 
 
 /*mouvement snake*/
-	int v,h,a;
+	int a;
 	for(i=0;i<10;i=i+1){
 		afficher_direction();
 		scanf("%d",&a);
 		while( a!=8 && a!=4 && a!=6 && a!=2 ){printf("resaisissez:");scanf("%d",&a);}
 
-		
 		system("clear"); 
-		afficher(tableau,dim);	
+		afficher(jouer_Tour(a,tableau,dim,l,longsnake),dim);	
 
 	}
 

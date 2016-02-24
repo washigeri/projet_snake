@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include "jeu.h"
 
-typedef struct {int x;int y;} Coord;
 
 Coord* init_coord_snake(Coord* l,int longsnake){
 	int i;
