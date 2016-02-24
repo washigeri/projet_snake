@@ -2,47 +2,13 @@
 #include<stdlib.h>
 #include "jeu.h"
 #include "snake.h"
-
-/*les fonctions presentes ici correspondent à l'affichage des infos à l'écran*/
-
-/*affiche le plateau
-converti un tableau d'entier en char*/
-
-void afficher(int** t,int dim){
-	int i,j;
-	for(i=0;i<dim;i=i+1){ printf("---");}
-	printf("--\n");
-	for(i=0;i<dim;i=i+1){
-		printf("|");
-		for(j=0;j<dim;j=j+1){
-			if( t[i][j]==0 ){ printf("   ");}
-			if( t[i][j]==1 ){ printf(" 1 ");}
-			if( t[i][j]==2 ){ printf(" 8 ");}
-			if( t[i][j]==-1 ){ printf(" X ");}
-			if( t[i][j]==-2 ){ printf("XXX");}
-		}
-		printf("|");
-		printf("\n");
-	}
-	for(i=0;i<dim;i=i+1){ printf("---");}
-	printf("--\n");
-}
-
-/*affiche les commandes manettes*/
-
-void afficher_direction(){
-		printf("\n    ^    \n");
-		printf("    8    \n");
-		printf(" <4   6> ");
-		printf("\n    2    \n");
-		printf("    V    \n");
-}
+#include "affichage.h"
 
 
 
 /*---------------LE MAIN--------------------*/
 
-int main(){
+int main() {
 /*dimension du tableau*/
 	int dim=10;
 /*	printf("dimension du terrain:>7\n");
@@ -58,13 +24,13 @@ int main(){
 	init_tableau(tableau,dim);
 
 	int longsnake=5;
-	Coord* l=malloc(longsnake*sizeof(Coord));
-	l=init_coord_snake(l,longsnake);
+	Coord* l=(Coord*)malloc(longsnake*sizeof(Coord));
+	init_coord_snake(l,longsnake);
 
 	init_tableau(tableau,dim);
 	appplique_partie(tableau,l,longsnake);
-	system("clear"); 
-	afficher(tableau,dim);	
+	system("clear");
+	afficher(tableau,dim);
 
 
 /*mouvement snake*/
@@ -74,11 +40,11 @@ int main(){
 		scanf("%d",&a);
 		while( a!=8 && a!=4 && a!=6 && a!=2 ){printf("resaisissez:");scanf("%d",&a);}
 
-		system("clear"); 
-		afficher(jouer_Tour(a,tableau,dim,l,longsnake),dim);	
+		system("clear");
+		afficher(jouer_Tour(a,tableau,dim,l,longsnake),dim);
 
 	}
 
 	free(tableau);
 	return 0;
-}	
+}

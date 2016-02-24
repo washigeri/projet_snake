@@ -1,7 +1,7 @@
 #ifndef __JEU_H
 #define __JEU_H
+#include "snake.h"
 
-typedef struct {int x;int y;} Coord;
 
 void init_tableau(int** tableau,int dim);
 void appplique_partie(int** tableau,Coord* l,int longsnake);

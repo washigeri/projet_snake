@@ -8,7 +8,7 @@ void init_tableau(int** tableau,int dim){
 		for(j=0;j<dim;j=j+1){
 			tableau[i][j]=0;
 		}
-	}	
+	}
 }
 
 
