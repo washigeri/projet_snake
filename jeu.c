@@ -2,19 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "struct.h"
-
-snake init_snake(int len){
-    snake res;
-    res.pos=(coord*)malloc(len*sizeof(coord));
-    int i;
-    for(i=0;i<len;i++){
-            res.pos[i].x=0;
-            res.pos[i].y=0;
-    }
-    res.taille=len;
-    res.dir=right;
-    return res;
-}
+#include "snake.h"
 
 
 plateau init_plateau(int n){
@@ -41,6 +29,7 @@ bool cherche_snake(int i, int j, snake s){
 }
 
 void affiche(plateau p, snake s){
+    system("cls"); //à changer pour daubuntu
     int i,j;
     for(i=0;i<p.taille;i++){
         for(j=0;j<p.taille;j++){
@@ -68,7 +57,6 @@ void affiche(plateau p, snake s){
 }
 
 void movesnake(snake s,direction dir){
-    if(s.dir!=dir){
     int i;
 
     switch (dir){
@@ -78,6 +66,7 @@ void movesnake(snake s,direction dir){
                 s.pos[i].y=s.pos[i-1].y;
             }
             s.pos[0].x++;
+            s.dir=dir;
             break;
     case left:
             for(i=s.taille-1;i>0;i--){
@@ -85,6 +74,7 @@ void movesnake(snake s,direction dir){
                 s.pos[i].y=s.pos[i-1].y;
             }
             s.pos[0].x--;
+            s.dir=dir;
             break;
     case up:
             for(i=s.taille-1;i>0;i--){
@@ -92,6 +82,7 @@ void movesnake(snake s,direction dir){
                 s.pos[i].y=s.pos[i-1].y;
             }
             s.pos[0].y--;
+            s.dir=dir;
             break;
 
 
@@ -101,10 +92,11 @@ void movesnake(snake s,direction dir){
                 s.pos[i].y=s.pos[i-1].y;
             }
             s.pos[0].y++;
+            s.dir=dir;
             break;
         }
-    }
 }
+
 
 
 bool wall_hit(plateau p, snake s){
@@ -116,10 +108,11 @@ bool wall_hit(plateau p, snake s){
 }
 
 
-int main(){
-    snake s=init_snake(2);
-    s.pos[0].x=5;s.pos[0].y=5;
-    s.pos[1].x=5;s.pos[1].y=4;
-    plateau p=init_plateau(10);
-    affiche(p,s);
-    return 0;}
+bool jouer(snake s,plateau p){
+    direction dir;
+    scanf("%c",&dir);
+    movesnake(s,dir);
+    return wall_hit(p,s);
+}
+
+
