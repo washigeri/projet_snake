@@ -11,8 +11,7 @@ snake init_snake(int len){
             res.pos[i].y=0;
     }
     res.taille=len;
-    res.dir=(direction *) malloc (sizeof(direction));
-    res.dir[0]=right;
+    res.dir=right;
     return res;
 }
 

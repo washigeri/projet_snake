@@ -58,44 +58,47 @@ void affiche(plateau p, snake s){
     }
 }
 
-void movesnake(snake s,direction dir){
-    if((int)(abs(s.dir[0]-dir))!=7 && (int)(abs(s.dir[0]-dir))!=13){
-        int i;
-        switch (dir){
-        case right:
-                for(i=s.taille-1;i>0;i--){
-                    s.pos[i].x=s.pos[i-1].x;
-                    s.pos[i].y=s.pos[i-1].y;
-                }
-                s.pos[0].x++;
-                s.dir[0]=dir;
-                break;
-        case left:
-                for(i=s.taille-1;i>0;i--){
-                    s.pos[i].x=s.pos[i-1].x;
-                    s.pos[i].y=s.pos[i-1].y;
-                }
-                s.pos[0].x--;
-                s.dir[0]=dir;
-                break;
-        case up:
-                for(i=s.taille-1;i>0;i--){
-                    s.pos[i].x=s.pos[i-1].x;
-                    s.pos[i].y=s.pos[i-1].y;
-                }
-                s.pos[0].y--;
-                s.dir[0]=dir;
-                break;
-        case down:
-                for(i=s.taille-1;i>0;i--){
-                    s.pos[i].x=s.pos[i-1].x;
-                    s.pos[i].y=s.pos[i-1].y;
-                }
-                s.pos[0].y++;
-                s.dir[0]=dir;
-                break;
+void movesnake(snake* s,direction dir){
+    
+
+    int i;
+
+    switch (dir){
+    case right:
+            for(i=s->taille-1;i>0;i--){
+                s->pos[i].x=s->pos[i-1].x;
+                s->pos[i].y=s->pos[i-1].y;
+            }
+            s->pos[0].x++;
+            s->dir=dir;
+            break;
+    case left:
+            for(i=s->taille-1;i>0;i--){
+                s->pos[i].x=s->pos[i-1].x;
+                s->pos[i].y=s->pos[i-1].y;
+            }
+            s->pos[0].x--;
+            s->dir=dir;
+            break;
+    case up:
+            for(i=s->taille-1;i>0;i--){
+                s->pos[i].x=s->pos[i-1].x;
+                s->pos[i].y=s->pos[i-1].y;
+            }
+            s->pos[0].y--;
+            s->dir=dir;
+            break;
+
+
+    case down:
+            for(i=s->taille-1;i>0;i--){
+                s->pos[i].x=s->pos[i-1].x;
+                s->pos[i].y=s->pos[i-1].y;
+            }
+            s->pos[0].y++;
+            s->dir=dir;
+            break;
         }
-    }
 }
 
 
@@ -116,4 +119,5 @@ bool jouer(snake s,plateau p){
     printf("%c",dir);
     return wall_hit(p,s);
 }
+
 
