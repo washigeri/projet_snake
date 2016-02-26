@@ -29,7 +29,7 @@ bool cherche_snake(int i, int j, snake s){
 }
 
 void affiche(plateau p, snake s){
-    system("clear");
+    system("clear"); //à changer pour daubuntu
     int i,j;
     for(i=0;i<p.taille;i++){
         for(j=0;j<p.taille;j++){
