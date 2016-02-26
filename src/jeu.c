@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <math.h>
 #include "struct.h"
 #include "snake.h"
+
 
 
 plateau init_plateau(int n){
@@ -56,43 +58,45 @@ void affiche(plateau p, snake s){
     }
 }
 
-void movesnake(snake s,direction dir){
+void movesnake(snake* s,direction dir){
+    
+
     int i;
 
     switch (dir){
     case right:
-            for(i=s.taille-1;i>0;i--){
-                s.pos[i].x=s.pos[i-1].x;
-                s.pos[i].y=s.pos[i-1].y;
+            for(i=s->taille-1;i>0;i--){
+                s->pos[i].x=s->pos[i-1].x;
+                s->pos[i].y=s->pos[i-1].y;
             }
-            s.pos[0].x++;
-            s.dir=dir;
+            s->pos[0].x++;
+            s->dir=dir;
             break;
     case left:
-            for(i=s.taille-1;i>0;i--){
-                s.pos[i].x=s.pos[i-1].x;
-                s.pos[i].y=s.pos[i-1].y;
+            for(i=s->taille-1;i>0;i--){
+                s->pos[i].x=s->pos[i-1].x;
+                s->pos[i].y=s->pos[i-1].y;
             }
-            s.pos[0].x--;
-            s.dir=dir;
+            s->pos[0].x--;
+            s->dir=dir;
             break;
     case up:
-            for(i=s.taille-1;i>0;i--){
-                s.pos[i].x=s.pos[i-1].x;
-                s.pos[i].y=s.pos[i-1].y;
+            for(i=s->taille-1;i>0;i--){
+                s->pos[i].x=s->pos[i-1].x;
+                s->pos[i].y=s->pos[i-1].y;
             }
-            s.pos[0].y--;
-            s.dir=dir;
+            s->pos[0].y--;
+            s->dir=dir;
             break;
 
 
     case down:
-            for(i=s.taille-1;i>0;i--){
-                s.pos[i].x=s.pos[i-1].x;
-                s.pos[i].y=s.pos[i-1].y;
+            for(i=s->taille-1;i>0;i--){
+                s->pos[i].x=s->pos[i-1].x;
+                s->pos[i].y=s->pos[i-1].y;
             }
-            s.pos[0].y++;
-            s.dir=dir;
+            s->pos[0].y++;
+            s->dir=dir;
             break;
         }
 }
@@ -111,7 +115,8 @@ bool wall_hit(plateau p, snake s){
 bool jouer(snake s,plateau p){
     direction dir;
     scanf("%c",&dir);
-    movesnake(s,dir);
+    movesnake(&s,dir);
+    printf("%c",dir);
     return wall_hit(p,s);
 }
 

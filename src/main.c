@@ -1,8 +1,11 @@
 #include "struct.h"
 #include "jeu.h"
 #include "snake.h"
+#include <stdio.h>
 
-int main(){
+
+int main()
+{
     snake s=init_snake(4);
     s.pos[0].x=10;s.pos[0].y=10;
     s.pos[1].x=9;s.pos[1].y=10;
@@ -12,5 +15,7 @@ int main(){
     affiche(p,s);
     while(!jouer(s,p)){
         affiche(p,s);
+        printf("\n%c",s.dir);
     }
-    return 0;}
+    return 0;
+}
