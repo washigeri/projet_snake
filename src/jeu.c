@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdio_ext.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <math.h>
@@ -102,7 +103,7 @@ int kbhit()
 bool jouer(snake s,plateau p){
     char dir=s.dir[0];
         if(kbhit()){
-            dir=getchar();
+            dir=getchar();   
         }
         movesnake(s,dir);
         usleep(100000);
