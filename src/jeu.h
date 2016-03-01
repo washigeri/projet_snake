@@ -6,6 +6,7 @@ plateau init_plateau(int n);
 
 void movesnake(snake* s,direction dir);
 bool wall_hit(plateau p, snake s);
+int kbhit();
 bool jouer(snake s,plateau p);
 
 #endif // JEU_H_INCLUDED
