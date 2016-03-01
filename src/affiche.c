@@ -1,7 +1,19 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
 #include "struct.h"
 
-
+bool cherche_snake(int i, int j, snake s){
+    bool res=false;
+    int k=1;
+    while(k<s.taille && !res){
+        if(s.pos[k].x==j && s.pos[k].y==i){
+            res=true;
+        }
+        k++;
+        }
+    return res;
+}
 
 void affiche(plateau p, snake s){
     system("clear");
@@ -30,3 +42,4 @@ void affiche(plateau p, snake s){
         printf("\n");
     }
 }
+

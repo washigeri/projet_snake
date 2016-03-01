@@ -1,6 +1,7 @@
 #include "struct.h"
 #include "jeu.h"
 #include "snake.h"
+#include "affiche.h"
 #include <stdio.h>
 
 
@@ -15,7 +16,6 @@ int main()
     affiche(p,s);
     while(!jouer(s,p)){
         affiche(p,s);
-        printf("\n%c",s.dir);
     }
     return 0;
 }
