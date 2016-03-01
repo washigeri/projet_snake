@@ -72,7 +72,7 @@ bool wall_hit(plateau p, snake s){
 
 
 bool jouer(snake s,plateau p){
-    direction dir;
+    char dir;
     scanf("%c",&dir);
     movesnake(s,dir);
     printf("%c",dir);
