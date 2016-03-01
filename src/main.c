@@ -1,6 +1,7 @@
 #include "struct.h"
 #include "jeu.h"
 #include "snake.h"
+#include "affiche.h"
 #include <stdio.h>
 
 
