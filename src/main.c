@@ -15,7 +15,6 @@ int main()
     affiche(p,s);
     while(!jouer(s,p)){
         affiche(p,s);
-        printf("\n%c",s.dir);
     }
     return 0;
 }
