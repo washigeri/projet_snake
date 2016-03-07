@@ -15,4 +15,3 @@ snake init_snake(int len){
     res.dir[0]=right;
     return res;
 }
-

@@ -1,0 +1,7 @@
+#ifndef SNAKE_H_INCLUDED
+#define SNAKE_H_INCLUDED
+
+snake init_snake(int len);
+snake create_snake(int taille, coord pos, direction dir,int taille_plateau);
+
+#endif // SNAKE_H_INCLUDED
