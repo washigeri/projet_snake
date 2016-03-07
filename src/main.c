@@ -1,7 +1,7 @@
 #include "struct.h"
 #include "jeu.h"
 #include "snake.h"
-#include "affichage.h"
+#include "affiche.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -24,9 +24,7 @@ int main()
     s[1]=schlanga;
     plateau p=init_plateau(30);
     affiche(p,s,2);
-    int* taille=(int*) malloc (sizeof(int));
-    taille[0]=p.taille;
-    while(!jouer(s,2,p,taille)){
+    while(!jouer(s,2,p)){
         affiche(p,s,2);
     }
     return 0;
