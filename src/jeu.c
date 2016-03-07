@@ -94,7 +94,7 @@ int kbhit()
   return 0;
 }
 
-bool jouer(snake* s,int n,plateau p,int* taille){
+bool jouer(snake* s,int n,plateau p){
     char dir=s[0].dir[0];
     if(kbhit()){
     	dir=getchar();
