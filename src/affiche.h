@@ -1,7 +1,9 @@
-#ifndef AFFICHE_H_INCLUDED
-#define AFFICHE_H_INCLUDED
+#ifndef AFFICHAGE_H_INCLUDED
+#define AFFICHAGE_H_INCLUDED
 
-void affiche(plateau p, snake s);
-bool cherche_snake(int i, int j, snake s);
+bool check(bool* b, int n);
+bool* cherche_snake(int i, int j, snake* s, int n);
+bool* cherche_tete(int i,int j, snake* s, int n);
+void affiche(plateau p, snake* s,int n);
 
-#endif // AFFICHE_H_INCLUDED
+#endif // AFFICHAGE_H_INCLUDED

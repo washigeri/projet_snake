@@ -11,6 +11,7 @@ typedef struct {coord* pos;
                 int taille;
                 direction* dir;
                 type playType;
+                direction* dir;
                 } snake;
 
 typedef struct {int** cases;

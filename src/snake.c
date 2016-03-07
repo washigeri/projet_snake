@@ -22,6 +22,7 @@ snake init_snake(int len){
     return res;
 }
 
+
 /**
  * @brief change_IA Permet le changement de l'intellgence artificielle d un serpent
  * @param snake
@@ -32,6 +33,3 @@ void change_IA(snake* snake, type typeAI )
 
     snake->playType = typeAI;
 }
-
-
-
