@@ -9,13 +9,13 @@
 int main()
 {
 /*LE SNAKE*/
-    snake snak=init_snake(4);
+    snake snak=init_snake(4,joueur);
     snak.pos[0].x=10;snak.pos[0].y=10;
     snak.pos[1].x=9;snak.pos[1].y=10;
     snak.pos[2].x=8;snak.pos[2].y=10;
     snak.pos[3].x=7;snak.pos[3].y=10;
 /*LE SCHLANGA*/ 
-   snake schlanga=init_snake(4);
+   snake schlanga=init_snake(4,idle);
     schlanga.pos[0].x=15;schlanga.pos[0].y=10;
     schlanga.pos[1].x=16;schlanga.pos[1].y=10;
     schlanga.pos[2].x=17;schlanga.pos[2].y=10;
@@ -38,7 +38,7 @@ int main()
 
 	printf("\nReady!\n");
 	printf("Pour se deplacer: appuyer sur z,q,s et d\n");
-	system("sleep 5;clear");
+	system("sleep 1;clear");
 
     plateau p=init_plateau(taille_plateau);
     affiche(p,s,2);
