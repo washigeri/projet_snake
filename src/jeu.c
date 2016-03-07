@@ -74,7 +74,39 @@ bool wall_hit(plateau p, snake* s,int n){
     }
     return res;
 }	
+bool head_s_hit(snake s1, snake s2){
+  bool res=false;
+  int k=0;
+  while(k<s1.taille && !res){
+    if(s2.pos[0].x==s1.pos[k].x && s2.pos[0].y==s1.pos[k].y){
+      res=true;
+    }
+    k++;
+  }
+  k=0;
+  while(k<s2.taille && !res){
+    if(s1.pos[0].x==s2.pos[k].x && s1.pos[0].y==s2.pos[k].y){
+      res=true;
+    }
+    k++;
+  }
+  return res;
+}
 
+
+
+
+bool body_hit(snake* s, int n){
+  bool res=false;
+  int i,j;
+  for(i=0;i<n;i++){
+    for(j=i+1;j<n;j++){
+      res=head_s_hit(s[i],s[j]);
+    }
+
+  }
+  return res;
+}
 
 
 int kbhit()
@@ -108,6 +140,6 @@ bool jouer(snake* s,int n,plateau p){
     movesnake(s[0],dir);
     movesnake(s[1],dir);
     usleep(100000);
-    return (wall_hit(p,s[0]) || wall_hit(p,s[1]));
+    return (wall_hit(p,s,n) || body_hit(s,n));
 }
 
