@@ -63,12 +63,19 @@ void movesnake(snake s,direction dir){
 
 
 
-bool wall_hit(plateau p, snake s){
+bool wall_hit(plateau p, snake* s,int n){
     bool res=false;
     int taille=p.taille;
-    if (s.pos[0].x==0 || s.pos[0].x==taille-1 || s.pos[0].y==0 || s.pos[0].y==taille-1)  res=true;
+    int i;
+    for(i=0;i<n;i++){
+    	if (s[i].pos[0].x==0 || s[i].pos[0].x==taille-1 || s[i].pos[0].y==0 || s[i].pos[0].y==taille-1){
+    	    res=true;
+    	}
+    }
     return res;
-}
+}	
+
+
 
 int kbhit()
 {
@@ -84,7 +91,6 @@ int kbhit()
   ch = getchar();
   tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
   fcntl(STDIN_FILENO, F_SETFL, oldf);
- 
   if(ch != EOF)
   {
     ungetc(ch, stdin);
@@ -94,7 +100,7 @@ int kbhit()
   return 0;
 }
 
-bool jouer(snake* s,int n,plateau p,int* taille){
+bool jouer(snake* s,int n,plateau p){
     char dir=s[0].dir[0];
     if(kbhit()){
     	dir=getchar();
