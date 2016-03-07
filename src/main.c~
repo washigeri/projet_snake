@@ -22,7 +22,7 @@ int main()
     snake* s=(snake*) malloc (2*sizeof(snake));
     s[0]=snak;
     s[1]=schlanga;
-    plateau p=init_plateau(30);
+    plateau p=init_plateau(20);
     affiche(p,s,2);
     int* taille=(int*) malloc (sizeof(int));
     taille[0]=p.taille;

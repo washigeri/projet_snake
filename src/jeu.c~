@@ -81,7 +81,9 @@ int kbhit()
   tcsetattr(STDIN_FILENO, TCSANOW, &newt);
   oldf = fcntl(STDIN_FILENO, F_GETFL, 0);
   fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
+ 
   ch = getchar();
+ 
   tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
   fcntl(STDIN_FILENO, F_SETFL, oldf);
  
@@ -95,7 +97,7 @@ int kbhit()
 }
 
 bool jouer(snake* s,int n,plateau p,int* taille){
-    char dir=s[0].dir[0];
+    char dir=s.dir[0];
     if(kbhit()){
     	dir=getchar();
     }
