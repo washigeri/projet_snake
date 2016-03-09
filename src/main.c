@@ -1,9 +1,11 @@
+#include <stdbool.h>
 #include "struct.h"
 #include "jeu.h"
 #include "snake.h"
 #include "affiche.h"
 #include <stdio.h>
 #include <stdlib.h>
+
 
 
 int main()
@@ -14,7 +16,7 @@ int main()
     snak.pos[1].x=9;snak.pos[1].y=10;
     snak.pos[2].x=8;snak.pos[2].y=10;
     snak.pos[3].x=7;snak.pos[3].y=10;
-/*LE SCHLANGA*/ 
+/*LE SCHLANGA*/
    snake schlanga=init_snake(4,idle);
     schlanga.pos[0].x=15;schlanga.pos[0].y=20;
     schlanga.pos[1].x=16;schlanga.pos[1].y=20;
@@ -44,7 +46,7 @@ int main()
     affiche(p,s,2);
 
 /*JEU*/
-    while(!jouer(s,2,p)){
+    while(!jouer(s,2,p).b){
         affiche(p,s,2);
     }
     return 0;

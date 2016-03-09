@@ -8,6 +8,7 @@ bools wall_hit(plateau p, snake* s,int n);
 bools head_s_hit(snake s1, snake s2);
 bools body_hit(snake* s, int n);
 bools collisions(plateau p,snake* s,int n);
+void win(bools bs,snake s);
 bools jouer(snake* s,int n, plateau p);
 
 #endif // JEU_H_INCLUDED

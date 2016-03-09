@@ -62,8 +62,6 @@ void movesnake(snake s,direction dir){
     }
 }
 
-
-
 bools wall_hit(plateau p, snake* s,int n){
     bools res;
     res.b=false;
@@ -77,7 +75,8 @@ bools wall_hit(plateau p, snake* s,int n){
     	}
     }
     return res;
-}	
+}
+
 bools head_s_hit(snake s1, snake s2){
   bools res;
   res.b=false;
@@ -101,29 +100,11 @@ bools head_s_hit(snake s1, snake s2){
   return res;
 }
 
-
-
-/*
 bools body_hit(snake* s, int n){
   bools res;
   res.b=false;
-  res.s=s[0];
-  int i,j;
-  for(i=0;i<n;i++){
-    for(j=i+1;j<n;j++){
-      res=head_s_hit(s[i],s[j]);
-    }
-  }
-  return res;
-}
-*/
-
-bools body_hit(snake* s, int n){
-  bools res;
-  res.b=false;
-  res.s=s[0];
   int i=0;
-  int j=1;
+  int j;
   while(i<n && !res.b){
     j=i+1;
     while(j<n && !res.b){
@@ -137,7 +118,6 @@ bools body_hit(snake* s, int n){
 
 bools collisions(plateau p,snake* s,int n){
   bools res;
-  res.s=s[0];
   bools wh=wall_hit(p,s,n);
   bools bh=body_hit(s,n);
   res.b = (wh.b || bh.b);
@@ -155,12 +135,23 @@ bools collisions(plateau p,snake* s,int n){
   return res;
 }
 
+void win(bools bs,snake s){
+    if(bs.b){
+        system("clear");
+        if(egalite_snake(bs.s,s)){
+            printf("PJSalt G A M E O V E R  PJSalt\n\n");
+        }
+        else {
+            printf("V I C T O I R E\n\n");
+        }
+    }
+}
+
 int kbhit()
 {
   struct termios oldt, newt;
   int ch;
-  int oldf;
-  tcgetattr(STDIN_FILENO, &oldt);
+  int oldf=tcgetattr(STDIN_FILENO, &oldt);
   newt = oldt;
   newt.c_lflag &= ~(ICANON | ECHO);
   tcsetattr(STDIN_FILENO, TCSANOW, &newt);
@@ -174,7 +165,7 @@ int kbhit()
     ungetc(ch, stdin);
     return 1;
   }
- 
+
   return 0;
 }
 
@@ -185,7 +176,9 @@ bools jouer(snake* s,int n,plateau p){
     }
     movesnake(s[0],dir);
     movesnake(s[1],dir);
+    bools res=collisions(p,s,n);
+    win(res,s[0]);
     usleep(100000);
-    return collisions(p,s,n);
+    return res;
 }
 
