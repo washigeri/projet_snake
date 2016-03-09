@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "struct.h"
 
 
 /**
  * @brief init_snake Permet la creation dun serpent dune taille definie
  * @param len taille du serpent
- * @return le serpent cree
+ * @return le serpent créé
  */
  
 snake init_snake(int len,type typesnake){
@@ -25,6 +26,26 @@ snake init_snake(int len,type typesnake){
     return res;
 }
 
+/**
+ * @brief test si 2 serpents sont égaux
+ * @param snake
+ * @param snake
+ */
+ 
+bool egalite_snake(snake s1, snake s2){
+    bool res=false;
+    if(s1.taille==s2.taille){
+    	int i=0;
+    	while(i<s1.taille && s1.pos[i].x==s2.pos[i].x && s1.pos[i].y==s2.pos[i].y){
+    	    i++;
+    	}
+    	if(i==s1.taille){
+    	    res=true;
+    	}
+    }
+    return res;
+}
+    	    
 
 /**
  * @brief change_IA Permet le changement de l'intellgence artificielle d un serpent

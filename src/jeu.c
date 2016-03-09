@@ -7,6 +7,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include "struct.h"
+#include "snake.h"
 
 
 
@@ -63,30 +64,37 @@ void movesnake(snake s,direction dir){
 
 
 
-bool wall_hit(plateau p, snake* s,int n){
-    bool res=false;
+bools wall_hit(plateau p, snake* s,int n){
+    bools res;
+    res.b=false;
+    res.s=s[0];
     int taille=p.taille;
     int i;
     for(i=0;i<n;i++){
     	if (s[i].pos[0].x==0 || s[i].pos[0].x==taille-1 || s[i].pos[0].y==0 || s[i].pos[0].y==taille-1){
-    	    res=true;
+    	    res.b=true;
+    	    res.s=s[i];
     	}
     }
     return res;
 }	
-bool head_s_hit(snake s1, snake s2){
-  bool res=false;
+bools head_s_hit(snake s1, snake s2){
+  bools res;
+  res.b=false;
+  res.s=s1;
   int k=0;
-  while(k<s1.taille && !res){
+  while(k<s1.taille && !res.b){
     if(s2.pos[0].x==s1.pos[k].x && s2.pos[0].y==s1.pos[k].y){
-      res=true;
+      res.b=true;
+      res.s=s2;
     }
     k++;
   }
   k=0;
-  while(k<s2.taille && !res){
+  while(k<s2.taille && !res.b){
     if(s1.pos[0].x==s2.pos[k].x && s1.pos[0].y==s2.pos[k].y){
-      res=true;
+      res.b=true;
+      res.s=s1;
     }
     k++;
   }
@@ -95,21 +103,56 @@ bool head_s_hit(snake s1, snake s2){
 
 
 
-
-bool body_hit(snake* s, int n){
-  bool res=false;
+/*
+bools body_hit(snake* s, int n){
+  bools res;
+  res.b=false;
+  res.s=s[0];
   int i,j;
   for(i=0;i<n;i++){
     for(j=i+1;j<n;j++){
       res=head_s_hit(s[i],s[j]);
     }
+  }
+  return res;
+}
+*/
 
+bools body_hit(snake* s, int n){
+  bools res;
+  res.b=false;
+  res.s=s[0];
+  int i=0;
+  int j=1;
+  while(i<n && !res.b){
+    j=i+1;
+    while(j<n && !res.b){
+      res=head_s_hit(s[i],s[j]);
+      j++;
+    }
+    i++;
   }
   return res;
 }
 
-bool collisions(plateau p,snake* s,int n){
-  return (wall_hit(p,s,n) || body_hit(s,n));
+bools collisions(plateau p,snake* s,int n){
+  bools res;
+  res.s=s[0];
+  bools wh=wall_hit(p,s,n);
+  bools bh=body_hit(s,n);
+  res.b = (wh.b || bh.b);
+  if(res.b){
+      if(egalite_snake(wh.s,s[0]) || egalite_snake(bh.s,s[0])){
+          res.s=s[0];
+      }
+      else if(wh.b){
+      	  res.s=wh.s;
+      }
+      else {
+          res.s=bh.s;
+      }
+  }
+  return res;
 }
 
 int kbhit()
@@ -135,7 +178,7 @@ int kbhit()
   return 0;
 }
 
-bool jouer(snake* s,int n,plateau p){
+bools jouer(snake* s,int n,plateau p){
     char dir=s[0].dir[0];
     if(kbhit()){
     	dir=getchar();

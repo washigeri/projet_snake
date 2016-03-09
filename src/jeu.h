@@ -4,10 +4,10 @@
 
 plateau init_plateau(int n);
 void movesnake(snake s,direction dir);
-bool wall_hit(plateau p, snake* s,int n);
-bool head_s_hit(snake s1, snake s2);
-bool body_hit(snake* s, int n);
-bool collisions(plateau p,snake* s,int n);
-bool jouer(snake* s,int n, plateau p);
+bools wall_hit(plateau p, snake* s,int n);
+bools head_s_hit(snake s1, snake s2);
+bools body_hit(snake* s, int n);
+bools collisions(plateau p,snake* s,int n);
+bools jouer(snake* s,int n, plateau p);
 
 #endif // JEU_H_INCLUDED
