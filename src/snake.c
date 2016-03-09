@@ -8,6 +8,7 @@
  * @param len taille du serpent
  * @return le serpent cree
  */
+ 
 snake init_snake(int len,type typesnake){
     snake res;
     res.pos=(coord*)malloc(len*sizeof(coord));
@@ -18,8 +19,9 @@ snake init_snake(int len,type typesnake){
     }
     res.taille=len;
     res.dir=(direction *) malloc (sizeof(direction));
-    res.playType=typesnake;
     res.dir[0]=right;
+    res.playType=(type*) malloc (sizeof(type));
+    res.playType[0]=typesnake;
     return res;
 }
 
@@ -29,8 +31,16 @@ snake init_snake(int len,type typesnake){
  * @param snake
  * @param typeAI
  */
-void change_IA(snake* snake, type typeAI )
+ 
+void change_IA(snake snake, type typeAI )
 {
-
-    snake->playType = typeAI;
+    snake.playType[0] = typeAI;
 }
+
+
+
+
+
+
+
+

@@ -16,10 +16,10 @@ int main()
     snak.pos[3].x=7;snak.pos[3].y=10;
 /*LE SCHLANGA*/ 
    snake schlanga=init_snake(4,idle);
-    schlanga.pos[0].x=15;schlanga.pos[0].y=10;
-    schlanga.pos[1].x=16;schlanga.pos[1].y=10;
-    schlanga.pos[2].x=17;schlanga.pos[2].y=10;
-    schlanga.pos[3].x=18;schlanga.pos[3].y=10;
+    schlanga.pos[0].x=15;schlanga.pos[0].y=20;
+    schlanga.pos[1].x=16;schlanga.pos[1].y=20;
+    schlanga.pos[2].x=17;schlanga.pos[2].y=20;
+    schlanga.pos[3].x=18;schlanga.pos[3].y=20;
     schlanga.dir[0]=left;
     snake* s=(snake*) malloc (2*sizeof(snake));
     s[0]=snak;

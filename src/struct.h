@@ -10,11 +10,10 @@ typedef struct {int x;int y;} coord;
 typedef struct {coord* pos;
                 int taille;
                 direction* dir;
-                type playType;
+                type* playType;
                 } snake;
 
 typedef struct {int** cases;
                 int taille;} plateau;
-
 
 #endif // STRUCT_H_INCLUDED

@@ -16,7 +16,7 @@ snake init_snake(int len,type typesnake);
  * @param snake
  * @param typeAI
  */
-void change_IA(snake* snake, type typeAI);
+void change_IA(snake snake, type typeAI);
 
 
 
