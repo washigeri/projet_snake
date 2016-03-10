@@ -122,7 +122,7 @@ bools collisions(plateau p,snake* s,int n){
   bools bh=body_hit(s,n);
   res.b = (wh.b || bh.b);
   if(res.b){
-      if(egalite_snake(wh.s,s[0]) || egalite_snake(bh.s,s[0])){
+      if((wh.b && egalite_snake(wh.s,s[0])) || (bh.b && egalite_snake(bh.s,s[0]))){
           res.s=s[0];
       }
       else if(wh.b){
@@ -175,7 +175,7 @@ bools jouer(snake* s,int n,plateau p){
     	dir=getchar();
     }
     movesnake(s[0],dir);
-    movesnake(s[1],dir);
+    //movesnake(s[1],dir);
     bools res=collisions(p,s,n);
     win(res,s[0]);
     usleep(100000);
