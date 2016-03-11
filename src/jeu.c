@@ -77,7 +77,7 @@ bools wall_hit(plateau p, snake* s,int n){
     return res;
 }
 
-bools head_s_hit(snake s1, snake s2){
+bools body_hit_aux(snake* s, snake s1, snake s2){
   bools res;
   res.b=false;
   res.s=s1;
@@ -85,7 +85,15 @@ bools head_s_hit(snake s1, snake s2){
   while(k<s1.taille && !res.b){
     if(s2.pos[0].x==s1.pos[k].x && s2.pos[0].y==s1.pos[k].y){
       res.b=true;
-      res.s=s2;
+      if(k==0 && (egalite_snake(s1,s[0]) || egalite_snake(s2,s[0]))){
+        res.s=s[0];
+      }
+      else if(egalite_snake(s2,s[0])){
+        res.s=s1;
+      }
+      else {
+      	res.s=s2;
+      }
     }
     k++;
   }
@@ -93,7 +101,15 @@ bools head_s_hit(snake s1, snake s2){
   while(k<s2.taille && !res.b){
     if(s1.pos[0].x==s2.pos[k].x && s1.pos[0].y==s2.pos[k].y){
       res.b=true;
-      res.s=s1;
+      if(k==0 && (egalite_snake(s1,s[0]) || egalite_snake(s2,s[0]))){
+      	res.s=s[0];
+      }
+      else if(egalite_snake(s1,s[0])){
+        res.s=s2;
+      }
+      else {
+      	res.s=s1;
+      }
     }
     k++;
   }
@@ -108,7 +124,7 @@ bools body_hit(snake* s, int n){
   while(i<n && !res.b){
     j=i+1;
     while(j<n && !res.b){
-      res=head_s_hit(s[i],s[j]);
+      res=body_hit_aux(s,s[i],s[j]);
       j++;
     }
     i++;
@@ -116,13 +132,14 @@ bools body_hit(snake* s, int n){
   return res;
 }
 
+
 bools collisions(plateau p,snake* s,int n){
   bools res;
   bools wh=wall_hit(p,s,n);
   bools bh=body_hit(s,n);
   res.b = (wh.b || bh.b);
   if(res.b){
-      if((wh.b && egalite_snake(wh.s,s[0])) || (bh.b && egalite_snake(bh.s,s[0]))){
+      if((wh.b && (egalite_snake(wh.s,s[0]))) || (bh.b && egalite_snake(bh.s,s[0]))){
           res.s=s[0];
       }
       else if(wh.b){
@@ -175,7 +192,7 @@ bools jouer(snake* s,int n,plateau p){
     	dir=getchar();
     }
     movesnake(s[0],dir);
-    //movesnake(s[1],dir);
+    movesnake(s[1],dir);
     bools res=collisions(p,s,n);
     win(res,s[0]);
     usleep(100000);
