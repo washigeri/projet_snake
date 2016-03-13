@@ -42,7 +42,7 @@ typedef struct {int x;int y;} coord;
 typedef struct {coord* pos;
                 int taille;
                 direction* dir;
-                type* playType;
+                type playType;
                 } snake;
 
 /**

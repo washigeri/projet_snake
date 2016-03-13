@@ -84,29 +84,3 @@ void affiche(plateau p, snake* s,int n){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

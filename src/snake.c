@@ -21,8 +21,7 @@ snake init_snake(int len,type typesnake){
     res.taille=len;
     res.dir=(direction *) malloc (sizeof(direction));
     res.dir[0]=right;
-    res.playType=(type*) malloc (sizeof(type));
-    res.playType[0]=typesnake;
+    res.playType=typesnake;
     return res;
 }
 
@@ -55,9 +54,8 @@ bool egalite_snake(snake s1, snake s2){
  
 void change_IA(snake snake, type typeAI )
 {
-    snake.playType[0] = typeAI;
+    snake.playType = typeAI;
 }
-
 
 
 
