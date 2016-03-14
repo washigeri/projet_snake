@@ -41,7 +41,7 @@ float partie(){
 
 	printf("\nReady!\n");
 	printf("Pour se deplacer:\n     ^\n     |\n     z\n<--q    d-->\n     s\n     |\n     v\n");
-	system("sleep 1;clear");
+	system("sleep 7;clear");
 
 
 	/*time->score*/

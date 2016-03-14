@@ -5,7 +5,7 @@
 
 #ifndef STRUCT_H_INCLUDED
 #define STRUCT_H_INCLUDED
-#include<stdbool.h>
+
 /**
  * \enum direction
  * \brief Type énuméré permettant de stocker la direction de déplacement
