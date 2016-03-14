@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "struct.h"
-
+#include "jeu.h"
 
 /**
  * @brief init_snake Permet la creation dun serpent dune taille definie
@@ -58,8 +58,33 @@ void change_IA(snake snake, type typeAI )
 }
 
 
+direction choix_strategie(snake cible,snake* snakes, plateau p,direction toucheJoueur){
+
+    switch(cible.playType)
+    {
+        case 0 :
+            return toucheJoueur;
+            break;
+        case 1 :
+            return 0;
+            break;
+
+    }
+}
 
 
+bool estOccupe(coord c ,snake * snakes , plateau p)
+{
+    bool res = false;
+    int i,j; 
 
+}
+
+direction idle(snake cible, snake* snakes, plateau p){
+        direction res=cible.dir[0];
+
+
+        
+}
 
 
