@@ -19,6 +19,8 @@ plateau init_plateau(int n);
  * @param dir la direction souhaitee
  */
 void movesnake(snake s,direction dir);
+
+bools* init_bools_tab(int n);
 /**
  * @brief wall_hit Permet de tester si le serpent touche un mur du plateau
  * @param p le plateau de jeu
@@ -26,14 +28,16 @@ void movesnake(snake s,direction dir);
  * @param n le nombre de serpents
  * @return la cas de collision avec un mur
  */
-bools wall_hit(plateau p, snake* s,int n);
+bools* wall_hit(plateau p, snake* s,int n);
 /**
  * @brief body_hit_aux Permet de tester le cas de collision entre deux serpents
  * @param s1 serpent 1
  * @param s2 serpent 2
  * @return le cas de collision
  */
-bools body_hit_aux(snake s1, snake s2);
+bools body_hit_aux1(snake s1, snake s2);
+
+bools** body_hit_aux2(snake *s, int n);
 /**
  * @brief body_hit Permet de tester les collisions de tous les serpents entre eux
  * @param s le tableau de serpent
@@ -42,7 +46,7 @@ bools body_hit_aux(snake s1, snake s2);
  */
 
 /*TODO :faire en sorte denvoyer une liste de collision et non un element unique (bools*)*/
-bools body_hit(snake* s, int n);
+bools* body_hit(snake* s,int n);
 /**
  * @brief collisions Permet de occuper de tout les sorte de collisions entre le
  * plateau et les sepents
@@ -52,7 +56,7 @@ bools body_hit(snake* s, int n);
  * @return le cas de collision
  */
 /*TODO :faire en sorte denvoyer une liste de collision et non un element unique (bools*)*/
-bools collisions(plateau p,snake* s,int n);
+bools* collisions(plateau p,snake* s,int n);
 /**
  * @brief win Permet de test si le joueur humain a gagne ou perdu
  * TODO NOTE : cette commande ne permet qu un jeu a un joueur et un ordinateur pour
@@ -61,8 +65,7 @@ bools collisions(plateau p,snake* s,int n);
  * @param s le serpent a test (toujours le joueur)
  */
 
-/*TODO :faire en sorte denvoyer une liste de collision et non un element unique (bools*)*/
-void win(bools bs,snake s);
+void win(bools* bs,snake* s,int n);
 
 /**
  * @brief kbhit operation permet de preparer la console a lappui sur une touche
@@ -80,6 +83,6 @@ int kbhit();
  * @return la collision provoque dans le tour
  */
 /*TODO :faire en sorte denvoyer une liste de collision et non un element unique (bools*)*/
-bools jouer(snake* s,int n, plateau p);
+bools* jouer(snake* s,int n,plateau p);
 
 #endif // JEU_H_INCLUDED
