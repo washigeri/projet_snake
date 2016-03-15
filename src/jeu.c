@@ -90,7 +90,7 @@ bools* wall_hit(plateau p, snake* s,int n){
 }
     
 
-bools body_hit_aux1(snake s1, snake s2){
+bools body_hit_aux(snake s1, snake s2){
   bools res;
   res.b=true;
   res.s=s1;
@@ -106,38 +106,18 @@ bools body_hit_aux1(snake s1, snake s2){
   return res;
 }
 
-bools** body_hit_aux2(snake *s, int n){
-    bools** res=(bools**)malloc((MAX_NB_SNAKE)*sizeof(bools*));
-    bools* ligne=init_bools_tab(MAX_NB_SNAKE);
-    int i,j;
-    for(i=0;i<n;i++){
-    	res[i]=ligne;
-    }
-    for(i=0;i<n;i++){
-    	for(j=0;j<n;j++){
-    	    res[i][j]=body_hit_aux1(s[i],s[j]);
-    	}
-    }
-    return res;
-}
-
-bools* body_hit(snake* s,int n){	
+bools* body_hit(snake* s,int n){
     bools* res=init_bools_tab(MAX_NB_SNAKE);
-    bools** all_hits=body_hit_aux2(s,n);
     int i,j;
+    bools test;
     for(i=0;i<n;i++){
-    	j=0;
-    	while(j<n && res[i].b){	
-    	    if(all_hits[i][j].b){
-    	    	j++;
-    	    }
-    	    else {
-    	        res[i].b=false;
-    	    }
-    	}
     	res[i].s=s[i];
-    	if(j!=n){
-    	    res[i].b=false;
+    	for(j=0;j<n;j++){
+    	    test=body_hit_aux(s[i],s[j]);
+    	    if(!test.b){
+    	    	res[i].b=false;
+    	    	j=n;
+    	    }
     	}
     }
     return res;
@@ -156,19 +136,23 @@ bools* collisions(plateau p,snake* s,int n){
 }
 
 
-void win(bools* bs,snake* s,int n){
+bool win(bools* bs,snake* s,int n){
+    bool res=true;
     if(!bs[0].b){
-        system("clear");
         printf("PJSalt G A M E O V E R  PJSalt\n\n");
+        res=false;
     }
     else {
         int i;
         for(i=1;i<n;i++){
             if(!bs[i].b){
-                printf("V I C T O I R E, le bot %d est crevé EleGiggle\n\n",i-1);
+                printf("V I C T O I R E, le bot %d est crevé EleGiggle\n\n",i);
+                i=n;
+                res=false;
     	    }   
         }  
     }
+    return res;
 }
 
 int kbhit()
@@ -194,15 +178,14 @@ int kbhit()
 }
 
 bools* jouer(snake* s,int n,plateau p){
-    char dir=s[1].dir[0];
+    char dir=s[0].dir[0];
     if(kbhit()){
     	dir=getchar();
     }
     movesnake(s[0],dir);
     movesnake(s[1],dir);
     bools* res=collisions(p,s,n);
-    win(res,s,n);
-    usleep(200000);
+    usleep(100000);
     return res;
 }
 

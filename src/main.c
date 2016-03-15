@@ -46,10 +46,8 @@ int main()
     affiche(p,s,2);
 
 /*JEU*/
-    bools* joue=jouer(s,2,p);
-    while(joue[0].b && joue[1].b){
+    while(win(jouer(s,2,p),s,2)){
         affiche(p,s,2);
-        joue=jouer(s,2,p);
     }
     return 0;
 }

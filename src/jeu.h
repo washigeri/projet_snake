@@ -35,9 +35,7 @@ bools* wall_hit(plateau p, snake* s,int n);
  * @param s2 serpent 2
  * @return le cas de collision
  */
-bools body_hit_aux1(snake s1, snake s2);
-
-bools** body_hit_aux2(snake *s, int n);
+bools body_hit_aux(snake s1, snake s2);
 /**
  * @brief body_hit Permet de tester les collisions de tous les serpents entre eux
  * @param s le tableau de serpent
@@ -63,9 +61,10 @@ bools* collisions(plateau p,snake* s,int n);
  * instant
  * @param bs les resultat des test de collision
  * @param s le serpent a test (toujours le joueur)
+ * @return true si il n'y a pas eu de collision, false sinon
  */
 
-void win(bools* bs,snake* s,int n);
+bool win(bools* bs,snake* s,int n);
 
 /**
  * @brief kbhit operation permet de preparer la console a lappui sur une touche
