@@ -27,6 +27,7 @@ int main()
     s[0]=snak;
     s[1]=schlanga;
 
+
 /*INITILAISATION*/
 	/*DEBUT DU JEU*/
 
