@@ -35,8 +35,19 @@ void change_IA(snake snake, type typeAI);
  * @param toucheJoueur la touche presse par le joueur pendant le debut du tour
  * @return la direction choisi par la strategie
  */
-direction choix_strategie(snake cible,snake* snakes, plateau p ,direction toucheJoueur);
+direction choix_strategie(snake cible,snake* snakes,int nombreSerpent, plateau p,direction toucheJoueur);
 
+bool estOccupe(coord c ,snake * snakes ,int nombreSerpent, plateau p);
+
+bool estInverse(direction dir1,direction dir2);
+
+direction joueur_strat(snake cible,direction toucheJoueur);
+
+coord convertDirectionToCoord(direction dir);
+
+direction tournerAntiHoraire(direction dir);
+
+direction idle_strat(snake cible, snake* snakes,int nombreSerpent, plateau p);
 
 
 
