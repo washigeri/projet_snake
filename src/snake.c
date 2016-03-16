@@ -1,9 +1,17 @@
+
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <string.h>
+
 #include "struct.h"
 #include "jeu.h"
 #include "snake.h"
+
 /**
  * @brief init_snake Permet la creation dun serpent dune taille definie
  * @param len taille du serpent
@@ -63,21 +71,21 @@ direction choix_strategie(snake cible,snake* snakes,int nombreSerpent, plateau p
     switch(cible.playType)
     {
 
-        case joueur :
-            return toucheJoueur;
-            break;
-        case idle :
-            return idle_strat(cible,snakes,nombreSerpent,p);
-            break;
-        case defensif :
-            return 0;
-            break;
-        case offensif :
-            return 0;
-            break;
-        default :
-            return toucheJoueur;
-            break;
+    case joueur :
+        return toucheJoueur;
+        break;
+    case idle :
+        return idle_strat(cible,snakes,nombreSerpent,p);
+        break;
+    case defensif :
+        return 0;
+        break;
+    case offensif :
+        return 0;
+        break;
+    default :
+        return toucheJoueur;
+        break;
     }
 }
 
@@ -92,6 +100,9 @@ bool estOccupe(coord c ,snake * snakes ,int nombreSerpent, plateau p)
     /*Test du plateau*/
     res = (p.cases[c.x][c.y] == 1);
 
+    printf("**Test plateau x= %d y= %d == %d  \n",c.x,c.y,res);
+
+
     /*Test des serpents*/
     for(i= 0 ; i < nombreSerpent && !res ; i++)
     {
@@ -101,6 +112,7 @@ bool estOccupe(coord c ,snake * snakes ,int nombreSerpent, plateau p)
 
         }
     }
+
 
 
     return res;
@@ -196,21 +208,28 @@ direction idle_strat(snake cible, snake* snakes,int nombreSerpent, plateau p){
 
     direction res = (*(cible.dir));
 
-    direction old = res;
+    direction old =res;
 
     int testmax = 0;
     coord dirSouhaite,dirFutur;
-            dirSouhaite.x = cible.pos->x;
-            dirSouhaite.y = cible.pos->y;
 
-    //On test si le serpent peut aller autre part (si ou bout de 3 test le test echoue le serpent se suicide
-    while(testmax < 4 && estOccupe(dirSouhaite,snakes,nombreSerpent,p))
+    dirFutur = convertDirectionToCoord(res);
+
+
+
+
+    dirSouhaite.x = cible.pos->x + dirFutur.x;
+    dirSouhaite.y = cible.pos->y + dirFutur.y;
+
+    //On test si le serpent peut aller autre part (si ou bout de 3 test le test echoue le serpent se suicide)
+    while(testmax < 5 && estOccupe(dirSouhaite,snakes,nombreSerpent,p))
     {
         res =tournerAntiHoraire(res);
-
         //Test si
-        if(estInverse(res,old))
+        if(!estInverse(res,old))
         {
+
+            printf("La case est occupe on tourne");
 
             dirFutur = convertDirectionToCoord(res);
             dirSouhaite.x = cible.pos->x + dirFutur.x;
@@ -224,5 +243,3 @@ direction idle_strat(snake cible, snake* snakes,int nombreSerpent, plateau p){
     return res;
 
 }
-
-
