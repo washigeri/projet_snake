@@ -39,4 +39,7 @@ direction choix_strategie(snake cible,snake* snakes, plateau p ,direction touche
 
 
 
+
+
+
 #endif // SNAKE_H_INCLUDED
