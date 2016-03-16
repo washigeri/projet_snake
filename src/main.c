@@ -46,7 +46,7 @@ int main()
     affiche(p,s,2);
 
 /*JEU*/
-    while(!jouer(s,2,p).b){
+    while(win(jouer(s,2,p),s,2)){
         affiche(p,s,2);
     }
     return 0;
