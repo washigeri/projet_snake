@@ -20,7 +20,7 @@ typedef enum {left='q',right='d',up='z',down='s'} direction;
  * 
  */
  
-typedef enum {joueur,idle,defensif,offensive} type ;
+typedef enum {joueur,idle,defensif,offensif} type ;
 
 /**
  * \struct coord struct.h Structures
