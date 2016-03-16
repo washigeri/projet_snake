@@ -244,3 +244,4 @@ direction idle_strat(snake cible, snake* snakes,int nombreSerpent, plateau p){
     return res;
 
 }
+
