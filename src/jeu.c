@@ -9,14 +9,20 @@
 #include "struct.h"
 #include "snake.h"
 
-
+#define MAX_NB_SNAKE 10
 
 plateau init_plateau(int n){
     plateau res;
     res.cases=(int**)malloc(n*sizeof(int*));
     int i;
     for(i=0;i<n;i++){
-            res.cases[i]=(int*)malloc(n*sizeof(int));
+        res.cases[i]=(int*)malloc(n*sizeof(int));
+    }
+    for(i=0;i<n;i++){
+    	res.cases[i][0]=1;
+    	res.cases[i][n-1]=1;
+    	res.cases[0][i]=1;
+    	res.cases[0][n-1]=1;
     }
     res.taille=n;
     return res;
@@ -62,106 +68,91 @@ void movesnake(snake s,direction dir){
     }
 }
 
-bools wall_hit(plateau p, snake* s,int n){
-    bools res;
-    res.b=false;
-    res.s=s[0];
+bools* init_bools_tab(int n){
+    bools* res=(bools*) malloc (n*sizeof(bools));
+    for(int i=0;i<n;i++){
+    	res[i].b=true;
+    }
+    return res;
+}
+
+bools* wall_hit(plateau p, snake* s,int n){
+    bools* res=init_bools_tab(MAX_NB_SNAKE);
     int taille=p.taille;
     int i;
     for(i=0;i<n;i++){
+    	res[i].s=s[i];
     	if (s[i].pos[0].x==0 || s[i].pos[0].x==taille-1 || s[i].pos[0].y==0 || s[i].pos[0].y==taille-1){
-    	    res.b=true;
-    	    res.s=s[i];
+    	    res[i].b=false;
+    	}
+    }
+    return res;
+}
+    
+
+bools body_hit_aux(snake s1, snake s2){
+  bools res;
+  res.b=true;
+  res.s=s1;
+  if(!egalite_snake(s1,s2)){
+      int k=0;
+      while(k<s2.taille && res.b){
+          if(s1.pos[0].x==s2.pos[k].x && s1.pos[0].y==s2.pos[k].y){
+              res.b=false;
+          }
+          k++;
+      }
+  }
+  return res;
+}
+
+bools* body_hit(snake* s,int n){
+    bools* res=init_bools_tab(MAX_NB_SNAKE);
+    int i,j;
+    bools test;
+    for(i=0;i<n;i++){
+    	res[i].s=s[i];
+    	for(j=0;j<n;j++){
+    	    test=body_hit_aux(s[i],s[j]);
+    	    if(!test.b){
+    	    	res[i].b=false;
+    	    	j=n;
+    	    }
     	}
     }
     return res;
 }
 
-bools body_hit_aux(snake* s, snake s1, snake s2){
-  bools res;
-  res.b=false;
-  res.s=s1;
-  int k=0;
-  while(k<s1.taille && !res.b){
-    if(s2.pos[0].x==s1.pos[k].x && s2.pos[0].y==s1.pos[k].y){
-      res.b=true;
-      if(k==0 && (egalite_snake(s1,s[0]) || egalite_snake(s2,s[0]))){
-        res.s=s[0];
-      }
-      else if(egalite_snake(s2,s[0])){
-        res.s=s1;
-      }
-      else {
-      	res.s=s2;
-      }
+bools* collisions(plateau p,snake* s,int n){
+    bools* res=init_bools_tab(MAX_NB_SNAKE);
+    bools* wh=wall_hit(p,s,n);
+    bools* bh=body_hit(s,n);
+    int i;
+    for(i=0;i<n;i++){
+    	res[i].b=(wh[i].b && bh[i].b);
+    	res[i].s=s[i];
     }
-    k++;
-  }
-  k=0;
-  while(k<s2.taille && !res.b){
-    if(s1.pos[0].x==s2.pos[k].x && s1.pos[0].y==s2.pos[k].y){
-      res.b=true;
-      if(k==0 && (egalite_snake(s1,s[0]) || egalite_snake(s2,s[0]))){
-      	res.s=s[0];
-      }
-      else if(egalite_snake(s1,s[0])){
-        res.s=s2;
-      }
-      else {
-      	res.s=s1;
-      }
-    }
-    k++;
-  }
-  return res;
-}
-
-bools body_hit(snake* s, int n){
-  bools res;
-  res.b=false;
-  int i=0;
-  int j;
-  while(i<n && !res.b){
-    j=i+1;
-    while(j<n && !res.b){
-      res=body_hit_aux(s,s[i],s[j]);
-      j++;
-    }
-    i++;
-  }
-  return res;
+    return res;
 }
 
 
-bools collisions(plateau p,snake* s,int n){
-  bools res;
-  bools wh=wall_hit(p,s,n);
-  bools bh=body_hit(s,n);
-  res.b = (wh.b || bh.b);
-  if(res.b){
-      if((wh.b && (egalite_snake(wh.s,s[0]))) || (bh.b && egalite_snake(bh.s,s[0]))){
-          res.s=s[0];
-      }
-      else if(wh.b){
-      	  res.s=wh.s;
-      }
-      else {
-          res.s=bh.s;
-      }
-  }
-  return res;
-}
-
-void win(bools bs,snake s){
-    if(bs.b){
-        system("clear");
-        if(egalite_snake(bs.s,s)){
-            printf("PJSalt G A M E O V E R  PJSalt\n\n");
-        }
-        else {
-            printf("V I C T O I R E\n\n");
-        }
+bool win(bools* bs,snake* s,int n){
+    bool res=true;
+    if(!bs[0].b){
+        printf("PJSalt G A M E O V E R  PJSalt\n\n");
+        res=false;
     }
+    else {
+        int i;
+        for(i=1;i<n;i++){
+            if(!bs[i].b){
+                printf("V I C T O I R E, le bot %d est crevé EleGiggle\n\n",i);
+                i=n;
+                res=false;
+    	    }   
+        }  
+    }
+    return res;
 }
 
 int kbhit()
@@ -186,15 +177,14 @@ int kbhit()
   return 0;
 }
 
-bools jouer(snake* s,int n,plateau p){
+bools* jouer(snake* s,int n,plateau p){
     char dir=s[0].dir[0];
     if(kbhit()){
     	dir=getchar();
     }
     movesnake(s[0],dir);
     movesnake(s[1],dir);
-    bools res=collisions(p,s,n);
-    win(res,s[0]);
+    bools* res=collisions(p,s,n);
     usleep(100000);
     return res;
 }
