@@ -182,8 +182,9 @@ bools* jouer(snake* s,int n,plateau p){
     if(kbhit()){
     	dir=getchar();
     }
+    direction dir2=choix_strategie(s[1],s,n,p,0);
     movesnake(s[0],dir);
-    movesnake(s[1],dir);
+    movesnake(s[1],dir2);
     bools* res=collisions(p,s,n);
     usleep(100000);
     return res;

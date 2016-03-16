@@ -201,7 +201,8 @@ direction idle_strat(snake cible, snake* snakes,int nombreSerpent, plateau p){
 
     int testmax = 0;
     coord dirSouhaite,dirFutur;
-
+            dirSouhaite.x = cible.pos->x;
+            dirSouhaite.y = cible.pos->y;
 
     //On test si le serpent peut aller autre part (si ou bout de 3 test le test echoue le serpent se suicide
     while(testmax < 4 && estOccupe(dirSouhaite,snakes,nombreSerpent,p))
