@@ -59,14 +59,15 @@ bool egalite_snake(snake s1, snake s2){
  * @param snake
  * @param typeAI
  */
+void change_IA(snake snake, type typeAI)
 
-void change_IA(snake snake, type typeAI )
 {
     snake.playType = typeAI;
 }
 
 
 direction choix_strategie(snake cible,snake* snakes,int nombreSerpent, plateau p,direction toucheJoueur){
+
 
     switch(cible.playType)
     {

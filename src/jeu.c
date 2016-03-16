@@ -22,7 +22,7 @@ plateau init_plateau(int n){
     	res.cases[i][0]=1;
     	res.cases[i][n-1]=1;
     	res.cases[0][i]=1;
-    	res.cases[0][n-1]=1;
+    	res.cases[n-1][i]=1;
     }
     res.taille=n;
     return res;

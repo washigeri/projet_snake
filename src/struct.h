@@ -53,7 +53,13 @@ typedef struct {coord* pos;
  
 typedef struct {int** cases;
                 int taille;} plateau;
-                
+
+/**
+ *
+ * \struct bools
+ * \brief Structure permettant de savoir si un serpent perd la partie ou la continue. Si b vaut false le serpent a perdu sinon il continue la partie.
+ */
+  
 typedef struct {bool b; snake s;} bools;
 
 #endif // STRUCT_H_INCLUDED
