@@ -3,7 +3,7 @@ TARGET   = Snake_Schlangà
 
 CC       = gcc
 # compiling flags here
-CFLAGS   = -Wall 
+CFLAGS   = -Wall -std=c99
 
 LINKER   = gcc -o
 # linking flags here
@@ -14,26 +14,30 @@ SRCDIR   = src
 OBJDIR   = obj
 BINDIR   = bin
 
-SOURCES  := $(wildcard $(SRCDIR)/*.c)
-INCLUDES := $(wildcard $(SRCDIR)/*.h)
-OBJECTS  := $(SOURCES:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
-rm       = rm -f
 
 
-$(BINDIR)/$(TARGET): $(OBJECTS)
-	@$(LINKER) $@ $(LFLAGS) $(OBJECTS)
-	@echo "Linking complete!"
+all: bin/Snake_Schlangà bin/Snake_test
 
-$(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.c
-	@$(CC) $(CFLAGS) -c $< -o $@
-	@echo "Compiled "$<" successfully!"
+bin/Snake_Schlangà: obj/affiche.o obj/jeu.o obj/main.o obj/snake.o
+	gcc obj/affiche.o obj/jeu.o obj/main.o obj/snake.o -o bin/Snake_Schlangà  $(CFLAGS)
 
-.PHONEY: clean
-clean:
-	@$(rm) $(OBJECTS)
-	@echo "Cleanup complete!"
+bin/Snake_test: obj/affiche.o obj/jeu.o obj/maintest.o obj/snake.o
+	gcc obj/affiche.o obj/jeu.o obj/main.o obj/snake.o -o bin/Snake_test $(CFLAGS)
 
-.PHONEY: remove
-remove: clean
-	@$(rm) $(BINDIR)/$(TARGET)
-	@echo "Executable removed!"
+obj/main.o: src/main.c
+	gcc -c src/main.c -o obj/main.o $(CFLAGS)
+
+obj/maintest.o: src/maintest.c
+	gcc -c src/maintest.c -o obj/maintest.o $(CFLAGS)
+
+obj/affiche.o: src/affiche.c
+	gcc -c src/affiche.c -o obj/affiche.o $(CFLAGS)
+
+obj/jeu.o: src/jeu.c
+	gcc -c src/jeu.c -o obj/jeu.o $(CFLAGS)
+
+obj/snake.o: src/snake.c
+	gcc -c src/snake.c -o obj/snake.o $(CFLAGS)
+
+
+
