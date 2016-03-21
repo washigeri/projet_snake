@@ -68,9 +68,11 @@ bool win(bools* bs,snake* s,int n);
 
 /**
  * @brief kbhit operation permet de preparer la console a lappui sur une touche
- * @return le succees ou non de l operation
+ * @return le succes ou non de l'operation
  */
 int kbhit();
+
+void depart(snake* s,int n, plateau p);
 /**
  * @brief jouer permet de jouer un tour de jeu
  *   * faire avancer les differents serpent selon leurs differentes strategies

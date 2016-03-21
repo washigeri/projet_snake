@@ -177,16 +177,39 @@ int kbhit()
   return 0;
 }
 
+void depart(snake* s,int n, plateau p){
+    char dir,dir2;
+    bool debut=false;
+    while(!debut){
+    	if(kbhit()){
+    	    dir=getchar();
+    	    if(dir=='z' || dir=='q' || dir=='s' || dir=='d'){
+    	        dir2=choix_strategie(s[1],s,n,p,0);
+    	        debut=true;
+    	    }
+    	}
+    }
+    movesnake(s[0],dir);
+    movesnake(s[1],dir2);
+}
+    
+
 bools* jouer(snake* s,int n,plateau p){
     char dir=s[0].dir[0];
     if(kbhit()){
     	dir=getchar();
     }
-    direction dir2=choix_strategie(s[1],s,n,p,0);
-    movesnake(s[0],dir);
-    movesnake(s[1],dir2);
+    if(dir=='z' || dir=='q' || dir=='s' || dir=='d'){
+        direction dir2=choix_strategie(s[1],s,n,p,0);
+        movesnake(s[0],dir);
+        movesnake(s[1],dir2);
+    }
+    else {
+    	movesnake(s[0],s[0].dir[0]);
+    	movesnake(s[1],choix_strategie(s[1],s,n,p,0));
+    }
     bools* res=collisions(p,s,n);
-    usleep(100000);
+    usleep(300000);
     return res;
 }
 

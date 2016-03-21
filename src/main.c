@@ -47,6 +47,8 @@ int main()
     affiche(p,s,2);
 
 /*JEU*/
+    depart(s,2,p);
+    
     while(win(jouer(s,2,p),s,2)){
         affiche(p,s,2);
     }
