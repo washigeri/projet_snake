@@ -209,7 +209,7 @@ bools* jouer(snake* s,int n,plateau p){
     	movesnake(s[1],choix_strategie(s[1],s,n,p,0));
     }
     bools* res=collisions(p,s,n);
-    usleep(300000);
+    usleep(100000);
     return res;
 }
 

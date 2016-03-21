@@ -2,12 +2,13 @@
 #include "jeu.h"
 #include "snake.h"
 #include "affiche.h"
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include<time.h>
-#include<ctype.h>
-#include<string.h>
-#include<stdbool.h>
+#include <time.h>
+#include <ctype.h>
+#include <string.h>
+#include <stdbool.h>
 
 float partie(){
 /*LE SNAKE*/
@@ -66,45 +67,32 @@ float partie(){
 }
 
 void afficher_score(){
-    FILE* fichier = NULL;
-    fichier = fopen("score.txt", "r");
+    FILE* fichier =NULL; 
+    FILE* temp;
+    temp=fopen("others/temp.txt","w+");    
+    fichier=fopen("others/score.txt", "r");
 	float res;
 	float max=0;
-    if (fichier != NULL)
-    {
-		int i=0;
-       	fscanf(fichier, "%f ", &res);
-        printf("%deme score: %f\n",i, res);
+	int i, len;
+	system("cat others/score.txt | wc -l > others/temp.txt");
+	fscanf(temp,"%d",&len);
+	fclose(temp);
+	for(i=0;i<len;i++){
+       	fscanf(fichier, "%f", &res);
+       	if( res!=EOF ){printf("[%d]: %f\n",i+1, res);}
 		if( res>max ){ max=res; }
-		while( res!=-1 ){
-			i=i+1;
-        	fscanf(fichier, "%f ", &res);
-        	if( res!=-1 ){printf("%deme score: %f\n",i, res);}
-			if( res>max ){ max=res; }
-		}
-		printf("\n **1er**     meilleur score: %f\n", max);
-        fclose(fichier);
-    }
+	}
+	printf("\nMeilleur score: %f\n", max);
+    fclose(fichier);
+    system("rm -f others/temp.txt");
+    
 }
 
 void write_score(float score_de_la_partie){
-	FILE *fr=fopen("score.txt","r");
-	int i=0;
-	float a[100];
-	fscanf(fr,"%f ",&a[i]);
-	while( a[i]!=-1 ){
-		i=i+1;
-		fscanf(fr,"%f ",&a[i]);
-	}
-	fclose(fr);
-
-	FILE *fw=fopen("score.txt","w");
-	int j;
-	for(j=0;j<i;j=j+1){ fprintf(fw,"%f ",a[j]);}
-	fprintf(fw,"%f ",score_de_la_partie);
-	fprintf(fw,"-1 ");
-
-	fclose(fw);
+	FILE* fichier=NULL;
+	fichier=fopen("others/score.txt","a+");
+	fprintf(fichier,"%f\n",score_de_la_partie);
+	fclose(fichier);
 }
 
 
