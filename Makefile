@@ -1,6 +1,7 @@
 # project name (generate executable with this name)
 TARGET   = Snake_Schlangà
 
+
 CC       = gcc
 # compiling flags here
 CFLAGS   = -Wall 
