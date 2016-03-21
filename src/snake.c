@@ -226,8 +226,6 @@ direction idle_strat(snake cible, snake* snakes,int nombreSerpent, plateau p){
         //Test si
         if(!estInverse(res,old))
         {
-            printf("La case est occupe on tourne");
-
             dirFutur = convertDirectionToCoord(res);
             dirSouhaite.x = cible.pos->x + dirFutur.x;
             dirSouhaite.y = cible.pos->y + dirFutur.y;

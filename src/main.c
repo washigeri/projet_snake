@@ -56,9 +56,7 @@ float partie(){
 /*JEU*/
     depart(s,2,p);
     
-    while(win(jouer(s,2,p),s,2)){
-        affiche(p,s,2);
-    }
+    while(win(jouer(s,2,p),s,2))
 
 	time(&temps2);
 	float t=difftime(temps2,temps1);
@@ -77,7 +75,7 @@ void afficher_score(){
 	system("cat others/score.txt | wc -l > others/temp.txt");
 	fscanf(temp,"%d",&len);
 	fclose(temp);
-	for(i=0;i<len;i++){
+	for(i=0;i<len && i<20;i++){
        	fscanf(fichier, "%f", &res);
        	if( res!=EOF ){printf("[%d]: %f\n",i+1, res);}
 		if( res>max ){ max=res; }
@@ -129,7 +127,10 @@ int main()
 		scanf("%d",&replay);
 
 
-		if( replay!=0 && replay!=1 ){ printf("\n! Erreur de saisie !\nMode par defaut: Quitter\n"); replay=0 ;}
+		if( replay!=0 && replay!=1 ){
+		    printf("\n! Erreur de saisie !\nMode par defaut: Quitter\n");
+		    replay=0 ;
+		}
 
 	}
 	printf("\n**Au revoir**\n");

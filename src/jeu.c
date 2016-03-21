@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include "struct.h"
 #include "snake.h"
+#include "affiche.h"
 
 #define MAX_NB_SNAKE 10
 
@@ -29,7 +30,7 @@ plateau init_plateau(int n){
 }
 
 void movesnake(snake s,direction dir){
-    if((int)(abs(s.dir[0]-dir))!=7 && (int)(abs(s.dir[0]-dir))!=13){
+    if(!estInverse(s.dir[0],dir)){
         int i;
         switch (dir){
         case right:
@@ -65,6 +66,9 @@ void movesnake(snake s,direction dir){
                 s.dir[0]=dir;
                 break;
         }
+    }
+    else {
+    	movesnake(s,s.dir[0]);
     }
 }
 
@@ -202,11 +206,15 @@ bools* jouer(snake* s,int n,plateau p){
     if(dir=='z' || dir=='q' || dir=='s' || dir=='d'){
         direction dir2=choix_strategie(s[1],s,n,p,0);
         movesnake(s[0],dir);
+        affiche(p,s,n);
         movesnake(s[1],dir2);
+        affiche(p,s,n);
     }
     else {
     	movesnake(s[0],s[0].dir[0]);
+    	affiche(p,s,n);
     	movesnake(s[1],choix_strategie(s[1],s,n,p,0));
+    	affiche(p,s,n);
     }
     bools* res=collisions(p,s,n);
     usleep(100000);
