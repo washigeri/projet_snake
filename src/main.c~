@@ -27,7 +27,6 @@ float partie(){
     s[0]=snak;
     s[1]=schlanga;
 
-
 /*INITILAISATION*/
 	/*DEBUT DU JEU*/
 
@@ -42,7 +41,7 @@ float partie(){
 
 	printf("\nReady!\n");
 	printf("Pour se deplacer:\n     ^\n     |\n     z\n<--q    d-->\n     s\n     |\n     v\n");
-	system("sleep 1;clear");
+	system("sleep 7;clear");
 
 
 	/*time->score*/
@@ -53,7 +52,7 @@ float partie(){
     affiche(p,s,2);
 
 /*JEU*/
-    while(win(jouer(s,2,p),s,2)){
+    while(!jouer(s,2,p).b){
         affiche(p,s,2);
     }
 

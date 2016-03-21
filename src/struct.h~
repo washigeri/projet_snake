@@ -5,7 +5,7 @@
 
 #ifndef STRUCT_H_INCLUDED
 #define STRUCT_H_INCLUDED
-#include<stdbool.h>
+
 /**
  * \enum direction
  * \brief Type énuméré permettant de stocker la direction de déplacement
@@ -20,7 +20,7 @@ typedef enum {left='q',right='d',up='z',down='s'} direction;
  * 
  */
  
-typedef enum {joueur,idle,defensif,offensif} type ;
+typedef enum {joueur,idle,defensif,offensive} type ;
 
 /**
  * \struct coord struct.h Structures
@@ -53,13 +53,7 @@ typedef struct {coord* pos;
  
 typedef struct {int** cases;
                 int taille;} plateau;
-
-/**
- *
- * \struct bools
- * \brief Structure permettant de savoir si un serpent perd la partie ou la continue. Si b vaut false le serpent a perdu sinon il continue la partie.
- */
-  
+                
 typedef struct {bool b; snake s;} bools;
 
 #endif // STRUCT_H_INCLUDED
