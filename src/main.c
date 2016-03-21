@@ -12,10 +12,10 @@
 float partie(){
 /*LE SNAKE*/
     snake snak=init_snake(4,0);
-    snak.pos[0].x=10;snak.pos[0].y=10;
-    snak.pos[1].x=9;snak.pos[1].y=10;
-    snak.pos[2].x=8;snak.pos[2].y=10;
-    snak.pos[3].x=7;snak.pos[3].y=10;
+    snak.pos[0].x=10;snak.pos[0].y=8;
+    snak.pos[1].x=9;snak.pos[1].y=8;
+    snak.pos[2].x=8;snak.pos[2].y=8;
+    snak.pos[3].x=7;snak.pos[3].y=8;
 /*LE SCHLANGA*/ 
    snake schlanga=init_snake(4,1);
     schlanga.pos[0].x=15;schlanga.pos[0].y=10;
