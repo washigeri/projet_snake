@@ -11,22 +11,21 @@
 
 float partie(){
 /*LE SNAKE*/
-    snake snak=init_snake(4,joueur);
+    snake snak=init_snake(4,0);
     snak.pos[0].x=10;snak.pos[0].y=10;
     snak.pos[1].x=9;snak.pos[1].y=10;
     snak.pos[2].x=8;snak.pos[2].y=10;
     snak.pos[3].x=7;snak.pos[3].y=10;
-/*LE SCHLANGA*/
-    snake schlanga=init_snake(4,idle);
-    schlanga.pos[0].x=15;schlanga.pos[0].y=15;
-    schlanga.pos[1].x=16;schlanga.pos[1].y=15;
-    schlanga.pos[2].x=17;schlanga.pos[2].y=15;
-    schlanga.pos[3].x=18;schlanga.pos[3].y=15;
+/*LE SCHLANGA*/ 
+   snake schlanga=init_snake(4,1);
+    schlanga.pos[0].x=15;schlanga.pos[0].y=10;
+    schlanga.pos[1].x=16;schlanga.pos[1].y=10;
+    schlanga.pos[2].x=17;schlanga.pos[2].y=10;
+    schlanga.pos[3].x=18;schlanga.pos[3].y=10;
     schlanga.dir[0]=left;
     snake* s=(snake*) malloc (2*sizeof(snake));
     s[0]=snak;
     s[1]=schlanga;
-
 
 /*INITILAISATION*/
 	/*DEBUT DU JEU*/
@@ -42,7 +41,7 @@ float partie(){
 
 	printf("\nReady!\n");
 	printf("Pour se deplacer:\n     ^\n     |\n     z\n<--q    d-->\n     s\n     |\n     v\n");
-	system("sleep 1;clear");
+	system("sleep 7;clear");
 
 
 	/*time->score*/
@@ -53,9 +52,7 @@ float partie(){
     affiche(p,s,2);
 
 /*JEU*/
-    depart(s,2,p);
-    
-    while(win(jouer(s,2,p),s,2)){
+    while(!jouer(s,2,p).b){
         affiche(p,s,2);
     }
 
