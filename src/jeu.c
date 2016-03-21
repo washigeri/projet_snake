@@ -143,14 +143,14 @@ bools* collisions(plateau p,snake* s,int n){
 bool win(bools* bs,snake* s,int n){
     bool res=true;
     if(!bs[0].b){
-        printf("PJSalt G A M E O V E R  PJSalt\n\n");
+        printf("G A M E O V E R\n\n");
         res=false;
     }
     else {
         int i;
         for(i=1;i<n;i++){
             if(!bs[i].b){
-                printf("V I C T O I R E, le bot %d est crevé EleGiggle\n\n",i);
+                printf("V I C T O I R E");
                 i=n;
                 res=false;
     	    }   
@@ -205,14 +205,14 @@ bools* jouer(snake* s,int n,plateau p){
     }
     if(dir=='z' || dir=='q' || dir=='s' || dir=='d'){
         direction dir2=choix_strategie(s[1],s,n,p,0);
-        movesnake(s[0],dir);
         affiche(p,s,n);
+        movesnake(s[0],dir);
         movesnake(s[1],dir2);
         affiche(p,s,n);
     }
     else {
-    	movesnake(s[0],s[0].dir[0]);
     	affiche(p,s,n);
+    	movesnake(s[0],s[0].dir[0]);
     	movesnake(s[1],choix_strategie(s[1],s,n,p,0));
     	affiche(p,s,n);
     }
@@ -220,4 +220,20 @@ bools* jouer(snake* s,int n,plateau p){
     usleep(100000);
     return res;
 }
+
+bools* jouer_test_collisions(snake* s,int n, plateau p){
+    affiche(p,s,n);
+    movesnake(s[0],s[0].dir[0]);
+    bools* res=collisions(p,s,n);
+    usleep(100000);
+    return res;
+}
+    
+
+
+
+
+
+
+    
 

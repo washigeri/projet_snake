@@ -86,4 +86,6 @@ void depart(snake* s,int n, plateau p);
 /*TODO :faire en sorte denvoyer une liste de collision et non un element unique (bools*)*/
 bools* jouer(snake* s,int n,plateau p);
 
+bools* jouer_test_collisions(snake* s,int n, plateau p);
+
 #endif // JEU_H_INCLUDED
