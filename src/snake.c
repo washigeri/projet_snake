@@ -7,11 +7,18 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <string.h>
+#include <math.h>
 
 #include "struct.h"
 #include "jeu.h"
 #include "snake.h"
-
+/* AntiBlocage, Plus le coeff est eleve moins le serpents aura tendance a l'enrouler
+ *autour de lui-meme*/
+#define COEFF_TARGETSNAKE 1
+/* Aggresivite, Plus le coeff est haut plus le serpent evitera ses congeneres*/
+#define COEFF_OTHERSNAKE 3
+/* Liberte, plus le coefficient est eleve, plus le serpent voudra eloigner des murs du plateau*/
+#define COEFF_PLATEAU 10
 /**
  * @brief init_snake Permet la creation dun serpent dune taille definie
  * @param len taille du serpent
@@ -66,29 +73,7 @@ void change_IA(snake snake, type typeAI)
 }
 
 
-direction choix_strategie(snake cible,snake* snakes,int nombreSerpent, plateau p,direction toucheJoueur){
 
-
-    switch(cible.playType)
-    {
-
-    case joueur :
-        return toucheJoueur;
-        break;
-    case idle :
-        return idle_strat(cible,snakes,nombreSerpent,p);
-        break;
-    case defensif :
-        return 0;
-        break;
-    case offensif :
-        return 0;
-        break;
-    default :
-        return toucheJoueur;
-        break;
-    }
-}
 
 
 
@@ -222,6 +207,8 @@ direction idle_strat(snake cible, snake* snakes,int nombreSerpent, plateau p){
     //On test si le serpent peut aller autre part (si ou bout de 3 test le test echoue le serpent se suicide)
     while(testmax < 5 && estOccupe(dirSouhaite,snakes,nombreSerpent,p))
     {
+
+        /*TODO:Et si le serpent a une taille de 1 ?*/
         res =tournerAntiHoraire(res);
         //Test si
         if(!estInverse(res,old))
@@ -237,3 +224,129 @@ direction idle_strat(snake cible, snake* snakes,int nombreSerpent, plateau p){
 
 }
 
+int calculDistanceTaxicab(coord cor1,coord cor2)
+{
+
+    int res = 0;
+
+    /*x*/
+    res = abs((cor1.x - cor2.x));
+    /*y*/
+    res += abs((cor1.y -cor2.y));
+
+
+    return res;
+
+}
+
+int calculPoidsTableau(coord cor,plateau p)
+{
+    int res;
+
+    coord cort;
+    cort.x = p.taille/2;
+    cort.y = p.taille/2;
+
+    res = p.taille - calculDistanceTaxicab(cor,cort);
+
+    return res * COEFF_PLATEAU;
+}
+
+int calculPoidsSerpent(coord pos,snake cible,snake * snakes,int nombreSerpent,plateau p)
+{
+    int res = 0;
+
+    int i,j;
+
+    for(i = 0 ; i < nombreSerpent;i++)
+    {
+        if(egalite_snake(snakes[i],cible))
+        {
+            for(j = 0; j < snakes[i].taille ; j++)
+            {
+
+                res += calculDistanceTaxicab(snakes[i].pos[j],pos) * COEFF_TARGETSNAKE;
+            }
+
+        }
+        else
+        {
+            for(j = 0; j < snakes[i].taille ; j++)
+            {
+
+
+                res += calculDistanceTaxicab(snakes[i].pos[j],pos) * COEFF_OTHERSNAKE;
+            }
+
+        }
+
+    }
+
+    return res;
+
+}
+
+direction defensiv_strat(snake cible,snake* snakes,int nombreSerpent,plateau p)
+{
+    int poids = -1;
+    direction actuel = *cible.dir;
+    direction res = *cible.dir;
+    coord coor;
+
+    int i;
+    for(i = 0; i < 4 ; i++)
+    {
+
+        coor.x = convertDirectionToCoord(actuel).x + cible.pos->x;
+        coor.y = convertDirectionToCoord(actuel).y + cible.pos->y;
+
+
+        if(!estOccupe(coor,snakes,nombreSerpent,p))
+        {
+            int poidscurrent = 0;
+            poidscurrent += calculPoidsTableau(coor,p);
+            poidscurrent += calculPoidsSerpent(coor,cible,snakes,nombreSerpent,p);
+
+            if(poids <= poidscurrent)
+            {
+              poids = poidscurrent;
+              res = actuel;
+
+            }
+
+        }
+
+        actuel = tournerAntiHoraire(actuel);
+    }
+
+    return res;
+
+
+
+
+}
+
+
+direction choix_strategie(snake cible,snake* snakes,int nombreSerpent, plateau p,direction toucheJoueur){
+
+
+    switch(cible.playType)
+    {
+
+    case joueur :
+        return toucheJoueur;
+        break;
+    case idle :
+        return idle_strat(cible,snakes,nombreSerpent,p);
+        break;
+    case defensif :
+        return defensiv_strat(cible,snakes,nombreSerpent,p);
+        break;
+    case offensif :
+        return 0;
+        break;
+    default :
+        return toucheJoueur;
+        break;
+    }
+}
