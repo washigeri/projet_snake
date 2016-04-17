@@ -12,19 +12,23 @@
 #include "struct.h"
 #include "jeu.h"
 #include "snake.h"
-/* AntiBlocage, Plus le coeff est eleve moins le serpents aura tendance a l'enrouler
+/* AntiBlocage, Plus le coefficient est eleve moins le serpents aura tendance a s'enrouler
  *autour de lui-meme*/
 #define COEFF_TARGETSNAKE 1
-/* Aggresivite, Plus le coeff est haut plus le serpent evitera ses congeneres*/
+/* Aggresivite, Plus le coefficient est haut plus le serpent evitera ses congeneres*/
 #define COEFF_OTHERSNAKE 3
 /* Liberte, plus le coefficient est eleve, plus le serpent voudra eloigner des murs du plateau*/
 #define COEFF_PLATEAU 10
+/* Prevoyance ,plus le coefficient est eleve plus le serpent se mefira de la tete des autres serpents*/
+#define COEFF_HEAD 4
+
+
+
 /**
  * @brief init_snake Permet la creation dun serpent dune taille definie
  * @param len taille du serpent
- * @return le serpent créé
+ * @return le serpent cree
  */
-
 snake init_snake(int len,type typesnake){
     snake res;
     res.pos=(coord*)malloc(len*sizeof(coord));
@@ -39,13 +43,22 @@ snake init_snake(int len,type typesnake){
     res.playType=typesnake;
     return res;
 }
+/**
+ * @brief delete_snake permet de detruire un snake
+ * @param snakeAeffacer serpent a detruire
+ */
+void delete_snake(snake* snakeAeffacer){
+
+    free(snakeAeffacer->dir);
+    free(snakeAeffacer->pos);
+    /*free(snakeAeffacer);*/
+}
 
 /**
  * @brief test si 2 serpents sont égaux
- * @param snake
- * @param snake
+ * @param snake serpent 1
+ * @param snake serpent 2
  */
-
 bool egalite_snake(snake s1, snake s2){
     bool res=false;
     if(s1.taille==s2.taille){
@@ -60,11 +73,10 @@ bool egalite_snake(snake s1, snake s2){
     return res;
 }
 
-
 /**
- * @brief change_IA Permet le changement de l'intellgence artificielle d un serpent
- * @param snake
- * @param typeAI
+ * @brief change_IA Permet le changement de l'intelligence artificielle d un serpent
+ * @param snake le serpent
+ * @param typeAI le nouveau type dAI
  */
 void change_IA(snake snake, type typeAI)
 
@@ -76,7 +88,14 @@ void change_IA(snake snake, type typeAI)
 
 
 
-
+/**
+ * @brief estOccupe Permet de savoir si une case est occupe par un serpent ou un obstacle
+ * @param c la coordonnes de la case
+ * @param snakes le tableau de serpent
+ * @param nombreSerpent le nombre de serpent
+ * @param p le plateau
+ * @return vrai si occupe
+ */
 bool estOccupe(coord c ,snake * snakes ,int nombreSerpent, plateau p)
 
 {
@@ -104,7 +123,13 @@ bool estOccupe(coord c ,snake * snakes ,int nombreSerpent, plateau p)
     return res;
 
 }
-
+/**
+ * @brief estInverse Permet de savoir si deux coordonnees sont inversees utile pour savoir si le
+ * serpent ne fais pas marche arriere
+ * @param dir1
+ * @param dir2
+ * @return vrai si lezs cordonnees sont inversees
+ */
 bool estInverse(direction dir1,direction dir2)
 {
     if(dir1 == left )
@@ -125,6 +150,15 @@ bool estInverse(direction dir1,direction dir2)
     }
 }
 
+
+/**
+ * @brief joueur_strat Fonction de traitement de la strategie du joueur
+ *  *Se contente de choisir la direction selectionner par le joueur
+ *  *Si la direction est linverse de la direction generale il continu tout droit
+ * @param cible le serpent a determiner la direction
+ * @param toucheJoueur la direction choisi par le joueur
+ * @return la direction apres analyse
+ */
 direction joueur_strat(snake cible,direction toucheJoueur)
 {
     if(estInverse(*(cible.dir),toucheJoueur))
@@ -138,6 +172,13 @@ direction joueur_strat(snake cible,direction toucheJoueur)
 
 }
 
+
+/**
+ * @brief convertDirectionToCoord Permet de convertir une direction en coordonnees
+ *Exemple "haut" devient "0,-1"
+ * @param dir la direction a convertir
+ * @return la coordonnee
+ */
 coord convertDirectionToCoord(direction dir)
 {
     coord res;
@@ -166,7 +207,12 @@ coord convertDirectionToCoord(direction dir)
     return res;
 
 }
-
+/**
+ * @brief tournerAntiHoraire permet de selectionner une direction qui se trouve a gauche de la direction en parametre
+ *
+ * @param dir la direction
+ * @return la direction a gauche
+ */
 direction tournerAntiHoraire(direction dir)
 {
 
@@ -189,6 +235,17 @@ direction tournerAntiHoraire(direction dir)
 
 }
 
+
+/**
+ * @brief idle_strat Fonction de traitement de la strategie AI IDLE
+ * *le serpent se contente daller tout droit sauf sil rencontre un obstacle
+ * *si les trois directions possibles sont occupee le serpent se suicide en allant tout droit dans lobstacle
+ * @param cible le serpent a determine rla direction
+ * @param snakes le tableau des serpents
+ * @param nombreSerpent le nombre de serpents
+ * @param p le plateau de jeu
+ * @return la direction selectionne par la strategie
+ */
 direction idle_strat(snake cible, snake* snakes,int nombreSerpent, plateau p){
 
 
@@ -224,6 +281,16 @@ direction idle_strat(snake cible, snake* snakes,int nombreSerpent, plateau p){
 
 }
 
+
+
+/**
+ * @brief calculDistanceTaxicab Permet de calculer la distance entre deux coordonnees selon la methode du TaxiCab
+ * ( ou de Manhattan)
+ *
+ * @param cor1 la coordonnee 1
+ * @param cor2 la coordonnee 2
+ * @return la distance de Manhattan entre les deux cordonnees
+ */
 int calculDistanceTaxicab(coord cor1,coord cor2)
 {
 
@@ -239,6 +306,14 @@ int calculDistanceTaxicab(coord cor1,coord cor2)
 
 }
 
+/**
+ * @brief calculPoidsTableau permet de calculer l influence des murs du plateaux sur une coordonnees donnees
+ * Plus la case est eloigné des murs du tableau plus le poids est eleve
+ * @note COEFF_PLATEAU est le coefficient de multiplication du poids
+ * @param cor la coordonnee
+ * @param p le plateau de jeu
+ * @return le poids de la case par rapport a l'influence du plateau
+ */
 int calculPoidsTableau(coord cor,plateau p)
 {
     int res;
@@ -252,10 +327,28 @@ int calculPoidsTableau(coord cor,plateau p)
     return res * COEFF_PLATEAU;
 }
 
+
+/**
+ * @brief calculPoidsSerpent permet de calculer le poids d'un case par rapport a l'influence des serpent
+ * Plus un serpent est eloigne de la case plus le poids qu'il attribut est eleve
+ * le serpent cible est egalement pris en compte dans le calcul mais possede un coefficient different des autres serpents
+ * le poids est calcule pour tous les serpents et pour tous leurs membres du corps
+ *
+ * @note COEFF_TARGETSNAKE le coefficient de multiplication du serpent cible
+ * @note COEFF_OTHERSNAKE le coefficient de multiplication des autres serpent
+ * @note COEFF_HEAD le coefficent de multiplication des tete des serpent (cible exclue)
+ * @param pos la coordonnees
+ * @param cible le serpent cible
+ * @param snakes la liste des serpent
+ * @param nombreSerpent le nombre de serpent
+ * @param p le plateau de jeu
+ * @return le poids calcule
+ */
 int calculPoidsSerpent(coord pos,snake cible,snake * snakes,int nombreSerpent,plateau p)
 {
     int res = 0;
 
+    bool esttete;
     int i,j;
 
     for(i = 0 ; i < nombreSerpent;i++)
@@ -264,7 +357,6 @@ int calculPoidsSerpent(coord pos,snake cible,snake * snakes,int nombreSerpent,pl
         {
             for(j = 0; j < snakes[i].taille ; j++)
             {
-
                 res += calculDistanceTaxicab(snakes[i].pos[j],pos) * COEFF_TARGETSNAKE;
             }
 
@@ -273,19 +365,32 @@ int calculPoidsSerpent(coord pos,snake cible,snake * snakes,int nombreSerpent,pl
         {
             for(j = 0; j < snakes[i].taille ; j++)
             {
+                esttete = (j==0);
 
 
-                res += calculDistanceTaxicab(snakes[i].pos[j],pos) * COEFF_OTHERSNAKE;
+
+                res += calculDistanceTaxicab(snakes[i].pos[j],pos) * COEFF_OTHERSNAKE * (1 + esttete*COEFF_HEAD);
+
             }
-
         }
-
     }
 
     return res;
-
 }
 
+/**
+ * @brief defensiv_strat Fonction de traitement de la strategie AI DEFENSIVE
+ * *Le serpent cherche à etre le plus eloigne possible des autres serpents et notamment du joueur
+ * *Le serpent cherche à s'approcher le plus possible du centre
+ * *Le serpent cherche a eviter de s'enrouler sur lui-meme
+ * *Le serpent calcule les poids des cases adjacents est cherche celle qui a le plus de poids
+ * *Si le serpent ne trouve aucune cases adjacentes il se suicide
+ * @param cible le serpent cible
+ * @param snakes le tableau des snakes
+ * @param nombreSerpent le nombre de serpent
+ * @param p le plateau de jeu
+ * @return la direction choisi par le serpent
+ */
 direction defensiv_strat(snake cible,snake* snakes,int nombreSerpent,plateau p)
 {
     int poids = -1;
@@ -326,10 +431,15 @@ direction defensiv_strat(snake cible,snake* snakes,int nombreSerpent,plateau p)
 
 }
 
-
+/**
+ * @brief choix_strategie Fonction permettant de choisir la direction du serpent selon sa strategie mise en place
+ * @param cible le serpent à derterminer la direction
+ * @param snakes lensemble des serpents
+ * @param p le plateau de jeu
+ * @param toucheJoueur la touche presse par le joueur pendant le debut du tour
+ * @return la direction choisi par la strategie
+ */
 direction choix_strategie(snake cible,snake* snakes,int nombreSerpent, plateau p,direction toucheJoueur){
-
-
     switch(cible.playType)
     {
 

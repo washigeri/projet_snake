@@ -13,6 +13,20 @@
  */
 plateau init_plateau(int n);
 /**
+ * @brief erase_plateau Permet d effacer un plateau de jeu
+ * @param platAEffacer le plateau a effacer
+ */
+void erase_plateau(plateau* platAEffacer);
+
+/**
+ * @brief effacerPartie Permet d'effacer la partie de la memoire (serpent et plateau)
+ * @param plat le plateau de jeu
+ * @param tabSerpent la table des serpents
+ * @param nombreSerpent le nombre de serpent
+ */
+void effacer_Partie(plateau* plat,snake* tabSerpent,int nombreSerpent);
+
+/**
  * @brief movesnake Procedure de mise à jour et de deplacement du serpent dans
  * une direction donne
  * @param s le serpent a deplacer

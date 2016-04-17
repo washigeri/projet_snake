@@ -11,6 +11,8 @@
 #include <stdbool.h>
 	
 float partie(){
+
+    int nombreSerpent = 2;
 /*LE SNAKE*/
     snake snak=init_snake(4,joueur);
     snak.pos[0].x=10;snak.pos[0].y=10;
@@ -18,13 +20,13 @@ float partie(){
     snak.pos[2].x=8;snak.pos[2].y=10;
     snak.pos[3].x=7;snak.pos[3].y=10;
 /*LE SCHLANGA*/
-    snake schlanga=init_snake(4,idle);
+    snake schlanga=init_snake(4,defensif);
     schlanga.pos[0].x=15;schlanga.pos[0].y=15;
     schlanga.pos[1].x=16;schlanga.pos[1].y=15;
     schlanga.pos[2].x=17;schlanga.pos[2].y=15;
     schlanga.pos[3].x=18;schlanga.pos[3].y=15;
     schlanga.dir[0]=left;
-    snake* s=(snake*) malloc (2*sizeof(snake));
+    snake* s=(snake*) malloc (nombreSerpent*sizeof(snake));
     s[0]=snak;
     s[1]=schlanga;
 
@@ -51,16 +53,19 @@ float partie(){
 	time(&temps1);
    
 	plateau p=init_plateau(taille_plateau);
-    affiche(p,s,2);
+    affiche(p,s,nombreSerpent);
 
 /*JEU*/
-    depart(s,2,p);
+    depart(s,nombreSerpent,p);
     
-    while(win(jouer(s,2,p),s,2))
+    while(win(jouer(s,nombreSerpent,p),s,nombreSerpent))
 
 	time(&temps2);
 	float t=difftime(temps2,temps1);
     printf("Tu as tenus %f secondes.\n", t );
+
+    effacer_Partie(&p,s,nombreSerpent);
+
 	return t;
 }
 
@@ -93,6 +98,9 @@ void partie_test_collisions(int n){
 		s[1].pos[3].y=10;
 	}
 	while(win(jouer_test_collisions(s,2,p),s,2));
+
+    effacer_Partie(&p,s,2);
+
 }
 
 void afficher_score(){
@@ -134,7 +142,8 @@ int main()
 	scanf("%d",&replay);
 
 
-	if( replay!=1 &&  replay!=2 &&  replay!=3 ){ printf("\n! Erreur de saisie:hors borne ou saisie differente d'un nombre !\nMode par defaut: jouer\n"); replay=1;}
+    if( replay!=1 &&  replay!=2 &&  replay!=3 && replay!=4
+            ){ printf("\n! Erreur de saisie:hors borne ou saisie differente d'un nombre !\nMode par defaut: jouer\n"); replay=1;}
 
 	if(replay==3){
 		system("clear");

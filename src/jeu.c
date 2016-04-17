@@ -29,6 +29,42 @@ plateau init_plateau(int n){
     return res;
 }
 
+/**
+ * @brief erase_plateau Permet d effacer un plateau de jeu
+ * @param platAEffacer le plateau a effacer
+ */
+void erase_plateau(plateau* platAEffacer)
+{
+    int i;
+    for(i = 0; i < platAEffacer->taille ;i++)
+    {
+        free(platAEffacer->cases[i]);
+    }
+    free(platAEffacer->cases);
+    /*free(platAEffacer);*/
+
+}
+/**
+ * @brief effacerPartie Permet d'effacer la partie de la memoire (serpent et plateau)
+ * @param plat le plateau de jeu
+ * @param tabSerpent la table des serpents
+ * @param nombreSerpent le nombre de serpent
+ */
+void effacer_Partie(plateau* plat,snake* tabSerpent,int nombreSerpent)
+{
+    int i;
+    for(i = 0 ; i < nombreSerpent;i++)
+    {
+        delete_snake(tabSerpent + i);
+    }
+    free(tabSerpent);
+
+    erase_plateau(plat);
+
+
+}
+
+
 void movesnake(snake s,direction dir){
     if(!estInverse(s.dir[0],dir)){
         int i;
@@ -136,6 +172,10 @@ bools* collisions(plateau p,snake* s,int n){
     	res[i].b=(wh[i].b && bh[i].b);
     	res[i].s=s[i];
     }
+
+    free(wh);
+    free(bh);
+
     return res;
 }
 
@@ -156,6 +196,9 @@ bool win(bools* bs,snake* s,int n){
     	    }   
         }  
     }
+
+    free(bs);
+
     return res;
 }
 

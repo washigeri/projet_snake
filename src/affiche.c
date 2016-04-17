@@ -17,6 +17,9 @@ bool check(bool* b, int n){
     else if(b[n-1]){
     	res=true;
     }
+
+    free(b);
+
     return res;
 }
 

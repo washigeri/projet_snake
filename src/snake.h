@@ -12,6 +12,13 @@
  
 snake init_snake(int len,type typesnake);
 
+
+/**
+ * @brief delete_snake permet de detruire un snake
+ * @param snakeAeffacer serpent a detruire
+ */
+void delete_snake(snake* snakeAeffacer);
+
 /**
  * @brief test si 2 serpents sont égaux
  * @param snake serpent 1
@@ -106,6 +113,7 @@ int calculPoidsTableau(coord cor,plateau p);
  *
  * @note COEFF_TARGETSNAKE le coefficient de multiplication du serpent cible
  * @note COEFF_OTHERSNAKE le coefficient de multiplication des autres serpent
+ * @note COEFF_HEAD le coefficent de multiplication des tete des serpent (cible exclue)
  * @param pos la coordonnees
  * @param cible le serpent cible
  * @param snakes la liste des serpent
