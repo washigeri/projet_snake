@@ -28,7 +28,7 @@ Instructions d'installation:
 	-Taper make pour compiler le jeu (si une erreur survient, taper 'make dir && make clean && make remove'
 	-Taper './bin/Snake_Schlangà' pour lancer le jeu
 	-Jouer !
-
+	-Pour lancer les tests, executer './bin/Tests_Snake'
 
 Fonctions non mises au point:
 	-Affichage dans une fenêtre graphique en utilisant la bibliothèque SDL.

@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include "struct.h"
 #include "snake.h"
+#include "jeu.h"
 #include "affiche.h"
 
 
@@ -35,7 +36,7 @@ int main()
     s[1]=schlanga;
 
 
-    plateau p=init_plateau(taille_plateau);
+    plateau p=init_plateau(20);
     affiche(p,s,NOMBRESERPENT);
 
 
@@ -73,7 +74,7 @@ void afficher_serpent(snake* s)
     int i;
 
     printf("-Serpent %p \n",s);
-    for(i = 0; i < s.taille;i++)
+    for(i = 0; i < s->taille;i++)
     {
         printf("--[%d,%d]\n",s->pos[i].x,s->pos[i].y);
     }
@@ -83,19 +84,19 @@ void afficher_poids(snake s,snake* tabsnake,int nombreserpent,plateau p)
 {
     int i,j;
     int poids =0;
-    for(i=0;i < p->taille;i++)
+    for(i=0;i < p.taille;i++)
     {
-        for(j=0;j< p->taille;j++)
+        for(j=0;j< p.taille;j++)
         {
             coord c;
-            c.x = i;
-            c.y = j;
+            c.x = j;
+            c.y = i;
             poids = calculPoidsSerpent(c,s,tabsnake,nombreserpent,p) + calculPoidsTableau(c,p);
 
-            printf("| %d |",poids);
+            printf("| %03d |",poids);
 
         }
-        printf("/n");
+        printf("\n");
     }
 
 }
