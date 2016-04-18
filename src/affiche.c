@@ -24,12 +24,12 @@ bool check(bool* b, int n){
 }
 
 bool* cherche_snake(int i, int j, snake* s, int n){
-    bool* res=(bool*) malloc (n*sizeof(bool));
+    bool* res=(bool*) calloc (n,sizeof(bool));
     int k,l;
     for(l=0;l<n;l++){
     	k=1;
         while(k<s[l].taille && !res[l]){
-            if(s[l].pos[k].x==j && s[l].pos[k].y==i){
+            if(!(s[l].dead[0]) && s[l].pos[k].x==j && s[l].pos[k].y==i){
                 res[l]=true;
             }
             else {
@@ -42,10 +42,10 @@ bool* cherche_snake(int i, int j, snake* s, int n){
 }
 
 bool* cherche_tete(int i,int j, snake* s, int n){
-    bool* res=(bool*) malloc (n*sizeof(bool));
+    bool* res=(bool*) calloc (n,sizeof(bool));
     int k;
     for(k=0;k<n;k++){
-        if(s[k].pos[0].x==j && s[k].pos[0].y==i){
+        if(!(s[k].dead[0]) && s[k].pos[0].x==j && s[k].pos[0].y==i){
             res[k]=true;
         }
         else {

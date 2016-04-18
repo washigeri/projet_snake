@@ -31,7 +31,7 @@
  */
 snake init_snake(int len,type typesnake){
     snake res;
-    res.pos=(coord*)malloc(len*sizeof(coord));
+    res.pos=(coord*)calloc(len,sizeof(coord));
     int i;
     for(i=0;i<len;i++){
         res.pos[i].x=0;
@@ -41,6 +41,8 @@ snake init_snake(int len,type typesnake){
     res.dir=(direction *) malloc (sizeof(direction));
     res.dir[0]=right;
     res.playType=typesnake;
+    res.dead=(bool*) malloc (sizeof(bool));
+    res.dead[0]=false;
     return res;
 }
 /**
@@ -51,6 +53,7 @@ void delete_snake(snake* snakeAeffacer){
 
     free(snakeAeffacer->dir);
     free(snakeAeffacer->pos);
+    free(snakeAeffacer->dead);
     /*free(snakeAeffacer);*/
 }
 

@@ -37,12 +37,14 @@ typedef struct {int x;int y;} coord;
  *						  - un entier permmettant de stocker la taille du serpent
  *						  - une direction indiquant la direction actuelle du serpent
 						  - un type indiquant le type du serpent (joueur, ia défensive ou offensive ...)
+						  - un booleen indiquand si le serpent est mort ou non
  */
 
 typedef struct {coord* pos;
                 int taille;
                 direction* dir;
                 type playType;
+                bool* dead;
                 } snake;
 
 /**

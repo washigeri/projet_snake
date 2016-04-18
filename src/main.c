@@ -9,7 +9,7 @@
 #include <ctype.h>
 #include <string.h>
 #include <stdbool.h>
-	
+
 float partie(){
 
     int nombreSerpent = 2;
@@ -26,6 +26,7 @@ float partie(){
     schlanga.pos[2].x=17;schlanga.pos[2].y=15;
     schlanga.pos[3].x=18;schlanga.pos[3].y=15;
     schlanga.dir[0]=left;
+    //schlanga.dead[0]=true;
     snake* s=(snake*) malloc (nombreSerpent*sizeof(snake));
     s[0]=snak;
     s[1]=schlanga;
@@ -41,7 +42,7 @@ float partie(){
 
 	scanf("%d",&taille_plateau);
 	if( taille_plateau<=19 ){ printf("\n! Erreur de saisie:dimension trop petite ou saisie differente d'un nombre !\nMode par defaut: dim=20\n"); taille_plateau=20 ;}
-	
+
 
 	printf("\nReady!\n");
 	printf("Pour se deplacer:\n     ^\n     |\n     z\n<--q    d-->\n     s\n     |\n     v\n");
@@ -51,13 +52,13 @@ float partie(){
 	/*time->score*/
     time_t temps1,temps2;
 	time(&temps1);
-   
+
 	plateau p=init_plateau(taille_plateau);
     affiche(p,s,nombreSerpent);
 
 /*JEU*/
     depart(s,nombreSerpent,p);
-    
+
     while(win(jouer(s,nombreSerpent,p),s,nombreSerpent))
 
 	time(&temps2);
@@ -81,7 +82,7 @@ void partie_test_collisions(int n){
         schlanga.pos[1].x=16;
         schlanga.pos[2].x=17;
         schlanga.pos[3].x=18;
-        schlanga.dir[0]=left; 
+        schlanga.dir[0]=left;
         snake* s=(snake*) malloc (2*sizeof(snake));
         s[0]=snak;
         s[1]=schlanga;
@@ -104,9 +105,9 @@ void partie_test_collisions(int n){
 }
 
 void afficher_score(){
-    FILE* fichier =NULL; 
+    FILE* fichier =NULL;
     FILE* temp;
-    temp=fopen("others/temp.txt","w+");    
+    temp=fopen("others/temp.txt","w+");
     fichier=fopen("others/score.txt", "r");
 	float res;
 	float max=0;
@@ -122,7 +123,7 @@ void afficher_score(){
 	printf("\nMeilleur score: %f\n", max);
     fclose(fichier);
     system("rm -f others/temp.txt");
-    
+
 }
 
 void write_score(float score_de_la_partie){
@@ -152,16 +153,16 @@ int main()
 		scanf("%d",&direction);
 		partie_test_collisions(direction);
 	}
-			
+
 
 	if( replay==4 ){ printf("\n**Au revoir**\n"); exit(1); }
-	else if( replay==2 ){ 
+	else if( replay==2 ){
 		/*score();*/
 		printf("\nscores (en s):\n");
 		afficher_score();
-		
+
 	}
-	
+
 
 	replay=1;
 
