@@ -62,6 +62,9 @@ int main()
     afficher_serpent(&snak);
 
 
+    printf("TEST CALCULPOIDS\n");
+    afficher_poids(snak,s,NOMBRESERPENT,p);
+
 }
 
 
@@ -76,10 +79,10 @@ void afficher_serpent(snake* s)
     }
 }
 
-void afficher_poids(snake* s,int nombreserpent,plateau* p)
+void afficher_poids(snake s,snake* tabsnake,int nombreserpent,plateau p)
 {
     int i,j;
-    int poids;
+    int poids =0;
     for(i=0;i < p->taille;i++)
     {
         for(j=0;j< p->taille;j++)
@@ -87,8 +90,12 @@ void afficher_poids(snake* s,int nombreserpent,plateau* p)
             coord c;
             c.x = i;
             c.y = j;
-            poids = calculPoidsSerpent(c,*s,)
+            poids = calculPoidsSerpent(c,s,tabsnake,nombreserpent,p) + calculPoidsTableau(c,p);
+
+            printf("| %d |",poids);
+
         }
+        printf("/n");
     }
 
 }
