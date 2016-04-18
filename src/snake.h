@@ -93,7 +93,7 @@ direction idle_strat(snake cible, snake* snakes,int nombreSerpent, plateau p);
  * @param cor2 la coordonnee 2
  * @return la distance de Manhattan entre les deux cordonnees
  */
-int calculDistanceTaxicab(coord cor1,coord cor2);
+unsigned int calculDistanceTaxicab(coord cor1,coord cor2);
 
 /**
  * @brief calculPoidsTableau permet de calculer l influence des murs du plateaux sur une coordonnees donnees
@@ -103,7 +103,7 @@ int calculDistanceTaxicab(coord cor1,coord cor2);
  * @param p le plateau de jeu
  * @return le poids de la case par rapport a l'influence du plateau
  */
-int calculPoidsTableau(coord cor,plateau p);
+unsigned int calculPoidsTableau(coord cor,plateau p);
 
 /**
  * @brief calculPoidsSerpent permet de calculer le poids d'un case par rapport a l'influence des serpent
@@ -121,7 +121,7 @@ int calculPoidsTableau(coord cor,plateau p);
  * @param p le plateau de jeu
  * @return le poids calcule
  */
-int calculPoidsSerpent(coord pos,snake cible,snake * snakes,int nombreSerpent,plateau p);
+unsigned int calculPoidsSerpent(coord pos,snake cible,snake * snakes,int nombreSerpent,plateau p);
 
 /**
  * @brief defensiv_strat Fonction de traitement de la strategie AI DEFENSIVE

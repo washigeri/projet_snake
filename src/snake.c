@@ -18,9 +18,9 @@
 /* Aggresivite, Plus le coefficient est haut plus le serpent evitera ses congeneres*/
 #define COEFF_OTHERSNAKE 3
 /* Liberte, plus le coefficient est eleve, plus le serpent voudra eloigner des murs du plateau*/
-#define COEFF_PLATEAU 10
+#define COEFF_PLATEAU 5
 /* Prevoyance ,plus le coefficient est eleve plus le serpent se mefira de la tete des autres serpents*/
-#define COEFF_HEAD 4
+#define COEFF_HEAD 9
 
 
 
@@ -291,10 +291,10 @@ direction idle_strat(snake cible, snake* snakes,int nombreSerpent, plateau p){
  * @param cor2 la coordonnee 2
  * @return la distance de Manhattan entre les deux cordonnees
  */
-int calculDistanceTaxicab(coord cor1,coord cor2)
+unsigned int calculDistanceTaxicab(coord cor1,coord cor2)
 {
 
-    int res = 0;
+    unsigned int res = 0;
 
     /*x*/
     res = abs((cor1.x - cor2.x));
@@ -314,9 +314,9 @@ int calculDistanceTaxicab(coord cor1,coord cor2)
  * @param p le plateau de jeu
  * @return le poids de la case par rapport a l'influence du plateau
  */
-int calculPoidsTableau(coord cor,plateau p)
+unsigned int calculPoidsTableau(coord cor,plateau p)
 {
-    int res;
+    unsigned int res;
 
     coord cort;
     cort.x = p.taille/2;
@@ -344,20 +344,22 @@ int calculPoidsTableau(coord cor,plateau p)
  * @param p le plateau de jeu
  * @return le poids calcule
  */
-int calculPoidsSerpent(coord pos,snake cible,snake * snakes,int nombreSerpent,plateau p)
+unsigned int calculPoidsSerpent(coord pos,snake cible,snake * snakes,int nombreSerpent,plateau p)
 {
-    int res = 0;
+    unsigned int res = 0;
 
     bool esttete;
     int i,j;
 
     for(i = 0 ; i < nombreSerpent;i++)
     {
+        unsigned int poidstotalserpent = 0;
+
         if(egalite_snake(snakes[i],cible))
         {
             for(j = 0; j < snakes[i].taille ; j++)
             {
-                res += calculDistanceTaxicab(snakes[i].pos[j],pos) * COEFF_TARGETSNAKE;
+                poidstotalserpent += calculDistanceTaxicab(snakes[i].pos[j],pos) * COEFF_TARGETSNAKE;
             }
 
         }
@@ -369,11 +371,16 @@ int calculPoidsSerpent(coord pos,snake cible,snake * snakes,int nombreSerpent,pl
 
 
 
-                res += calculDistanceTaxicab(snakes[i].pos[j],pos) * COEFF_OTHERSNAKE * (1 + esttete*COEFF_HEAD);
+                poidstotalserpent += calculDistanceTaxicab(snakes[i].pos[j],pos) * COEFF_OTHERSNAKE * (1 + esttete*COEFF_HEAD);
 
             }
         }
+
+        res += poidstotalserpent/snakes[i].taille;
     }
+
+    res /= nombreSerpent;
+
 
     return res;
 }
@@ -412,6 +419,7 @@ direction defensiv_strat(snake cible,snake* snakes,int nombreSerpent,plateau p)
             poidscurrent += calculPoidsTableau(coor,p);
             poidscurrent += calculPoidsSerpent(coor,cible,snakes,nombreSerpent,p);
 
+
             if(poids <= poidscurrent)
             {
               poids = poidscurrent;
@@ -423,6 +431,8 @@ direction defensiv_strat(snake cible,snake* snakes,int nombreSerpent,plateau p)
 
         actuel = tournerAntiHoraire(actuel);
     }
+
+    printf("calcul:%d\n",res);
 
     return res;
 
