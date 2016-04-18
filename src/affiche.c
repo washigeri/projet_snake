@@ -48,9 +48,6 @@ bool* cherche_tete(int i,int j, snake* s, int n){
         if(!(s[k].dead[0]) && s[k].pos[0].x==j && s[k].pos[0].y==i){
             res[k]=true;
         }
-        else {
-            res[k]=false;
-        }
     }
     return res;
 }

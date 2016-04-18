@@ -12,7 +12,7 @@
 
 float partie(){
 
-    int nombreSerpent = 2;
+    int nombreSerpent = 3;
 /*LE SNAKE*/
     snake snak=init_snake(4,joueur);
     snak.pos[0].x=10;snak.pos[0].y=10;
@@ -27,9 +27,16 @@ float partie(){
     schlanga.pos[3].x=18;schlanga.pos[3].y=15;
     schlanga.dir[0]=left;
     //schlanga.dead[0]=true;
+    snake schlangas=init_snake(4,defensif);
+    schlangas.pos[0].x=12;schlangas.pos[0].y=5;
+    schlangas.pos[1].x=12;schlangas.pos[1].y=6;
+    schlangas.pos[2].x=12;schlangas.pos[2].y=7;
+    schlangas.pos[3].x=12;schlangas.pos[3].y=8;
+    schlangas.dir[0]=down;
     snake* s=(snake*) malloc (nombreSerpent*sizeof(snake));
     s[0]=snak;
     s[1]=schlanga;
+    s[2]=schlangas;
 
 
 /*INITILAISATION*/

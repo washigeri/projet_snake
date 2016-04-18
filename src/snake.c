@@ -45,16 +45,26 @@ snake init_snake(int len,type typesnake){
     res.dead[0]=false;
     return res;
 }
+
+/**
+ * @brief kill_snake change la valeur du booleen dead a false
+ * @param snakeAeffacer serpent a tuer
+ */
+
+void kill_snake(snake s){
+    s.dead[0]=true;
+}
+ 
 /**
  * @brief delete_snake permet de detruire un snake
  * @param snakeAeffacer serpent a detruire
  */
+
 void delete_snake(snake* snakeAeffacer){
 
     free(snakeAeffacer->dir);
     free(snakeAeffacer->pos);
     free(snakeAeffacer->dead);
-    /*free(snakeAeffacer);*/
 }
 
 /**

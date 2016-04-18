@@ -122,8 +122,10 @@ bools* wall_hit(plateau p, snake* s,int n){
     int i;
     for(i=0;i<n;i++){
     	res[i].s=s[i];
-    	if (s[i].pos[0].x==0 || s[i].pos[0].x==taille-1 || s[i].pos[0].y==0 || s[i].pos[0].y==taille-1){
-    	    res[i].b=false;
+    	if(!res[i].s.dead[0]){
+    	    if (s[i].pos[0].x==0 || s[i].pos[0].x==taille-1 || s[i].pos[0].y==0 || s[i].pos[0].y==taille-1){
+    	        res[i].b=false;
+    	    }
     	}
     }
     return res;
@@ -134,13 +136,15 @@ bools body_hit_aux(snake s1, snake s2){
   bools res;
   res.b=true;
   res.s=s1;
-  if(!egalite_snake(s1,s2)){
-      int k=0;
-      while(k<s2.taille && res.b){
-          if(s1.pos[0].x==s2.pos[k].x && s1.pos[0].y==s2.pos[k].y){
-              res.b=false;
-          }
-          k++;
+  if(!s1.dead[0] && !s2.dead[0]){
+      if(!egalite_snake(s1,s2)){
+          int k=0;
+          while(k<s2.taille && res.b){
+              if(s1.pos[0].x==s2.pos[k].x && s1.pos[0].y==s2.pos[k].y){
+                  res.b=false;
+              }
+              k++;
+          } 
       }
   }
   return res;
@@ -183,6 +187,7 @@ bools* collisions(plateau p,snake* s,int n){
 bool win(bools* bs,snake* s,int n){
     bool res=true;
     if(!bs[0].b){
+    	s[0].dead[0]=true;
         printf("G A M E O V E R\n\n");
         res=false;
     }
@@ -190,15 +195,11 @@ bool win(bools* bs,snake* s,int n){
         int i;
         for(i=1;i<n;i++){
             if(!bs[i].b){
-                printf("V I C T O I R E");
-                i=n;
-                res=false;
-    	    }   
-        }  
+                kill_snake(s[i]);
+    	    }
+        }
     }
-
     free(bs);
-
     return res;
 }
 
@@ -242,21 +243,25 @@ void depart(snake* s,int n, plateau p){
     
 
 bools* jouer(snake* s,int n,plateau p){
+    int i;
     char dir=s[0].dir[0];
     if(kbhit()){
     	dir=getchar();
     }
     if(dir=='z' || dir=='q' || dir=='s' || dir=='d'){
-        direction dir2=choix_strategie(s[1],s,n,p,0);
         affiche(p,s,n);
-        movesnake(s[0],dir);
-        movesnake(s[1],dir2);
+        movesnake(s[0],choix_strategie(s[0],s,n,p,dir));
+        for(i=1;i<n;i++){
+            movesnake(s[i],choix_strategie(s[i],s,n,p,dir));
+        }
         affiche(p,s,n);
     }
     else {
     	affiche(p,s,n);
     	movesnake(s[0],s[0].dir[0]);
-    	movesnake(s[1],choix_strategie(s[1],s,n,p,0));
+    	for(i=1;i<n;i++){
+    	    movesnake(s[i],choix_strategie(s[i],s,n,p,0));
+    	}
     	affiche(p,s,n);
     }
     bools* res=collisions(p,s,n);
