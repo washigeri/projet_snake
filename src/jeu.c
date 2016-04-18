@@ -14,10 +14,10 @@
 
 plateau init_plateau(int n){
     plateau res;
-    res.cases=(int**)malloc(n*sizeof(int*));
+    res.cases=(int**)calloc(n,sizeof(int*));
     int i;
     for(i=0;i<n;i++){
-        res.cases[i]=(int*)malloc(n*sizeof(int));
+        res.cases[i]=(int*)calloc(n,sizeof(int));
     }
     for(i=0;i<n;i++){
     	res.cases[i][0]=1;

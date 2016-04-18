@@ -100,13 +100,10 @@ bool estOccupe(coord c ,snake * snakes ,int nombreSerpent, plateau p)
 
 {
     bool res = false;
-    int i,j;
+    int i=0,j=0;
 
     /*Test du plateau*/
     res = (p.cases[c.x][c.y] == 1);
-
-    printf("**Test plateau x= %d y= %d == %d  \n",c.x,c.y,res);
-
 
     /*Test des serpents*/
     for(i= 0 ; i < nombreSerpent && !res ; i++)
@@ -432,7 +429,7 @@ direction defensiv_strat(snake cible,snake* snakes,int nombreSerpent,plateau p)
         actuel = tournerAntiHoraire(actuel);
     }
 
-    printf("calcul:%d\n",res);
+    /*printf("calcul:%d\n",poids);*/
 
     return res;
 
