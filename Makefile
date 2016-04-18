@@ -1,32 +1,32 @@
-# project name (generate executable with this name)
-TARGET   = Snake_Schlangà
+CC = gcc
+CFLAGS = -Wall -lm
 
-CC       = gcc
-# compiling flags here
-CFLAGS   = -Wall 
+LINKER = gcc -o
 
-LINKER   = gcc -o
-# linking flags here
-LFLAGS   = 
+SRCDIR = src
+OBJDIR = obj
+BINDIR = bin
 
-# change these to set the proper directories where each files shoould be
-SRCDIR   = src
-OBJDIR   = obj
-BINDIR   = bin
 
 SOURCES  := $(wildcard $(SRCDIR)/*.c)
 INCLUDES := $(wildcard $(SRCDIR)/*.h)
 OBJECTS  := $(SOURCES:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 rm       = rm -f
 
+all : $(BINDIR)/Snake_Schlangà $(BINDIR)/Tests_Snake
 
-$(BINDIR)/$(TARGET): $(OBJECTS)
-	@$(LINKER) $@ $(LFLAGS) $(OBJECTS)
-	@echo "Linking complete!"
+$(BINDIR)/Snake_Schlangà: $(OBJDIR)/main.o $(OBJDIR)/affiche.o $(OBJDIR)/jeu.o $(OBJDIR)/snake.o
+	@$(LINKER) $@ $(LFGLAGS)  $(OBJDIR)/main.o $(OBJDIR)/affiche.o $(OBJDIR)/jeu.o $(OBJDIR)/snake.o
+	@echo "Linking for Snake_Schlangà complete!"
+
+$(BINDIR)/Tests_Snake:  $(OBJDIR)/Testmain.o $(OBJDIR)/affiche.o $(OBJDIR)/jeu.o $(OBJDIR)/snake.o
+	@$(LINKER) $@ $(LFLAGS) $(OBJDIR)/Testmain.o $(OBJDIR)/affiche.o $(OBJDIR)/jeu.o $(OBJDIR)/snake.o
+	@echo "Linking for Tests_Snake complete !"
 
 $(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@echo "Compiled "$<" successfully!"
+	
 
 .PHONEY: clean
 clean:
@@ -35,5 +35,10 @@ clean:
 
 .PHONEY: remove
 remove: clean
-	@$(rm) $(BINDIR)/$(TARGET)
+	@$(rm) $(BINDIR)/*
 	@echo "Executable removed!"
+
+.PHONEY: dir
+dir:
+	mkdir bin obj
+	@echo "Directories created !"

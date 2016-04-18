@@ -1,1 +1,36 @@
-Git projet snake IPI2
+Ce jeu consiste en l'affrontement de plusieurs serpents, le snake, controlé par l'utilisateur,
+et des Schlangà controlés par l'IA.
+Pour le moment, deux modes d'IA sont disponibles:
+	-une IA "idle": IA passive, qui ne fait que faire le tour
+	du plateau et éviter le joueur
+	-une IA "défensive" : IA qui évite le joueur et tente de
+	rester au centre du plateau afin d'éviter les bords (et donc
+	de se faire coincer). Lors de chaque mouvement, l'IA attribue
+	un poids à chaque direction/choix possible, et se dirige 
+	dans la direction de plus gros poids (direction la moins
+	dangereuse).
+
+
+Le jeu s'éxecute dans la console.
+L'IA est prioritaire sur le joueur au niveau des collisions (i.e si les deux serpents entrent en collisions tête contre
+tête, l'IA est considérée gagnante).
+Le contrôle du serpent s'effectue à l'aide des touches 'z' (haut), 'q'(gauche), 's'(bas) et 'd'(droite).
+
+
+
+
+Prérequis:
+	-OS: Linux ou MacOS
+
+Instructions d'installation:
+
+	-Ouvrir un terminal dans le dossier racine du jeu
+	-Taper make pour compiler le jeu (si une erreur survient, taper 'make dir && make clean && make remove'
+	-Taper './bin/Snake_Schlangà' pour lancer le jeu
+	-Jouer !
+
+
+Fonctions non mises au point:
+	-Affichage dans une fenêtre graphique en utilisant la bibliothèque SDL.
+	-Mise au point de l'IA offensive
+	-Ajout d'un système pour agrandir les serpents en mangeant des bonus
