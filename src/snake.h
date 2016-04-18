@@ -13,16 +13,12 @@
 snake init_snake(int len,type typesnake);
 
 /**
- * @brief kill_snake change la valeur du booleen dead a false
- * @param snakeAeffacer serpent a tuer
- */
-
-void kill_snake(snake s);
-
-/**
  * @brief delete_snake permet de detruire un snake
  * @param snakeAeffacer serpent a detruire
  */
+ 
+void kill_snake(snake s);
+
 void delete_snake(snake* snakeAeffacer);
 
 /**
