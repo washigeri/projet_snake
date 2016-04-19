@@ -42,8 +42,8 @@ int main()
 
 
     /*Test Avancer*/
-    printf("TEST MOVEMENT ");
-    printf("+Test Avancer dans la direction courant\n");
+    printf("TEST MOUVEMENT ");
+    printf("+Test Avancer dans la direction courante\n");
     afficher_serpent(&snak);
     movesnake(snak,left);
     affiche(p,s,NOMBRESERPENT);
@@ -63,7 +63,7 @@ int main()
     afficher_serpent(&snak);
 
 
-    printf("TEST CALCULPOIDS\n");
+    printf("TEST CALCUL POIDS\n");
     afficher_poids(snak,s,NOMBRESERPENT,p);
 
 }
