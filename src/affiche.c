@@ -38,8 +38,8 @@ bool check(bool* b, int n){
 }
 /**
  * \brief cherche_snake fonction dont l'objectif est de déterminer si le corps d'un serpent (et pas sa tête) se situe sur la case de coordonnées i,j
- * \param i un entier correspondant a l'absisse d'une coordonnée 
- * \param j un entier correspondant a l'ordonnée d'une coordonnée 
+ * \param i un entier correspondant a l'absisse d'une coordonnée
+ * \param j un entier correspondant a l'ordonnée d'une coordonnée
  * \param s les serpents
  * \param n le nombre de serpents
  * \return Un tableau de booléens de taille n
@@ -58,14 +58,14 @@ bool* cherche_snake(int i, int j, snake* s, int n){
             }
             k++;
         }
-    }    
+    }
     return res;
 }
 
 /**
  * \brief cherche_tete fonction dont l'objectif est de déterminer si la tête d'un serpent se situe sur la case de coordonnées i,j
- * \param i un entier correspondant a l'absisse d'une coordonnée 
- * \param j un entier correspondant a l'ordonnée d'une coordonnée 
+ * \param i un entier correspondant a l'absisse d'une coordonnée
+ * \param j un entier correspondant a l'ordonnée d'une coordonnée
  * \param s les serpents
  * \param n le nombre de serpents
  * \return Un tableau de booléens de taille n
@@ -114,6 +114,7 @@ void affiche(plateau p, snake* s,int n){
         printf("\n");
     }
 }
+
 
 
 
