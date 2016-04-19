@@ -75,12 +75,15 @@ bools* body_hit(snake* s,int n);
  */
 
 bools* collisions(plateau p,snake* s,int n);
+bool arrete_partie(snake* s, int n);
+
 /**
  * \brief win Permet de test si le joueur humain a gagne ou perdu
  * \param bs les resultat des test de collision
  * \param s le serpent a test (toujours le joueur)
  * \return true si il n'y a pas eu de collision, false sinon
  */
+
 
 bool win(bools* bs,snake* s,int n);
 

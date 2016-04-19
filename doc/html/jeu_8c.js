@@ -1,6 +1,7 @@
 var jeu_8c =
 [
     [ "MAX_NB_SNAKE", "jeu_8c.html#a6faf52bfb96da16820b7b97233c6c1f0", null ],
+    [ "arrete_partie", "jeu_8c.html#ad5563f599cbc1bd5195c6e36eb01856f", null ],
     [ "body_hit", "jeu_8c.html#af34766dd9ff2b603c3aa0358bf7ad900", null ],
     [ "body_hit_aux", "jeu_8c.html#a98ac7c8a2c094833bfb8788aea89c6d6", null ],
     [ "collisions", "jeu_8c.html#a2a2804411eaa47472bdb207cc910f9be", null ],
