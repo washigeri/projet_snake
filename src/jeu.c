@@ -226,19 +226,23 @@ int kbhit()
 }
 
 void depart(snake* s,int n, plateau p){
-    char dir,dir2;
+    int i;
+    char dir;
     bool debut=false;
     while(!debut){
     	if(kbhit()){
     	    dir=getchar();
     	    if(dir=='z' || dir=='q' || dir=='s' || dir=='d'){
-    	        dir2=choix_strategie(s[1],s,n,p,0);
     	        debut=true;
     	    }
     	}
     }
     movesnake(s[0],dir);
-    movesnake(s[1],dir2);
+    for(i=1;i<n;i++){
+        if(!s[i].dead[0]){
+            movesnake(s[i],choix_strategie(s[i],s,n,p,0));
+        }
+    }
 }
     
 
@@ -252,7 +256,9 @@ bools* jouer(snake* s,int n,plateau p){
         affiche(p,s,n);
         movesnake(s[0],choix_strategie(s[0],s,n,p,dir));
         for(i=1;i<n;i++){
-            movesnake(s[i],choix_strategie(s[i],s,n,p,dir));
+            if(!s[i].dead[0]){
+    	        movesnake(s[i],choix_strategie(s[i],s,n,p,0));
+    	    }
         }
         affiche(p,s,n);
     }
@@ -260,7 +266,9 @@ bools* jouer(snake* s,int n,plateau p){
     	affiche(p,s,n);
     	movesnake(s[0],s[0].dir[0]);
     	for(i=1;i<n;i++){
-    	    movesnake(s[i],choix_strategie(s[i],s,n,p,0));
+    	    if(!s[i].dead[0]){
+    	        movesnake(s[i],choix_strategie(s[i],s,n,p,0));
+    	    }
     	}
     	affiche(p,s,n);
     }

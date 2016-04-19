@@ -46,10 +46,6 @@ snake init_snake(int len,type typesnake){
     return res;
 }
 
-/**
- * @brief kill_snake change la valeur du booleen dead a false
- * @param snakeAeffacer serpent a tuer
- */
 
 void kill_snake(snake s){
     s.dead[0]=true;
@@ -123,8 +119,10 @@ bool estOccupe(coord c ,snake * snakes ,int nombreSerpent, plateau p)
     {
         for(j= 0; j < snakes[i].taille && !res ; j++)
         {
-            res  = (snakes[i].pos[j].x==c.x && snakes[i].pos[j].y==c.y);
-
+            if(!snakes[i].dead[0])
+            {
+                res  = (snakes[i].pos[j].x==c.x && snakes[i].pos[j].y==c.y);
+	    }
         }
     }
 
@@ -375,14 +373,15 @@ unsigned int calculPoidsSerpent(coord pos,snake cible,snake * snakes,int nombreS
         }
         else
         {
-            for(j = 0; j < snakes[i].taille ; j++)
+            if(!snakes[i].dead[0])
             {
-                esttete = (j==0);
+                for(j = 0; j < snakes[i].taille ; j++)
+                {
+                    esttete = (j==0);
 
+                    poidstotalserpent += calculDistanceTaxicab(snakes[i].pos[j],pos) * COEFF_OTHERSNAKE * (1 + esttete*COEFF_HEAD);
 
-
-                poidstotalserpent += calculDistanceTaxicab(snakes[i].pos[j],pos) * COEFF_OTHERSNAKE * (1 + esttete*COEFF_HEAD);
-
+                }
             }
         }
 

@@ -26,7 +26,7 @@ float partie(){
     schlanga.pos[2].x=17;schlanga.pos[2].y=15;
     schlanga.pos[3].x=18;schlanga.pos[3].y=15;
     schlanga.dir[0]=left;
-    //schlanga.dead[0]=true;
+    schlanga.dead[0]=true;
     snake schlangas=init_snake(4,defensif);
     schlangas.pos[0].x=12;schlangas.pos[0].y=5;
     schlangas.pos[1].x=12;schlangas.pos[1].y=6;
@@ -65,7 +65,7 @@ float partie(){
 
 /*JEU*/
     depart(s,nombreSerpent,p);
-
+    //kill_snake(s[1]);
     while(win(jouer(s,nombreSerpent,p),s,nombreSerpent))
 
 	time(&temps2);
