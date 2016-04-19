@@ -1,3 +1,12 @@
+
+/**
+ * \file jeu.c
+ * \brief Ce source contient l'implémentation des fonctions gérant les fonctions prncipales du jeu
+ * \details Les fonctions dans ce fichier permettent notamment la création du plateau de jeu, la détection des entrées utilisateurs 
+ et le déplacement des serpents. Ce fichier implémente aussi les deux types d'IA: idle et défensive.
+
+ */
+
 #include <stdio.h>
 #include <stdio_ext.h>
 #include <stdlib.h>
