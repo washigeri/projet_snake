@@ -45,15 +45,7 @@ bool egalite_snake(snake s1, snake s2);
  */
 void change_IA(snake snake, type typeAI);
 
-/**
- * \brief estOccupe Permet de savoir si une case est occupe par un serpent ou un obstacle
- * \param c la coordonnes de la case
- * \param snakes le tableau de serpent
- * \param nombreSerpent le nombre de serpent
- * \param p le plateau
- * \return vrai si occupe
- */
-bool estOccupe(coord c ,snake * snakes ,int nombreSerpent, plateau p);
+
 /**
  * \brief estInverse Permet de savoir si deux coordonnees sont inversees utile pour savoir si le
  * serpent ne fais pas marche arriere

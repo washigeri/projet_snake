@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -lm
+CFLAGS = -Wall -std=c99 -lm
 
 LINKER = gcc -o
 
@@ -15,12 +15,12 @@ rm       = rm -f
 
 all : $(BINDIR)/Snake_Schlangà $(BINDIR)/Tests_Snake
 
-$(BINDIR)/Snake_Schlangà: $(OBJDIR)/main.o $(OBJDIR)/affiche.o $(OBJDIR)/jeu.o $(OBJDIR)/snake.o
-	@$(LINKER) $@ $(LFGLAGS)  $(OBJDIR)/main.o $(OBJDIR)/affiche.o $(OBJDIR)/jeu.o $(OBJDIR)/snake.o
+$(BINDIR)/Snake_Schlangà: $(OBJDIR)/main.o $(OBJDIR)/affiche.o $(OBJDIR)/jeu.o $(OBJDIR)/snake.o $(OBJDIR)/collision.o
+	@$(LINKER) $@ $(LFGLAGS)  $(OBJDIR)/main.o $(OBJDIR)/affiche.o $(OBJDIR)/jeu.o $(OBJDIR)/snake.o $(OBJDIR)/collision.o
 	@echo "Linking for Snake_Schlangà complete!"
 
-$(BINDIR)/Tests_Snake:  $(OBJDIR)/Testmain.o $(OBJDIR)/affiche.o $(OBJDIR)/jeu.o $(OBJDIR)/snake.o
-	@$(LINKER) $@ $(LFLAGS) $(OBJDIR)/Testmain.o $(OBJDIR)/affiche.o $(OBJDIR)/jeu.o $(OBJDIR)/snake.o
+$(BINDIR)/Tests_Snake:  $(OBJDIR)/Testmain.o $(OBJDIR)/affiche.o $(OBJDIR)/jeu.o $(OBJDIR)/snake.o $(OBJDIR)/collision.o
+	@$(LINKER) $@ $(LFLAGS) $(OBJDIR)/Testmain.o $(OBJDIR)/affiche.o $(OBJDIR)/jeu.o $(OBJDIR)/snake.o $(OBJDIR)/collision.o
 	@echo "Linking for Tests_Snake complete !"
 
 $(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.c

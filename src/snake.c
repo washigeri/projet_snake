@@ -16,6 +16,8 @@
 #include "struct.h"
 #include "jeu.h"
 #include "snake.h"
+#include "collision.h"
+
 /* AntiBlocage, Plus le coefficient est eleve moins le serpents aura tendance a s'enrouler
  *autour de lui-meme*/
 #define COEFF_TARGETSNAKE 1
@@ -101,42 +103,6 @@ void change_IA(snake snake, type typeAI)
     snake.playType = typeAI;
 }
 
-
-
-
-
-/**
- * \brief estOccupe Permet de savoir si une case est occupe par un serpent ou un obstacle
- * \param c la coordonnes de la case
- * \param snakes le tableau de serpent
- * \param nombreSerpent le nombre de serpent
- * \param p le plateau
- * \return vrai si occupe
- */
-bool estOccupe(coord c ,snake * snakes ,int nombreSerpent, plateau p)
-
-{
-    bool res = false;
-    int i=0,j=0;
-
-    /*Test du plateau*/
-    res = (p.cases[c.x][c.y] == 1);
-
-    /*Test des serpents*/
-    for(i= 0 ; i < nombreSerpent && !res ; i++)
-    {
-        for(j= 0; j < snakes[i].taille && !res ; j++)
-        {
-            res  = (snakes[i].pos[j].x==c.x && snakes[i].pos[j].y==c.y);
-
-        }
-    }
-
-
-
-    return res;
-
-}
 /**
  * \brief estInverse Permet de savoir si deux coordonnees sont inversees utile pour savoir si le
  * serpent ne fais pas marche arriere
