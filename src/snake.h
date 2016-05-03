@@ -161,6 +161,10 @@ direction defensiv_strat(snake cible,snake* snakes,int nombreSerpent,plateau p);
  */
 direction choix_strategie(snake cible,snake* snakes,int nombreSerpent, plateau p,direction toucheJoueur);
 
-
+/**
+ * \brief add_taille_snake Fonction qui permet d'augmenter de 1 la taille du snake
+ * \param snak le serpent dont la taille doit être modifié
+*/
+void add_taille_snake(snake snak);
 
 #endif // SNAKE_H_INCLUDED

@@ -484,3 +484,17 @@ direction choix_strategie(snake cible,snake* snakes,int nombreSerpent, plateau p
         break;
     }
 }
+
+
+
+void add_taille_snake(snake snak){
+    int i;
+    snak.taille=snak.taille+1;
+    for(i=1;i<snak.taille;i=i+1){
+        snak[i].pos=snak[i-1].pos;
+    }
+    snak[0].pos.x=convertDirectionToCoord(*dir).x+snak[0].pos.x;
+    snak[0].pos.y=convertDirectionToCoord(*dir).x+snak[0].pos.y;
+}
+
+
