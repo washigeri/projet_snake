@@ -9,6 +9,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <math.h>
+#include <SDL/SDL.h>
+#include <SDL/SDL_image.h>
 #include "struct.h"
 #include "snake.h"
 
@@ -115,6 +117,47 @@ void affiche(plateau p, snake* s,int n){
     }
 }
 
+
+
+void jeu_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p){
+    SDL_Surface* wall=NULL;
+    SDL_Surface* snake=NULL;
+    int taille_cases_px=screen->h/p.taille;
+    wall=SDL_CreateRGBSurface(0,taille_cases_px,taille_cases_px,32,0,0,0,0);
+    snake=SDL_CreateRGBSurface(0,taille_cases_px,taille_cases_px,32,0,0,0,0);
+    SDL_FillRect(wall,NULL,SDL_MapRGB(screen->format,255,140,0));
+    SDL_FillRect(snake,NULL,SDL_MapRGB(screen->format,205,0,205));
+    SDL_FillRect(screen,NULL,SDL_MapRGB(screen->format,140,140,140));
+    SDL_Rect position_mur;
+    position_mur.x=0;
+    position_mur.y=0;
+    int i,j;
+    for(i=0;i<p.taille;i++){
+        position_mur.x=i*taille_cases_px;
+        for(j=0;j<p.taille;j++){
+            if(i==0 || j==0 || i==p.taille-1 || j==p.taille-1){
+                position_mur.y=j*taille_cases_px;
+                SDL_BlitSurface(wall,NULL,screen,&position_mur);
+                }
+            }
+
+        }
+    SDL_FreeSurface(wall);
+    SDL_Rect position_snake;
+    position_snake.x=0;
+    position_snake.y=0;
+    int k;
+    for(k=0;k<nbs;k++){
+        for(i=0;i<s[k].taille;i++){
+            position_snake.x=s[k].pos[i].x*taille_cases_px;
+            position_snake.y=s[k].pos[i].y*taille_cases_px;
+            SDL_BlitSurface(snake,NULL,screen,&position_snake);
+
+            }
+        }
+    SDL_FreeSurface(snake);
+
+    }
 
 
 
