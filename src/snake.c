@@ -490,7 +490,7 @@ direction choix_strategie(snake cible,snake* snakes,int nombreSerpent, plateau p
 void add_taille_snake(snake snak){
     int i;
     snak.taille=snak.taille+1;
-	Coord* new_pos=malloc(snak.taille*sizeof( coord ));
+    coord* new_pos=malloc(snak.taille*sizeof( coord ));
 
 //On décale les pos
 
@@ -498,8 +498,8 @@ void add_taille_snake(snake snak){
         new_pos[i]=snak.pos[i-1];
     }
 
-    new_pos[0].x=convertDirectionToCoord(*dir).x+snak[0].pos.x;
-    new_pos[0].y=convertDirectionToCoord(*dir).x+snak[0].pos.y;
+    new_pos[0].x=convertDirectionToCoord(*(snak.dir)).x+snak.pos[0].x;
+    new_pos[0].y=convertDirectionToCoord(*(snak.dir)).x+snak.pos[0].y;
 
 //On libere l'ancien tableau de pos devenu trop petit
 	free( snak.pos );
