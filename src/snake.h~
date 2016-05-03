@@ -18,6 +18,6 @@ snake init_snake(int len,type typesnake);
  */
 void change_IA(snake snake, type typeAI);
 
-void add_taille_snake(snake snak);
+
 
 #endif // SNAKE_H_INCLUDED
