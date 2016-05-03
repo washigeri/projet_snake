@@ -493,7 +493,6 @@ void add_taille_snake(snake snak){
 	Coord* new_pos=malloc(snak.taille*sizeof( coord ));
 
 //On décale les pos
-
     for(i=1;i<snak.taille;i=i+1){
         new_pos[i]=snak.pos[i-1];
     }
