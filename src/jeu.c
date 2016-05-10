@@ -20,6 +20,7 @@
 #include "snake.h"
 #include "affiche.h"
 #include "collision.h"
+#include "strategie.h"
 
 /**
  *
