@@ -121,6 +121,25 @@ bools* collisions(plateau p,snake* s,int n){
 }
 
 /**
+ * \brief collisions Permet de occuper de tout les sorte de collisions entre le
+ * plateau et les fruits et d'agrandir le snake / retirer le fruit le cas échéant
+ * \param p le plateau forme
+ * \param s la liste de serpent du jeu
+ * \param n le nombre de serpent
+ * \return rien
+ */
+void collisions_fruit(plateau p,snake* s,int n){
+    int i;
+    for(i=0;i<n;i++){
+        if( detectionFruit(s[i].pos[0],p)  )
+		{
+			add_taille_snake(s[i]);
+			retirerFruit(s[i].pos[0],p);
+		}
+    }
+}
+
+/**
  * \brief estOccupe Permet de savoir si une case est occupe par un serpent ou un obstacle
  * \param c la coordonnes de la case
  * \param snakes le tableau de serpent
