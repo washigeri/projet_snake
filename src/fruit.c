@@ -52,7 +52,7 @@ void placerFruit(plateau plat)
 
 }
 
-void detectionFruit(coord c,plateau plat)
+bool detectionFruit(coord c,plateau plat)
 {
     return plat[c.x][c.y] == 2;
 }
