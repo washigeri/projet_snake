@@ -119,7 +119,7 @@ void affiche(plateau p, snake* s,int n){
 
 
 
-void jeu_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p){
+void affiche_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p){
     SDL_Surface* wall=NULL;
     SDL_Surface* snake=NULL;
     int taille_cases_px=screen->h/p.taille;

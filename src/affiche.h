@@ -49,7 +49,7 @@ bool* cherche_tete(int i,int j, snake* s, int n);
 
 void affiche(plateau p, snake* s,int n);
 
-void jeu_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p);
+void affiche_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p);
 
 
 #endif // AFFICHAGE_H_INCLUDED

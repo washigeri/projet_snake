@@ -2,7 +2,7 @@
 /**
  * \file jeu.c
  * \brief Ce source contient l'implémentation des fonctions gérant les fonctions prncipales du jeu
- * \details Les fonctions dans ce fichier permettent notamment la création du plateau de jeu, la détection des entrées utilisateurs 
+ * \details Les fonctions dans ce fichier permettent notamment la création du plateau de jeu, la détection des entrées utilisateurs
  et le déplacement des serpents. Ce fichier implémente aussi les deux types d'IA: idle et défensive.
 
  */
@@ -15,6 +15,7 @@
 #include <termios.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <SDL/SDL.h>
 #include "struct.h"
 #include "snake.h"
 #include "affiche.h"
@@ -166,7 +167,7 @@ bools* wall_hit(plateau p, snake* s,int n){
  * \param s1 serpent 1
  * \param s2 serpent 2
  * \return le cas de collision
- */   
+ */
 
 bools body_hit_aux(snake s1, snake s2){
   bools res;
@@ -180,7 +181,7 @@ bools body_hit_aux(snake s1, snake s2){
                   res.b=false;
               }
               k++;
-          } 
+          }
       }
   }
   return res;
@@ -315,7 +316,7 @@ void depart(snake* s,int n, plateau p){
         }
     }
 }
-    
+
 /**
  * \brief jouer permet de jouer un tour de jeu
  *   * faire avancer les differents serpent selon leurs differentes strategies
@@ -356,6 +357,51 @@ bools* jouer(snake* s,int n,plateau p){
     usleep(100000);
     return res;
 }
+
+bools* jouer_sdl(SDL_Surface* screen, snake* s, int nb_ser, plateau p, SDLKey touche,int difficulte){
+    char dir=s[0].dir[0];
+    switch(touche){
+        case SDLK_DOWN:
+            dir=down;
+            break;
+        case SDLK_s:
+            dir=down;
+            break;
+        case SDLK_UP:
+            dir=up;
+            break;
+        case SDLK_z:
+            dir=up;
+            break;
+        case SDLK_LEFT:
+            dir=left;
+            break;
+        case SDLK_q:
+            dir=left;
+            break;
+        case SDLK_RIGHT:
+            dir=right;
+            break;
+        case SDLK_d:
+            dir=right;
+            break;
+        default:
+            break;
+        }
+    affiche_sdl(screen,s,nb_ser,p);
+    movesnake(s[0],choix_strategie(s[0],s,nb_ser,p,dir));
+    for(int i=1;i<nb_ser;i++){
+        if(!s[i].dead[0]){
+            movesnake(s[i],choix_strategie(s[i],s,nb_ser,p,0));
+            }
+        }
+    affiche_sdl(screen,s,nb_ser,p);
+    bools* res=collisions(p,s,nb_ser);
+    SDL_Delay(difficulte*1000);
+    return res;
+
+    }
+
 /**
  * @brief Fonction utilisée dans les tests unitaires pour tester les collisions
  * @param s Tableau contenant tous les serpents en jeu
@@ -370,12 +416,12 @@ bools* jouer_test_collisions(snake* s,int n, plateau p){
     usleep(100000);
     return res;
 }
-    
 
 
 
 
 
 
-    
+
+
 

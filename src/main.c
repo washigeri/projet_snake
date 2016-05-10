@@ -19,8 +19,8 @@
 #include <SDL/SDL_image.h>
 
 snake* init_snakes(int n,int taille_plateau){
-    int espacement_vert_g=(taille_plateau)*(2/n);
-    int espacement_vert_d=(taille_plateau)/(n-(n/2));
+    int espacement_vert_g=(taille_plateau)/(n/2+1);
+    int espacement_vert_d=(taille_plateau)/(n-(n/2)+1);
     int taille_serpent=4;
     snake* res=(snake*)calloc(n,sizeof(snake));
     for(int i=0;i<n;i++){
@@ -33,8 +33,8 @@ snake* init_snakes(int n,int taille_plateau){
                 res[i].dir[0]=right;
                 }
             else{
-                res[i].pos[k].y=(i+1)*espacement_vert_d;
-                res[i].pos[k].x=(3*taille_plateau/4)+(taille_serpent/2)+k;
+                res[i].pos[k].y=(i+1-n/2)*espacement_vert_d;
+                res[i].pos[k].x=(3*taille_plateau/4)-(taille_serpent/2)+k;
                 res[i].dir[0]=left;
                 }
             }
@@ -43,18 +43,14 @@ snake* init_snakes(int n,int taille_plateau){
     }
 
 
+#define NB_SERPENT 2
 
 
 
 
 int main(){
-    snake Snake=init_snake(2,joueur);
-    Snake.pos[0].x=10;
-    Snake.pos[1].x=11;
-    Snake.pos[0].y=10;
-    Snake.pos[1].y=10;
     plateau p=init_plateau(30);
-    snake* snakes=init_snakes(2,p.taille);
+    snake* snakes=init_snakes(NB_SERPENT,p.taille);
     if(SDL_Init(SDL_INIT_VIDEO)==-1){
         printf("Error sdl_init %s\n",SDL_GetError());
         return 1;
@@ -85,8 +81,8 @@ int main(){
     positionTexte2.y=positionTexte1.y+(texte2->h);
     int continuer =1;
     int selecteur=1;
-    printf("Position texte 1 x: %d y:%d\n",positionTexte1.x,positionTexte1.y);
-    printf("Dimensions texte 1 w: %d h: %d\n",texte->w,texte->h);
+   /*printf("Position texte 1 x: %d y:%d\n",positionTexte1.x,positionTexte1.y);
+    printf("Dimensions texte 1 w: %d h: %d\n",texte->w,texte->h);*/
     while(continuer){
         SDL_WaitEvent(&event);
         switch(event.type){
@@ -98,8 +94,8 @@ int main(){
                 selecteur=1;
 
                 }
-                printf("%d %d\n",event.button.x,event.button.y);
-                printf("Selecteur : %d\n",selecteur);
+               /* printf("%d %d\n",event.button.x,event.button.y);
+                printf("Selecteur : %d\n",selecteur);*/
                 break;
             default:
                 break;
@@ -114,7 +110,7 @@ int main(){
                     SDL_BlitSurface(texte2,NULL,ecran,&positionTexte2);
                     break;
                 case 1:
-                    jeu_sdl(ecran,&Snake,1,p);
+                    affiche_sdl(ecran,snakes,NB_SERPENT,p);
                     break;
                 case 2:
                     continuer=0;
@@ -130,4 +126,5 @@ int main(){
     SDL_FreeSurface(texte2);
     TTF_Quit();
     SDL_Quit();
+    effacer_Partie(&p,snakes,NB_SERPENT);
     return 0;}
