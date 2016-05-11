@@ -16,6 +16,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <SDL/SDL.h>
+#include <SDL/SDL_ttf.h>
 #include "struct.h"
 #include "snake.h"
 #include "affiche.h"
@@ -388,7 +389,7 @@ bools* jouer_sdl(SDL_Surface* screen, snake* s, int nb_ser, plateau p, SDLKey to
         default:
             break;
         }
-    affiche_sdl(screen,s,nb_ser,p);
+    //affiche_sdl(screen,s,nb_ser,p);
     movesnake(s[0],choix_strategie(s[0],s,nb_ser,p,dir));
     for(int i=1;i<nb_ser;i++){
         if(!s[i].dead[0]){
@@ -397,7 +398,7 @@ bools* jouer_sdl(SDL_Surface* screen, snake* s, int nb_ser, plateau p, SDLKey to
         }
     affiche_sdl(screen,s,nb_ser,p);
     bools* res=collisions(p,s,nb_ser);
-    SDL_Delay(difficulte*1000);
+    SDL_Delay(difficulte*70);
     return res;
 
     }

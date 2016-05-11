@@ -11,6 +11,7 @@
 #include <math.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
+#include <SDL/SDL_ttf.h>
 #include "struct.h"
 #include "snake.h"
 
@@ -120,15 +121,28 @@ void affiche(plateau p, snake* s,int n){
 
 
 void affiche_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p){
+    int taille_cases_px=screen->h/p.taille;
     SDL_Surface* wall=NULL;
     SDL_Surface* snake=NULL;
-    int taille_cases_px=screen->h/p.taille;
+    SDL_Surface* score=NULL;
+    SDL_Rect position_score_board;
+    SDL_Surface* score_board=NULL;
+    TTF_Font* police=TTF_OpenFont("others/m01/m01.TTF",15);
+    position_score_board.y=0;position_score_board.x=taille_cases_px*(p.taille);
+    char score_ch[14]; SDL_Color color_white={255,255,255};
+    sprintf(score_ch,"SCORE: %06d",SDL_GetTicks()/10);
+    score=TTF_RenderText_Solid(police,score_ch,color_white);
+
     wall=SDL_CreateRGBSurface(0,taille_cases_px,taille_cases_px,32,0,0,0,0);
     snake=SDL_CreateRGBSurface(0,taille_cases_px,taille_cases_px,32,0,0,0,0);
+    score_board=SDL_CreateRGBSurface(0,(screen->w)-position_score_board.x,screen->h,32,0,0,0,0);
     SDL_FillRect(wall,NULL,SDL_MapRGB(screen->format,255,140,0));
     SDL_FillRect(snake,NULL,SDL_MapRGB(screen->format,205,0,205));
     SDL_FillRect(screen,NULL,SDL_MapRGB(screen->format,140,140,140));
+    SDL_FillRect(score_board,NULL,SDL_MapRGB(screen->format,0,0,0));
     SDL_Rect position_mur;
+
+    SDL_Rect position_score;
     position_mur.x=0;
     position_mur.y=0;
     int i,j;
@@ -155,7 +169,14 @@ void affiche_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p){
 
             }
         }
+
+    SDL_BlitSurface(score_board,NULL,screen,&position_score_board);
+    position_score.x=position_score_board.x+taille_cases_px;
+    position_score.y=taille_cases_px;
+    SDL_BlitSurface(score,NULL,screen,&position_score);
     SDL_FreeSurface(snake);
+    SDL_FreeSurface(score);
+    TTF_CloseFont(police);
 
     }
 

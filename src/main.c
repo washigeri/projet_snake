@@ -51,6 +51,7 @@ snake* init_snakes(int n,int taille_plateau){
 int main(){
     plateau p=init_plateau(30);
     snake* snakes=init_snakes(NB_SERPENT,p.taille);
+    snakes[1].playType=idle;
     if(SDL_Init(SDL_INIT_VIDEO)==-1){
         printf("Error sdl_init %s\n",SDL_GetError());
         return 1;
@@ -80,23 +81,44 @@ int main(){
     positionTexte2.x=positionTexte1.x;
     positionTexte2.y=positionTexte1.y+(texte2->h);
     int continuer =1;
-    int selecteur=1;
+    int selecteur=0;
+    SDLKey touche;
+    SDL_EnableKeyRepeat(10,10);
    /*printf("Position texte 1 x: %d y:%d\n",positionTexte1.x,positionTexte1.y);
     printf("Dimensions texte 1 w: %d h: %d\n",texte->w,texte->h);*/
     while(continuer){
-        SDL_WaitEvent(&event);
+        SDL_PollEvent(&event);
         switch(event.type){
             case SDL_QUIT:
                 continuer=0;
                 break;
-            case SDL_MOUSEBUTTONUP:
+            /*case SDL_MOUSEBUTTONUP:
                 if((event.button.button==SDL_BUTTON_LEFT) && (selecteur==0) && (event.button.x>positionTexte1.x) && (event.button.x<positionTexte1.x+texte->w) && (event.button.y<positionTexte1.y) && (event.button.y>positionTexte1.y+texte->h)){
                 selecteur=1;
 
                 }
                /* printf("%d %d\n",event.button.x,event.button.y);
-                printf("Selecteur : %d\n",selecteur);*/
-                break;
+                printf("Selecteur : %d\n",selecteur);
+                break;*/
+            case SDL_KEYDOWN:
+                touche=event.key.keysym.sym;
+                switch(touche){
+                    case SDLK_KP1:
+                        if(selecteur==0)
+                            selecteur=1;
+                        break;
+                    case SDLK_AMPERSAND:
+                        if(selecteur==0)
+                            selecteur=1;
+                        break;
+                    case SDLK_KP2:
+                        if(selecteur==0)
+                            selecteur=2;
+                        break;
+
+                    default:
+                        break;
+                    }
             default:
                 break;
             }
@@ -108,9 +130,11 @@ int main(){
                     SDL_FillRect(ecran,NULL,SDL_MapRGB(ecran->format,0,0,0));
                     SDL_BlitSurface(texte,NULL,ecran,&positionTexte1);
                     SDL_BlitSurface(texte2,NULL,ecran,&positionTexte2);
+                    printf("%06d\n",SDL_GetTicks());
                     break;
                 case 1:
-                    affiche_sdl(ecran,snakes,NB_SERPENT,p);
+                    if(!win(jouer_sdl(ecran,snakes,NB_SERPENT,p,touche,1),snakes,NB_SERPENT)){
+                        selecteur=0;}
                     break;
                 case 2:
                     continuer=0;
