@@ -142,22 +142,24 @@ coord convertDirectionToCoord(direction dir)
 
 void add_taille_snake(snake snak){
     int i;
-    snak.taille=snak.taille+1;
-    coord* new_pos=malloc(snak.taille*sizeof( coord ));
-
+    snak.taille++;
+//	usleep(1);printf("\ndebut\n");
+    coord* new_pos=calloc(snak.taille,sizeof( coord ));
+//	usleep(1);printf("\nmiddle\n");
 //On décale les pos
 
-    for(i=1;i<snak.taille;i=i+1){
+    for(i=1;i<snak.taille;i++){
         new_pos[i]=snak.pos[i-1];
     }
-
-    new_pos[0].x=convertDirectionToCoord(*(snak.dir)).x +snak.pos[0].x;
-    new_pos[0].y=convertDirectionToCoord(*(snak.dir)).y +snak.pos[0].y;
+//	usleep(1);printf("\nmiddle-end\n");
+    new_pos[0].x= convertDirectionToCoord(*(snak.dir)).x +snak.pos[0].x;
+    new_pos[0].y= convertDirectionToCoord(*(snak.dir)).y +snak.pos[0].y;
 
 //On libere l'ancien tableau de pos devenu trop petit
 	free( snak.pos );
-	snak.pos=new_pos;
-
+//	usleep(1);printf("\nend\n");
+	snak.pos = new_pos;
+//	usleep(1);printf("\nend\n");
 }
 
 

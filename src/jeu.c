@@ -21,6 +21,7 @@
 #include "affiche.h"
 #include "collision.h"
 #include "strategie.h"
+#include "fruit.h"
 
 /**
  *
@@ -229,12 +230,12 @@ bools* jouer(snake* s,int n,plateau p){
     if(kbhit()){
     	dir=getchar();
     }
+
     if(dir=='z' || dir=='q' || dir=='s' || dir=='d'){
         affiche(p,s,n);
-        movesnake(s[0],choix_strategie(s[0],s,n,p,dir));
-        for(i=1;i<n;i++){
+        for(i=0;i<n;i++){
             if(!s[i].dead[0]){
-    	        movesnake(s[i],choix_strategie(s[i],s,n,p,0));
+    	        movesnake(s[i],choix_strategie(s[i],s,n,p,dir));
     	    }
         }
         affiche(p,s,n);
@@ -244,12 +245,19 @@ bools* jouer(snake* s,int n,plateau p){
     	movesnake(s[0],s[0].dir[0]);
     	for(i=1;i<n;i++){
     	    if(!s[i].dead[0]){
-    	        movesnake(s[i],choix_strategie(s[i],s,n,p,0));
+    	        movesnake(s[i],choix_strategie(s[i],s,n,p,dir));
     	    }
     	}
     	affiche(p,s,n);
     }
     bools* res=collisions(p,s,n);
+
+	//placement dunn fruit sur le plateau
+	placerFruit(p);
+
+    //assurer la collision entre fruit :utiliser la fonction...
+	collisions_fruit(p,s,n);
+
     usleep(100000);
     return res;
 }

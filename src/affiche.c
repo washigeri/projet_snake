@@ -101,6 +101,9 @@ void affiche(plateau p, snake* s,int n){
             else if (i==0 || i==p.taille-1){
                 printf("--");
             }
+			else if( p.cases[i][j]==2 ){
+                printf("@-");
+			}
             else if(check(cherche_tete(i,j,s,n),n)){
                 printf(":)");
             }

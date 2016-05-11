@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include "struct.h"
 #include "snake.h"
+#include "fruit.h"
 
 #define CH_SPAWNFRUIT 50 //sur 100
 
@@ -16,28 +17,28 @@
  * */
 void ajoutFruit(coord cor,plateau plat)
 {
-    if(plat[cor.x][cor.y] == 0)
+    if(plat.cases[cor.y][cor.x] == 0)
     {
-        plat.cases[cor.x][cor.y] = 2;
+        plat.cases[cor.y][cor.x] = 2;
     }
 
 }
 
 void retirerFruit(coord cor,plateau plat)
 {
-    if(plat[cor.x][cor.y] > 1)
+    if(plat.cases[cor.y][cor.x] > 1)
     {
-        plat[cor.x][cor.y] = 0;
+        plat.cases[cor.y][cor.x] = 0;
     }
 }
 void placerFruit(plateau plat)
 {
-    int rand;
+    int r;
     int x,y;
 
-    rand = rand() % 100;
+    r = rand() % 100;
 
-    if(rand < CH_SPAWNFRUIT)
+    if(r < CH_SPAWNFRUIT)
     {
 
         x = rand() % plat.taille;
@@ -52,7 +53,7 @@ void placerFruit(plateau plat)
 
 }
 
-void detectionFruit(coord c,plateau plat)
+int detectionFruit(coord c,plateau plat)
 {
-    return plat[c.x][c.y] == 2;
+    return plat.cases[c.y][c.x] == 2;
 }

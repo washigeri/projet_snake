@@ -9,6 +9,7 @@
 #include <unistd.h>
 
 #include "struct.h"
+#include "fruit.h"
 #include "snake.h"
 #include "collision.h"
 
@@ -133,8 +134,8 @@ void collisions_fruit(plateau p,snake* s,int n){
     for(i=0;i<n;i++){
         if( detectionFruit(s[i].pos[0],p)  )
 		{
-			add_taille_snake(s[i]);
 			retirerFruit(s[i].pos[0],p);
+//			add_taille_snake(s[i]);
 		}
     }
 }
