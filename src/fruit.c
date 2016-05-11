@@ -53,7 +53,8 @@ void placerFruit(plateau plat)
 
 }
 
-int detectionFruit(coord c,plateau plat)
+
+bool detectionFruit(coord c,plateau plat)
 {
     return plat.cases[c.y][c.x] == 2;
 }
