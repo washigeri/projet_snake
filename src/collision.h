@@ -56,7 +56,7 @@ bools* collisions(plateau p,snake* s,int n);
  * \param n le nombre de serpent
  * \return rien
  */
-void collisions_fruit(plateau p,snake* s,int n);
+bool collisions_fruit(plateau p,snake cible,int n,direction dir);
 
 /**
  * \brief estOccupe Permet de savoir si une case est occupe par un serpent ou un obstacle

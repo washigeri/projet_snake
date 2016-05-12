@@ -57,6 +57,6 @@ coord convertDirectionToCoord(direction dir);
  * \brief add_taille_snake Fonction qui permet d'augmenter de 1 la taille du snake
  * \param snak le serpent dont la taille doit être modifié
 */
-void add_taille_snake(snake snak);
+void add_taille_snake(snake *snak,direction dir);
 
 #endif // SNAKE_H_INCLUDED

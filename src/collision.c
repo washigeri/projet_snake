@@ -129,15 +129,16 @@ bools* collisions(plateau p,snake* s,int n){
  * \param n le nombre de serpent
  * \return rien
  */
-void collisions_fruit(plateau p,snake* s,int n){
-    int i;
-    for(i=0;i<n;i++){
-        if( detectionFruit(s[i].pos[0],p)  )
+bool collisions_fruit(plateau p,snake cible,int n,direction dir){
+    bool res;
+    if( (res = detectionFruit(cible.pos[0],p))  )
 		{
-			retirerFruit(s[i].pos[0],p);
-//			add_taille_snake(s[i]);
+			retirerFruit(cible.pos[0],p);
+			add_taille_snake(&cible,dir);
 		}
-    }
+
+    return res;
+
 }
 
 /**

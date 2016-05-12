@@ -231,32 +231,31 @@ bools* jouer(snake* s,int n,plateau p){
     	dir=getchar();
     }
 
-    if(dir=='z' || dir=='q' || dir=='s' || dir=='d'){
+
         affiche(p,s,n);
         for(i=0;i<n;i++){
             if(!s[i].dead[0]){
-    	        movesnake(s[i],choix_strategie(s[i],s,n,p,dir));
+
+                if(!(dir=='z' || dir=='q' || dir=='s' || dir=='d'))
+                {
+                    dir = *(s[i].dir);
+                }
+
+                direction dirchoisi = choix_strategie(s[i],s,n,p,dir);
+
+                //assurer la collision entre fruit :utiliser la fonction...
+                if(!collisions_fruit(p,s[i],n,dirchoisi))
+                {
+                    movesnake(s[i],dirchoisi);
+                }
+
     	    }
         }
         affiche(p,s,n);
-    }
-    else {
-    	affiche(p,s,n);
-    	movesnake(s[0],s[0].dir[0]);
-    	for(i=1;i<n;i++){
-    	    if(!s[i].dead[0]){
-    	        movesnake(s[i],choix_strategie(s[i],s,n,p,dir));
-    	    }
-    	}
-    	affiche(p,s,n);
-    }
     bools* res=collisions(p,s,n);
 
 	//placement dunn fruit sur le plateau
 	placerFruit(p);
-
-    //assurer la collision entre fruit :utiliser la fonction...
-	collisions_fruit(p,s,n);
 
     usleep(100000);
     return res;
