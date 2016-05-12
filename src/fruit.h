@@ -6,5 +6,5 @@ void retirerFruit(coord cor,plateau plat);
 
 void placerFruit(plateau plat);
 
-int detectionFruit(coord c,plateau plat);
+bool detectionFruit(coord c,plateau plat);
 
