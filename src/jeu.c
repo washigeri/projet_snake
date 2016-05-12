@@ -359,7 +359,7 @@ bools* jouer(snake* s,int n,plateau p){
     return res;
 }
 
-bools* jouer_sdl(SDL_Surface* screen, snake* s, int nb_ser, plateau p, SDLKey touche,int difficulte){
+bools* jouer_sdl(SDL_Surface* screen, snake* s, int nb_ser, plateau p, SDLKey touche,int difficulte,int temps_debut){
     char dir=s[0].dir[0];
     switch(touche){
         case SDLK_DOWN:
@@ -396,7 +396,7 @@ bools* jouer_sdl(SDL_Surface* screen, snake* s, int nb_ser, plateau p, SDLKey to
             movesnake(s[i],choix_strategie(s[i],s,nb_ser,p,0));
             }
         }
-    affiche_sdl(screen,s,nb_ser,p);
+    affiche_sdl(screen,s,nb_ser,p,temps_debut);
     bools* res=collisions(p,s,nb_ser);
     SDL_Delay(difficulte*70);
     return res;

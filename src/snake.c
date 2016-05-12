@@ -58,7 +58,7 @@ snake init_snake(int len,type typesnake){
 void kill_snake(snake s){
     s.dead[0]=true;
 }
- 
+
 /**
  * \brief delete_snake permet de detruire un snake
  * \param snakeAeffacer serpent a detruire

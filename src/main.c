@@ -24,7 +24,12 @@ snake* init_snakes(int n,int taille_plateau){
     int taille_serpent=4;
     snake* res=(snake*)calloc(n,sizeof(snake));
     for(int i=0;i<n;i++){
-        res[i]=init_snake(taille_serpent,joueur);
+        if(i==0){
+            res[i]=init_snake(taille_serpent,joueur);
+            }
+        else{
+            res[i]=init_snake(taille_serpent,idle);
+            }
         for(int k=0;k<taille_serpent;k++){
 
             if(i<(n/2)){
@@ -43,12 +48,20 @@ snake* init_snakes(int n,int taille_plateau){
     }
 
 
-#define NB_SERPENT 2
+#define NB_SERPENT 8
 
+void reset_snakes(snake* snakes, int nb,int taille_p){
+    for(int i=0;i<nb;i++){
+        delete_snake(snakes + i);
+        }
+    free(snakes);
+    snakes=init_snakes(nb,taille_p);
+    }
 
 
 
 int main(){
+    init_tab_couleur();
     plateau p=init_plateau(30);
     snake* snakes=init_snakes(NB_SERPENT,p.taille);
     snakes[1].playType=idle;
@@ -83,6 +96,7 @@ int main(){
     int continuer =1;
     int selecteur=0;
     SDLKey touche;
+    int temps_debut;
     SDL_EnableKeyRepeat(10,10);
    /*printf("Position texte 1 x: %d y:%d\n",positionTexte1.x,positionTexte1.y);
     printf("Dimensions texte 1 w: %d h: %d\n",texte->w,texte->h);*/
@@ -104,12 +118,16 @@ int main(){
                 touche=event.key.keysym.sym;
                 switch(touche){
                     case SDLK_KP1:
-                        if(selecteur==0)
+                        if(selecteur==0){
                             selecteur=1;
+                            temps_debut=SDL_GetTicks();
+                            }
                         break;
                     case SDLK_AMPERSAND:
-                        if(selecteur==0)
+                        if(selecteur==0){
                             selecteur=1;
+                            temps_debut=SDL_GetTicks();
+                            }
                         break;
                     case SDLK_KP2:
                         if(selecteur==0)
@@ -130,11 +148,12 @@ int main(){
                     SDL_FillRect(ecran,NULL,SDL_MapRGB(ecran->format,0,0,0));
                     SDL_BlitSurface(texte,NULL,ecran,&positionTexte1);
                     SDL_BlitSurface(texte2,NULL,ecran,&positionTexte2);
-                    printf("%06d\n",SDL_GetTicks());
                     break;
                 case 1:
-                    if(!win(jouer_sdl(ecran,snakes,NB_SERPENT,p,touche,1),snakes,NB_SERPENT)){
-                        selecteur=0;}
+                    if(!win(jouer_sdl(ecran,snakes,NB_SERPENT,p,touche,1,temps_debut),snakes,NB_SERPENT)){
+                        selecteur=0;
+                        reset_snakes(snakes,NB_SERPENT,p.taille);
+                        }
                     break;
                 case 2:
                     continuer=0;
@@ -143,7 +162,6 @@ int main(){
                     break;
             }
             SDL_Flip(ecran);
-
         }
     TTF_CloseFont(police);
     SDL_FreeSurface(texte);
