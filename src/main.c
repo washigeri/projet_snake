@@ -130,7 +130,7 @@ int main()
 	/*LES PARTIES JOUEES*/
 	while( replay==1 ){
 		system("clear");
-		printf("Choisissez le type de l'IA\n  1- idle\n  2- defensive\n");
+        printf("Choisissez le type de l'IA\n  1- idle\n  2- defensive\n 3- offensive\n  autre- Joueur\n");
 		scanf("%d",&typeSerpent);
 		write_score( partie(typeSerpent) );
 

@@ -19,19 +19,21 @@
  *autour de lui-meme*/
 #define COEFF_TARGETSNAKE 1
 /* Timidite, Plus le coefficient est haut plus le serpent evitera ses congeneres*/
-#define COEFF_OTHERSNAKE 5
+#define COEFF_OTHERSNAKE 2
 /* Liberte, plus le coefficient est eleve, plus le serpent voudra eloigner des murs du plateau*/
-#define COEFF_PLATEAU 3
+#define COEFF_PLATEAU 2
 /* Prevoyance ,plus le coefficient est eleve plus le serpent se mefira de la tete des autres serpents*/
 #define COEFF_HEAD 5
-
-#define COEFF_ATTACK 10
-
-#define PDS_MAX_ATTACK 250
 
 #define COEFF_DEFENSIV 2
 
 #define COEFF_OFFENSIV 1
+#define PDS_MAX_ATTIRANCE_HEAD 500
+
+#define PDS_BONUS_COUP_STRATEGIQ 1500
+
+#define DISTANCE_MAX_APPLICATION_STRATEG 5
+
 
 
 
@@ -273,8 +275,8 @@ direction defensiv_strat(snake cible,snake* snakes,int nombreSerpent,plateau p)
 
             if(poids <= poidscurrent)
             {
-              poids = poidscurrent;
-              res = actuel;
+                poids = poidscurrent;
+                res = actuel;
 
             }
 
@@ -288,7 +290,7 @@ direction defensiv_strat(snake cible,snake* snakes,int nombreSerpent,plateau p)
     return res;
 }
 
-int  calculPoidsTete(snake cible,snake*snakes,int nombreSerpent)
+int  calculPoidsTete(coord coor,snake cible,snake*snakes,int nombreSerpent)
 {
     int res = 0;
     int i;
@@ -296,7 +298,7 @@ int  calculPoidsTete(snake cible,snake*snakes,int nombreSerpent)
     {
         if(!egalite_snake(cible,snakes[i]))
         {
-            res = 250 / calculDistanceTaxicab(snakes[i].pos[0],cible.pos[0]);
+            res = PDS_MAX_ATTIRANCE_HEAD / (calculDistanceTaxicab(snakes[i].pos[0],coor)+1);
 
         }
     }
@@ -304,6 +306,185 @@ int  calculPoidsTete(snake cible,snake*snakes,int nombreSerpent)
     return res;
 
 }
+
+snake connaitreSnakeLePlusProche(snake cible,snake*snakes,int nombreSerpent)
+{
+    snake res;
+    int distance = -1;
+    int i;
+
+    for(i=0;i<nombreSerpent;i++)
+    {
+        if(!egalite_snake(cible,snakes[i]))
+        {
+            if(distance>calculDistanceTaxicab(snakes[i].pos[0],cible.pos[0]) || distance == -1)
+            {
+                distance = calculDistanceTaxicab(snakes[i].pos[0],cible.pos[0]) ;
+                res = snakes[i];
+            }
+
+        }
+
+    }
+
+    return res;
+
+}
+
+
+direction calculdirection(coord origin,coord exter)
+{
+    direction res =up;
+    if(origin.y<exter.y)
+    {
+        if(exter.y-origin.y > abs(exter.x-origin.x))
+        {
+            res=down;
+        }
+        else if (exter.x>origin.x)
+        {
+            res = left;
+        }
+        else
+        {
+            res = right;
+        }
+    }
+    else
+    {
+        if(origin.y-exter.y > abs(exter.x-origin.x))
+        {
+            res=up;
+        }
+        else if (exter.x>origin.x)
+        {
+            res = left;
+        }
+        else
+        {
+            res = right;
+        }
+
+    }
+
+    return res;
+
+}
+
+int calculStrategie(snake cible, direction directiontest, snake snakeProche)
+{
+    int res = 0;
+    direction dirsnake;
+    dirsnake = calculdirection(cible.pos[0],snakeProche.pos[0]);
+
+    if(calculDistanceTaxicab(cible.pos[0],snakeProche.pos[0]) > DISTANCE_MAX_APPLICATION_STRATEG)
+    {
+        /*cas special
+         *
+         * rapprochement frontale
+         *
+         *     +++++  <-0000
+         *
+         *
+         *
+         * + ennemi
+         * O cible
+         * <- | direction
+         */
+        if(estInverse(dirsnake,directiontest ))
+        {
+            res = PDS_BONUS_COUP_STRATEGIQ;
+
+        }
+
+        /*cas special
+         *
+         * rapprochement diagonale
+         *
+         *     +++++
+         *              |
+         *              0
+         *              0
+         *              0
+         * + ennemi
+         * O cible
+         * <- | direction
+         */
+        else if(tournerAntiHoraire(dirsnake) == directiontest || dirsnake == tournerAntiHoraire(directiontest) )
+        {
+            res =PDS_BONUS_COUP_STRATEGIQ;
+
+        }
+
+
+        return res;
+    }
+
+
+
+
+    /*cas 1
+     *
+     * coupage de la route
+     *              0
+     *              0
+     *              0
+     *      ++++++  |
+     *
+     * + ennemi
+     * O cible
+     * | direction
+     *
+     */
+
+    if(estInverse(dirsnake,*snakeProche.dir) && (directiontest == tournerAntiHoraire(dirsnake)
+                                                 || directiontest == tournerAntiHoraire(*snakeProche.dir) ))
+    {
+        res = PDS_BONUS_COUP_STRATEGIQ;
+    }
+
+    /*cas 2
+     *
+     * encerclement
+     *         000
+     *     +++++ 0
+     *        <-00
+     *
+     *
+     * + ennemi
+     * O cible
+     * <- direction
+     */
+
+
+    else if(estInverse(*snakeProche.dir,directiontest) && (dirsnake == tournerAntiHoraire(directiontest)
+                                                           || dirsnake == tournerAntiHoraire(*snakeProche.dir) ))
+    {
+        res = PDS_BONUS_COUP_STRATEGIQ;
+    }
+
+    /*cas 3
+     *
+     * queue de poisson (debauche sur l'encerclement)
+     *         0000
+     *     +++++  |
+     *
+     *
+     *
+     * + ennemi
+     * O cible
+     * <- direction
+     */
+    else if(*cible.dir == *snakeProche.dir && estInverse(dirsnake,directiontest))
+    {
+        res = PDS_BONUS_COUP_STRATEGIQ;
+    }
+    return res;
+
+}
+
+
+
 
 
 direction offensive_strat(snake cible,snake* snakes,int nombreSerpent,plateau p)
@@ -324,14 +505,16 @@ direction offensive_strat(snake cible,snake* snakes,int nombreSerpent,plateau p)
         if(!estOccupe(coor,snakes,nombreSerpent,p))
         {
             int poidscurrent = 0;
-            poidscurrent += calculPoidsTableau(coor,p);
-            poidscurrent += calculPoidsSerpent(coor,cible,snakes,nombreSerpent,p);
+            poidscurrent += calculPoidsTableau(coor,p) *COEFF_OFFENSIV;
+            poidscurrent += calculPoidsSerpent(coor,cible,snakes,nombreSerpent,p) *COEFF_OFFENSIV;
+            poidscurrent += calculPoidsTete(coor,cible,snakes,nombreSerpent);
+            poidscurrent += calculStrategie(cible,actuel,connaitreSnakeLePlusProche(cible,snakes,nombreSerpent));
 
 
-            if(poids <= poidscurrent)
+            if(poids < poidscurrent)
             {
-              poids = poidscurrent;
-              res = actuel;
+                poids = poidscurrent;
+                res = actuel;
 
             }
 
@@ -340,19 +523,18 @@ direction offensive_strat(snake cible,snake* snakes,int nombreSerpent,plateau p)
         actuel = tournerAntiHoraire(actuel);
     }
 
-    /*printf("calcul:%d\n",poids);*/
 
     return res;
 }
 
 /**
- * \brief choix_strategie Fonction permettant de choisir la direction du serpent selon sa strategie mise en place
- * \param cible le serpent à derterminer la direction
- * \param snakes lensemble des serpents
- * \param p le plateau de jeu
- * \param toucheJoueur la touche presse par le joueur pendant le debut du tour
- * \return la direction choisi par la strategie
- */
+         * \brief choix_strategie Fonction permettant de choisir la direction du serpent selon sa strategie mise en place
+         * \param cible le serpent à derterminer la direction
+         * \param snakes lensemble des serpents
+         * \param p le plateau de jeu
+         * \param toucheJoueur la touche presse par le joueur pendant le debut du tour
+         * \return la direction choisi par la strategie
+         */
 direction choix_strategie(snake cible,snake* snakes,int nombreSerpent, plateau p,direction toucheJoueur){
     switch(cible.playType)
     {

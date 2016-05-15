@@ -86,6 +86,16 @@ unsigned int calculPoidsSerpent(coord pos,snake cible,snake * snakes,int nombreS
  */
 direction defensiv_strat(snake cible,snake* snakes,int nombreSerpent,plateau p);
 
+int  calculPoidsTete(coord coor, snake cible, snake*snakes, int nombreSerpent);
+
+snake connaitreSnakeLePlusProche(snake cible,snake*snakes,int nombreSerpent);
+
+
+direction calculdirection(coord origin,coord exter);
+
+
+int calculStrategie(snake cible,direction directiontest,snake snakeProche);
+
 
 /**
  * \brief choix_strategie Fonction permettant de choisir la direction du serpent selon sa strategie mise en place
