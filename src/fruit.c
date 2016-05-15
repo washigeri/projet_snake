@@ -13,8 +13,11 @@
 #define CH_SPAWNFRUIT 50 //sur 100
 
 #define MAX_NB_ITEM 100
+#define MAX_TELEPORT 3
+
 #define NB_TYPE_ITEM 3
 
+#define MARGE 5
 /** Gestion des Bonus
  * */
 
@@ -27,6 +30,26 @@ coord avoirCoordonneesLibreHasard(plateau plat)
 
         x = rand() % plat.taille;
         y = rand() % plat.taille;
+
+
+        c.x = x;
+        c.y = y;
+
+
+
+    }while(plat.cases[y][x] > 0);
+
+    return c;
+}
+
+coord avoirCoordonneesLibreHasardAvecMarge(plateau plat)
+{
+    coord c;
+    int x,y;
+    do{
+
+        x = (rand() % (plat.taille-MARGE)) + MARGE;
+        y = (rand() % (plat.taille-MARGE)) + MARGE;
 
 
         c.x = x;
@@ -64,7 +87,8 @@ void ajoutPoison(coord cor,plateau* plat)
 
 void creationTroudever(plateau* p)
 {
-    /* coord c = avoirCoordonneesLibreHasard(*p);
+
+     coord c = avoirCoordonneesLibreHasardAvecMarge(*p);
 
     p->nombreTroudever++;
 
@@ -92,7 +116,8 @@ void creationTroudever(plateau* p)
 
 
     p->cases[c.y][c.x] = 5;
-*/
+   /* p->cases[5][5] = 5;*/
+
 }
 
 void ajoutTeleporter(coord cor,plateau *plat)
@@ -137,7 +162,10 @@ void placerFruit(plateau *plat)
                 ajoutPoison(c,plat);
                 break;
             case 2:
+                if(plat->nombreTroudever < MAX_TELEPORT)
+                {
                 ajoutTeleporter(c,plat);
+                }
                 break;
             default:
                 ajoutFruit(c,plat);
@@ -150,14 +178,16 @@ void placerFruit(plateau *plat)
 }
 
 
-bool detectionFruit(coord c,plateau plat)
+bool detectionFruit(coord c,plateau* plat)
 {
-    return plat.cases[c.y][c.x] >= 2;
+    return plat->cases[c.y][c.x] >= 2;
 }
 
 void utiliserTeleporter(plateau* p ,snake* s,direction dSerpent)
 {
-    /*
+   /* coord c;
+    c.x = 5;
+    c.y = 5;*/
     int r;
 
     r = rand() % p->nombreTroudever;
@@ -180,14 +210,10 @@ void utiliserTeleporter(plateau* p ,snake* s,direction dSerpent)
     }
     p->cases[c.y][c.x] = 0;
 
-    teleport_snake(s,dSerpent,c);
-
     free(p->troudever);
     p->troudever= newtab;
     p->nombreTroudever--;
-    */
-
-
+    teleport_snake(s,dSerpent,c);
 }
 
 void fruit_strategie(plateau *p,snake *s,coord caseFruit,direction dserpent)
@@ -206,8 +232,7 @@ void fruit_strategie(plateau *p,snake *s,coord caseFruit,direction dserpent)
         retirerBonus(caseFruit,p);
         utiliserTeleporter(p,s,dserpent);
     case 5: //Trou de vers
-
-        //NADA
+        movesnake(*s,dserpent);
         break;
     default:
         //NADA

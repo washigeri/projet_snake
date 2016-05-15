@@ -2,6 +2,8 @@
  * */
 coord avoirCoordonneesLibreHasard(plateau plat);
 
+coord avoirCoordonneesLibreHasardAvecMarge(plateau plat);
+
 void ajoutFruit(coord cor, plateau* plat);
 
 void ajoutPoison(coord cor,plateau* plat);
@@ -14,7 +16,7 @@ void retirerBonus(coord cor, plateau *plat);
 
 void placerFruit(plateau *plat);
 
-bool detectionFruit(coord c,plateau plat);
+bool detectionFruit(coord c, plateau *plat);
 
 void utiliserTeleporter(plateau* p ,snake* s,direction dSerpent);
 

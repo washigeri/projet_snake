@@ -32,13 +32,9 @@ void erase_plateau(plateau* platAEffacer);
  */
 void effacer_Partie(plateau* plat,snake* tabSerpent,int nombreSerpent);
 
-/**
- * \brief movesnake Procedure de mise à jour et de deplacement du serpent dans
- * une direction donne
- * \param s le serpent a deplacer
- * \param dir la direction souhaitee
- */
-void movesnake(snake s,direction dir);
+
+
+
 
 bool arrete_partie(snake* s, int n);
 

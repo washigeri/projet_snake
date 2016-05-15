@@ -38,6 +38,16 @@ void delete_snake(snake* snakeAeffacer);
  */
 bool egalite_snake(snake s1, snake s2);
 
+
+/**
+ * \brief estInverse Permet de savoir si deux coordonnees sont inversees utile pour savoir si le
+ * serpent ne fais pas marche arriere
+ * \param dir1
+ * \param dir2
+ * \return vrai si lezs cordonnees sont inversees
+ */
+bool estInverse(direction dir1,direction dir2);
+
 /**
  * \brief change_IA Permet le changement de l'intelligence artificielle d un serpent
  * \param snake le serpent
@@ -52,6 +62,14 @@ void change_IA(snake snake, type typeAI);
  * \return la coordonnee
  */
 coord convertDirectionToCoord(direction dir);
+
+/**
+ * \brief movesnake Procedure de mise à jour et de deplacement du serpent dans
+ * une direction donne
+ * \param s le serpent a deplacer
+ * \param dir la direction souhaitee
+ */
+void movesnake(snake s,direction dir);
 
 /**
  * \brief add_taille_snake Fonction qui permet d'augmenter de 1 la taille du snake

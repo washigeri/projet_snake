@@ -49,7 +49,7 @@ bools* wall_hit(plateau p, snake* s,int n){
     }
     return res;
 }
- /**
+/**
  * \brief body_hit_aux Permet de tester le cas de collision entre deux serpents
  * \param s1 serpent 1
  * \param s2 serpent 2
@@ -57,21 +57,26 @@ bools* wall_hit(plateau p, snake* s,int n){
  */
 
 bools body_hit_aux(snake s1, snake s2){
-  bools res;
-  res.b=true;
-  res.s=s1;
-  if(!s1.dead[0] && !s2.dead[0]){
-      if(!egalite_snake(s1,s2)){
-          int k=0;
-          while(k<s2.taille && res.b){
-              if(s1.pos[0].x==s2.pos[k].x && s1.pos[0].y==s2.pos[k].y){
-                  res.b=false;
-              }
-              k++;
-          }
-      }
-  }
-  return res;
+    bools res;
+
+    int k=0;
+    res.b=true;
+    res.s=s1;
+    if(!s1.dead[0] && !s2.dead[0]){
+
+        if(egalite_snake(s1,s2)){
+            k=1;
+        }
+
+        while(k<s2.taille && res.b){
+            if(s1.pos[0].x==s2.pos[k].x && s1.pos[0].y==s2.pos[k].y){
+                res.b=false;
+            }
+            k++;
+        }
+
+    }
+    return res;
 }
 /**
  * \brief body_hit Permet de tester les collisions de tous les serpents entre eux
@@ -119,26 +124,6 @@ bools* collisions(plateau p,snake* s,int n){
     free(bh);
 
     return res;
-}
-
-/**
- * \brief collisions Permet de occuper de tout les sorte de collisions entre le
- * plateau et les fruits et d'agrandir le snake / retirer le fruit le cas échéant
- * \param p le plateau forme
- * \param s la liste de serpent du jeu
- * \param n le nombre de serpent
- * \return rien
- */
-bool collisions_fruit(plateau p,snake cible,int n,direction dir){
-    bool res;
-    if( (res = detectionFruit(cible.pos[0],p))  )
-		{
-            retirerBonus(cible.pos[0],p);
-			add_taille_snake(&cible,dir);
-		}
-
-    return res;
-
 }
 
 /**

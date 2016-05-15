@@ -56,8 +56,9 @@ typedef struct {coord* pos;
 typedef struct {int** cases;
                 int taille;
                 int nombreItem;
-                /*coord* troudever;
-                int nombreTroudever;*/} plateau;
+                coord* troudever;
+                int nombreTroudever;
+               } plateau;
 
 /**
  *

@@ -85,6 +85,34 @@ bool egalite_snake(snake s1, snake s2){
 }
 
 /**
+ * \brief estInverse Permet de savoir si deux coordonnees sont inversees utile pour savoir si le
+ * serpent ne fais pas marche arriere
+ * \param dir1
+ * \param dir2
+ * \return vrai si lezs cordonnees sont inversees
+ */
+bool estInverse(direction dir1,direction dir2)
+{
+    if(dir1 == left )
+    {
+        return (dir2 == right);
+    }
+    else if (dir1 == right)
+    {
+        return (dir2 == left);
+    }
+    else if (dir1 == up)
+    {
+        return (dir2 == down);
+    }
+    else
+    {
+        return (dir2 == up);
+    }
+}
+
+
+/**
  * \brief change_IA Permet le changement de l'intelligence artificielle d un serpent
  * \param snake le serpent
  * \param typeAI le nouveau type dAI
@@ -129,6 +157,55 @@ coord convertDirectionToCoord(direction dir)
 
     return res;
 
+}
+
+/**
+ * \brief movesnake Procedure de mise à jour et de deplacement du serpent dans
+ * une direction donne
+ * \param s le serpent a deplacer
+ * \param dir la direction souhaitee
+ */
+void movesnake(snake s,direction dir){
+    if(!estInverse(s.dir[0],dir)){
+        int i;
+        switch (dir){
+        case right:
+            for(i=s.taille-1;i>0;i--){
+                s.pos[i].x=s.pos[i-1].x;
+                s.pos[i].y=s.pos[i-1].y;
+            }
+            s.pos[0].x++;
+            s.dir[0]=dir;
+            break;
+        case left:
+            for(i=s.taille-1;i>0;i--){
+                s.pos[i].x=s.pos[i-1].x;
+                s.pos[i].y=s.pos[i-1].y;
+            }
+            s.pos[0].x--;
+            s.dir[0]=dir;
+            break;
+        case up:
+            for(i=s.taille-1;i>0;i--){
+                s.pos[i].x=s.pos[i-1].x;
+                s.pos[i].y=s.pos[i-1].y;
+            }
+            s.pos[0].y--;
+            s.dir[0]=dir;
+            break;
+        case down:
+            for(i=s.taille-1;i>0;i--){
+                s.pos[i].x=s.pos[i-1].x;
+                s.pos[i].y=s.pos[i-1].y;
+            }
+            s.pos[0].y++;
+            s.dir[0]=dir;
+            break;
+        }
+    }
+    else {
+        movesnake(s,s.dir[0]);
+    }
 }
 
 
@@ -200,6 +277,7 @@ void teleport_snake(snake *snak,direction dir,coord cor)
 {
     snak->pos[0].x = cor.x;
     snak->pos[0].y = cor.y;
+
 
     snak->dir[0]=dir;
 }

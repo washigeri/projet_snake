@@ -2,7 +2,7 @@
 /**
  * \file jeu.c
  * \brief Ce source contient l'implémentation des fonctions gérant les fonctions prncipales du jeu
- * \details Les fonctions dans ce fichier permettent notamment la création du plateau de jeu, la détection des entrées utilisateurs 
+ * \details Les fonctions dans ce fichier permettent notamment la création du plateau de jeu, la détection des entrées utilisateurs
  et le déplacement des serpents. Ce fichier implémente aussi les deux types d'IA: idle et défensive.
 
  */
@@ -23,6 +23,9 @@
 #include "strategie.h"
 #include "fruit.h"
 
+
+#define PAS_TEMPS 100000
+
 /**
  *
  * \brief init_plateau Permet la creation d un tableau de n * n cases
@@ -32,20 +35,22 @@
 
 plateau* init_plateau(int n){
     plateau* res = malloc(sizeof(plateau));
-       res->cases=(int**)calloc(n,sizeof(int*));
-       int i;
-       for(i=0;i<n;i++){
-           res->cases[i]=(int*)calloc(n,sizeof(int));
-       }
-       for(i=0;i<n;i++){
-           res->cases[i][0]=1;
-           res->cases[i][n-1]=1;
-           res->cases[0][i]=1;
-           res->cases[n-1][i]=1;
-       }
-       res->taille=n;
-       res->nombreItem=5;
-       return res;
+    res->troudever=0;
+    res->cases=(int**)calloc(n,sizeof(int*));
+    int i;
+    for(i=0;i<n;i++){
+        res->cases[i]=(int*)calloc(n,sizeof(int));
+    }
+    for(i=0;i<n;i++){
+        res->cases[i][0]=1;
+        res->cases[i][n-1]=1;
+        res->cases[0][i]=1;
+        res->cases[n-1][i]=1;
+    }
+    res->taille=n;
+    res->nombreItem=0;
+    res->nombreTroudever=0;
+    return res;
 }
 
 /**
@@ -61,12 +66,11 @@ void erase_plateau(plateau* platAEffacer)
     }
     free(platAEffacer->cases);
 
-    /*
+
     if(platAEffacer->troudever)
     {
         free(platAEffacer->troudever);
     }
-    */
     /*free(platAEffacer);*/
 
 }
@@ -86,57 +90,9 @@ void effacer_Partie(plateau* plat,snake* tabSerpent,int nombreSerpent)
     free(tabSerpent);
 
     erase_plateau(plat);
+    free(plat);
 
 
-}
-
-/**
- * \brief movesnake Procedure de mise à jour et de deplacement du serpent dans
- * une direction donne
- * \param s le serpent a deplacer
- * \param dir la direction souhaitee
- */
-void movesnake(snake s,direction dir){
-    if(!estInverse(s.dir[0],dir)){
-        int i;
-        switch (dir){
-        case right:
-                for(i=s.taille-1;i>0;i--){
-                    s.pos[i].x=s.pos[i-1].x;
-                    s.pos[i].y=s.pos[i-1].y;
-                }
-                s.pos[0].x++;
-                s.dir[0]=dir;
-                break;
-        case left:
-                for(i=s.taille-1;i>0;i--){
-                    s.pos[i].x=s.pos[i-1].x;
-                    s.pos[i].y=s.pos[i-1].y;
-                }
-                s.pos[0].x--;
-                s.dir[0]=dir;
-                break;
-        case up:
-                for(i=s.taille-1;i>0;i--){
-                    s.pos[i].x=s.pos[i-1].x;
-                    s.pos[i].y=s.pos[i-1].y;
-                }
-                s.pos[0].y--;
-                s.dir[0]=dir;
-                break;
-        case down:
-                for(i=s.taille-1;i>0;i--){
-                    s.pos[i].x=s.pos[i-1].x;
-                    s.pos[i].y=s.pos[i-1].y;
-                }
-                s.pos[0].y++;
-                s.dir[0]=dir;
-                break;
-        }
-    }
-    else {
-    	movesnake(s,s.dir[0]);
-    }
 }
 
 bool arrete_partie(snake* s,int n){
@@ -160,7 +116,7 @@ bool arrete_partie(snake* s,int n){
 bool win(bools* bs,snake* s,int n){
     bool res=true;
     if(!bs[0].b){
-    	s[0].dead[0]=true;
+        s[0].dead[0]=true;
         printf("G A M E O V E R\n\n");
         res=false;
     }
@@ -169,7 +125,7 @@ bool win(bools* bs,snake* s,int n){
         for(i=1;i<n;i++){
             if(!bs[i].b){
                 kill_snake(s[i]);
-    	    }
+            }
         }
         res=arrete_partie(s,n);
     }
@@ -182,24 +138,24 @@ bool win(bools* bs,snake* s,int n){
  */
 int kbhit()
 {
-  struct termios oldt, newt;
-  int ch;
-  int oldf=tcgetattr(STDIN_FILENO, &oldt);
-  newt = oldt;
-  newt.c_lflag &= ~(ICANON | ECHO);
-  tcsetattr(STDIN_FILENO, TCSANOW, &newt);
-  oldf = fcntl(STDIN_FILENO, F_GETFL, 0);
-  fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
-  ch = getchar();
-  tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-  fcntl(STDIN_FILENO, F_SETFL, oldf);
-  if(ch != EOF)
-  {
-    ungetc(ch, stdin);
-    return 1;
-  }
+    struct termios oldt, newt;
+    int ch;
+    int oldf=tcgetattr(STDIN_FILENO, &oldt);
+    newt = oldt;
+    newt.c_lflag &= ~(ICANON | ECHO);
+    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+    oldf = fcntl(STDIN_FILENO, F_GETFL, 0);
+    fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
+    ch = getchar();
+    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+    fcntl(STDIN_FILENO, F_SETFL, oldf);
+    if(ch != EOF)
+    {
+        ungetc(ch, stdin);
+        return 1;
+    }
 
-  return 0;
+    return 0;
 }
 
 void depart(snake* s,int n, plateau p){
@@ -207,12 +163,12 @@ void depart(snake* s,int n, plateau p){
     char dir;
     bool debut=false;
     while(!debut){
-    	if(kbhit()){
-    	    dir=getchar();
-    	    if(dir=='z' || dir=='q' || dir=='s' || dir=='d'){
-    	        debut=true;
-    	    }
-    	}
+        if(kbhit()){
+            dir=getchar();
+            if(dir=='z' || dir=='q' || dir=='s' || dir=='d'){
+                debut=true;
+            }
+        }
     }
     movesnake(s[0],dir);
     for(i=1;i<n;i++){
@@ -221,7 +177,7 @@ void depart(snake* s,int n, plateau p){
         }
     }
 }
-    
+
 /**
  * \brief jouer permet de jouer un tour de jeu
  *   * faire avancer les differents serpent selon leurs differentes strategies
@@ -232,9 +188,9 @@ void depart(snake* s,int n, plateau p){
  * \param p le plateau de jeu
  * \return la collision provoque dans le tour
  */
-bools* jouer(snake* s,int n,plateau *p){
+bools* jouer(snake* s,int n,plateau* p){
     int i;
-    char dir;
+    char dir='n';
     if(kbhit()){
         dir=getchar();
     }
@@ -245,23 +201,22 @@ bools* jouer(snake* s,int n,plateau *p){
     }
 
 
-        affiche(*p,s,n);
-        for(i=0;i<n;i++){
-            if(!s[i].dead[0]){
+    affiche(*p,s,n);
+    for(i=0;i<n;i++){
+        if(!s[i].dead[0]){
 
+            direction dirchoisi = choix_strategie(s[i],s,n,*p,dir);
 
-                direction dirchoisi = choix_strategie(s[i],s,n,*p,dir);
+            if(detectionFruit(s[i].pos[0],p))
+            {
+                fruit_strategie(p,s+i,s[i].pos[0],dirchoisi);
 
-                if(detectionFruit(s[i].pos[0],*p))
-                {
-                   fruit_strategie(p,s+i,s[i].pos[0],dirchoisi);
-
-                }
-                else
-                {
-                    movesnake(s[i],dirchoisi);
-                }
-                /*
+            }
+            else
+            {
+                movesnake(s[i],dirchoisi);
+            }
+            /*
                 //assurer la collision entre fruit :utiliser la fonction...
                 if(!collisions_fruit(p,s[i],n,dirchoisi))
                 {
@@ -269,15 +224,15 @@ bools* jouer(snake* s,int n,plateau *p){
                 }
                 */
 
-    	    }
         }
-        affiche(*p,s,n);
+    }
+    affiche(*p,s,n);
     bools* res=collisions(*p,s,n);
 
-	//placement dunn fruit sur le plateau
+    //placement dunn fruit sur le plateau
     placerFruit(p);
 
-    usleep(100000);
+    usleep(PAS_TEMPS);
     return res;
 }
 /**
@@ -291,15 +246,15 @@ bools* jouer_test_collisions(snake* s,int n, plateau p){
     affiche(p,s,n);
     movesnake(s[0],s[0].dir[0]);
     bools* res=collisions(p,s,n);
-    usleep(100000);
+    usleep(PAS_TEMPS);
     return res;
 }
-    
 
 
 
 
 
 
-    
+
+
 

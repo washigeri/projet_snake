@@ -34,32 +34,6 @@
 #define COEFF_OFFENSIV 1
 
 
-/**
- * \brief estInverse Permet de savoir si deux coordonnees sont inversees utile pour savoir si le
- * serpent ne fais pas marche arriere
- * \param dir1
- * \param dir2
- * \return vrai si lezs cordonnees sont inversees
- */
-bool estInverse(direction dir1,direction dir2)
-{
-    if(dir1 == left )
-    {
-        return (dir2 == right);
-    }
-    else if (dir1 == right)
-    {
-        return (dir2 == left);
-    }
-    else if (dir1 == up)
-    {
-        return (dir2 == down);
-    }
-    else
-    {
-        return (dir2 == up);
-    }
-}
 
 
 /**

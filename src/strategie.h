@@ -4,15 +4,6 @@
  */
 
 
-
-/**
- * \brief estInverse Permet de savoir si deux coordonnees sont inversees utile pour savoir si le
- * serpent ne fais pas marche arriere
- * \param dir1
- * \param dir2
- * \return vrai si lezs cordonnees sont inversees
- */
-bool estInverse(direction dir1,direction dir2);
 /**
  * \brief joueur_strat Fonction de traitement de la strategie du joueur
  *  *Se contente de choisir la direction selectionner par le joueur

@@ -10,6 +10,8 @@
 #include "snake.h"
 #include "jeu.h"
 #include "affiche.h"
+#include "collision.h"
+#include "strategie.h"
 
 
 #define NOMBRESERPENT 2
@@ -102,8 +104,8 @@ int main()
 
 
     printf("TEST DE BASE\n");
-    plateau p=init_plateau(20);
-    affiche(p,s,NOMBRESERPENT);
+    plateau* p=init_plateau(20);
+    affiche(*p,s,NOMBRESERPENT);
 
     printf("Serpent de base\n");
     afficher_serpent(snak);
@@ -118,7 +120,7 @@ int main()
     /*Test Avancer*/
 
     movesnake(snak,right);
-    affiche(p,s,NOMBRESERPENT);
+    affiche(*p,s,NOMBRESERPENT);
     printf("TEST MOUVEMENT\n");
     printf("+Test Avancer dans la direction courante aller a droite (tout droit)\n");
     afficher_serpent(snak);
@@ -131,7 +133,7 @@ int main()
 
 
     movesnake(snak,left);
-    affiche(p,s,NOMBRESERPENT);
+    affiche(*p,s,NOMBRESERPENT);
     printf("+Test Avancer dans la direction contraire\n");
     printf("le serpent ignore la direction et avance dans la direction courante\n");
     afficher_serpent(snak);
@@ -144,7 +146,7 @@ int main()
 
     printf("+Test Tourner\n");
     movesnake(snak,up);
-    affiche(p,s,NOMBRESERPENT);
+    affiche(*p,s,NOMBRESERPENT);
     printf("+Test Tourner aller en haut\n");
     afficher_serpent(snak);
 
@@ -157,7 +159,7 @@ int main()
     printf("-Plus le poids est eleve plus le serpent est attire\n");
     printf("-Ainsi les poids du cote bas droit sont les plus faible car\n");
     printf(" ils contiennent un serpent et sont proches des murs\n");
-    afficher_poids(snak,s,NOMBRESERPENT,p);
+    afficher_poids(snak,s,NOMBRESERPENT,*p);
 
     //Pause
     printf("Continuez ? \n");
@@ -172,16 +174,16 @@ int main()
     int i;
     for(i = 0; i < 15 ; i++)
     {
-        movesnake(snak,choix_strategie(snak,s,NOMBRESERPENT,p,left));
+        movesnake(snak,choix_strategie(snak,s,NOMBRESERPENT,*p,left));
         movesnake(schlanga,left);
         printf("\n");
-        affiche(p,s,NOMBRESERPENT);
+        affiche(*p,s,NOMBRESERPENT);
 
         printf("pas = %d \n",i);
         printf("le Schalanga avance tout droit ( a droite) \n");
 
-        afficher_poids(snak,s,NOMBRESERPENT,p);
-        afficher_collision(p,s,NOMBRESERPENT);
+        afficher_poids(snak,s,NOMBRESERPENT,*p);
+        afficher_collision(*p,s,NOMBRESERPENT);
 
 
         if(i < 14)
@@ -201,12 +203,12 @@ int main()
     }
 
     printf("Collision\n");
-    afficher_collision(p,s,NOMBRESERPENT);
+    afficher_collision(*p,s,NOMBRESERPENT);
 
     printf("Fin ? \n");
     getchar();
 
-    effacer_Partie(&p,s,NOMBRESERPENT);
+    effacer_Partie(p,s,NOMBRESERPENT);
 
     return 0;
 }
