@@ -12,6 +12,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_ttf.h>
+#include <SDL/SDL_gfxPrimitives.h>
 #include "struct.h"
 #include "snake.h"
 
@@ -53,7 +54,7 @@ void score_snakes_sdl(SDL_Surface* screen, snake* s, int nb_ser, plateau p,int t
     SDL_Rect position_score;
     position_score_snake.x=position_scoreboard.x+2*taille_px;
     position_score_snake.y=position_scoreboard.y+4*taille_px;
-    SDL_Surface* square=SDL_CreateRGBSurface(0,taille_px,taille_px,32,0,0,0,0);
+    SDL_Surface* square=SDL_CreateRGBSurface(SDL_HWSURFACE,taille_px,taille_px,32,0,0,0,0);
     char texte[23];
     char type[8];
     for(int i=0;i<nb_ser;i++){
@@ -113,8 +114,8 @@ void affiche_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p,int temps_deb
     sprintf(score_ch,"TEMPS: %d s",temps);
     score=TTF_RenderText_Solid(police,score_ch,color_white);
     wall=IMG_Load("others/sprites/sprite_bricks_tutorial_1.png");
-    snake=SDL_CreateRGBSurface(0,taille_cases_px,taille_cases_px,32,0,0,0,0);
-    score_board=SDL_CreateRGBSurface(0,(screen->w)-position_score_board.x,screen->h,32,0,0,0,0);
+    snake=SDL_CreateRGBSurface(SDL_HWSURFACE,taille_cases_px,taille_cases_px,32,0,0,0,0);
+    score_board=SDL_CreateRGBSurface(SDL_HWSURFACE,(screen->w)-position_score_board.x,screen->h,32,0,0,0,0);
     SDL_FillRect(screen,NULL,SDL_MapRGB(screen->format,140,140,140));
     SDL_FillRect(score_board,NULL,SDL_MapRGB(screen->format,0,0,0));
     SDL_Rect position_mur;
@@ -153,6 +154,7 @@ void affiche_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p,int temps_deb
     score_snakes_sdl(screen,s,nbs,p,temps_debut,taille_cases_px,position_score_board);
     SDL_FreeSurface(snake);
     SDL_FreeSurface(score);
+    SDL_FreeSurface(score_board);
     TTF_CloseFont(police);
 }
 
@@ -185,8 +187,9 @@ void load_menu_sdl(SDL_Surface* screen){
     TTF_CloseFont(police);
 }
 
-void load_options_sdl(SDL_Surface* screen, snake* snakes, plateau p, int* difficulte, int* nbs){
+int load_options_sdl(SDL_Surface* screen, snake* snakes, plateau p, int* difficulte, int* nbs,SDLKey touche,int selecteur_position){
     taille_cases_px=screen->h/p.taille;
+
     SDL_FillRect(screen,NULL,SDL_MapRGB(screen->format,0,0,0));
     SDL_Color couleurBlanche={255,255,255};
     TTF_Font* police=TTF_OpenFont("others/m01/m01.TTF",taille_cases_px*0.9);
@@ -219,7 +222,7 @@ void load_options_sdl(SDL_Surface* screen, snake* snakes, plateau p, int* diffic
             }
             sprintf(buffer3,"Snake %d %s",i+1,type);
             snakes_surfaces[i][0]=TTF_RenderText_Blended(police,buffer3,couleurBlanche);
-            snakes_surfaces[i][1]=SDL_CreateRGBSurface(0,taille_cases_px,taille_cases_px,32,0,0,0,0);
+            snakes_surfaces[i][1]=SDL_CreateRGBSurface(SDL_HWSURFACE,taille_cases_px,taille_cases_px,32,0,0,0,0);
             SDL_FillRect(snakes_surfaces[i][1],NULL,SDL_MapRGB(screen->format,tab_couleur[i][0],tab_couleur[i][1],tab_couleur[i][2]));
             snakes_surfaces[i][2]=TTF_RenderText_Blended(police,type,couleurBlanche);
         }
@@ -249,17 +252,67 @@ void load_options_sdl(SDL_Surface* screen, snake* snakes, plateau p, int* diffic
         temp.x=screen->w*(3.0/4.0)-snakes_surfaces[k][2]->w/2.0;
         SDL_BlitSurface(snakes_surfaces[k][2],NULL,screen,&temp);
         }
+    SDL_Surface* selecteur=SDL_CreateRGBSurface(SDL_HWSURFACE,taille_cases_px,taille_cases_px,32,0,0,0,0);
+    SDL_FillRect(selecteur,NULL,SDL_MapRGB(screen->format,255,255,255));
+    SDL_Rect positionSelecteur;
+    switch(selecteur_position)
+    {
+        case 0:
+            positionSelecteur.x=taille_cases_px;positionSelecteur.y=texte_nb_ser_jeu->h/2;
+            SDL_BlitSurface(selecteur,NULL,screen,&positionSelecteur);
+            switch(touche){
+                case SDLK_DOWN:
+                    selecteur_position++;
+                    break;
+                case SDLK_LEFT:
+                    if((*nbs)<=8)
+                        (*nbs)--;
+                    break;
+                case SDLK_RIGHT:
+                    if((*nbs)>=1)
+                        (*nbs)++;
+                    break;
+                default:
+                    break;
+                }
+            break;
+        case 1:
+            positionSelecteur.x=taille_cases_px;positionSelecteur.y=texte_vitesse_jeu->h/2+ecart_hauteur;
+            SDL_BlitSurface(selecteur,NULL,screen,&positionSelecteur);
+            switch(touche){
+                    case SDLK_DOWN:
+                    selecteur_position++;
+                    break;
+                    case SDLK_LEFT:
+                        break;
+                    case SDLK_RIGHT:
+                        break;
+                    default:
+                        break;
+
+                }
+        case 2:
+            positionSelecteur.x=taille_cases_px; positionSelecteur.y=snakes_surfaces[0][0]->h/2+2*ecart_hauteur;
+            SDL_BlitSurface(selecteur,NULL,screen,&positionSelecteur);
+
+            break;
+
+
+    }
+
+    //filledTrigonRGBA(screen,positionTexte_nb_ser_jeu.x,positionTexte_nb_ser_jeu.y,positionTexte_nb_ser_jeu.x,positionTexte_nb_ser_jeu.y+texte_nb_ser_jeu->h,positionTexte_nb_ser_jeu.x+texte_nb_ser_jeu->h/2,positionTexte_nb_ser_jeu.y+texte_nb_ser_jeu->h/2,255,255,255,255);
     TTF_CloseFont(police);
     SDL_FreeSurface(texte_nb_ser);
     SDL_FreeSurface(texte_nb_ser_jeu);
     SDL_FreeSurface(texte_vitesse_jeu);
     SDL_FreeSurface(texte_vitesse);
     SDL_FreeSurface(texte_type_snakes);
+    SDL_FreeSurface(selecteur);
     for(int i=0;i<(*nbs);i++){
         SDL_FreeSurface(snakes_surfaces[i][0]);
         SDL_FreeSurface(snakes_surfaces[i][1]);
         SDL_FreeSurface(snakes_surfaces[i][2]);
         }
-
+    return selecteur_position;
     }
 

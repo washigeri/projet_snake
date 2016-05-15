@@ -87,6 +87,7 @@ int main(){
     }
     int continuer=1;
     int selecteur=0;
+    int selecteur_options=0;
     int demarrer_jeu=1;
     int retour_menu=1;
     SDLKey touche;
@@ -103,13 +104,16 @@ int main(){
                     touche=event.key.keysym.sym;
                     switch(touche){
                         case SDLK_KP1:
-                            selecteur=1;
+                            if(selecteur==0)
+                                selecteur=1;
                             break;
                         case SDLK_AMPERSAND:
-                            selecteur=1;
+                            if(selecteur==0)
+                                selecteur=1;
                             break;
                         case SDLK_KP2:
-                            selecteur=2;
+                            if(selecteur==0)
+                                selecteur=2;
                             break;
                         case SDLK_KP3:
                             if(selecteur==0)
@@ -128,7 +132,7 @@ int main(){
                     break;
                 case 1:
                     retour_menu=1;
-                    affiche_sdl(ecran,snakes,NB_SERPENT,p,SDL_GetTicks());
+                    affiche_sdl(ecran,snakes,nbs,p,SDL_GetTicks());
                     while(demarrer_jeu){
                         SDL_Flip(ecran);
                         SDL_WaitEvent(&event_debut_partie);
@@ -140,7 +144,7 @@ int main(){
                             temps_debut=SDL_GetTicks();
                         }
                     }
-                    bools* jouer = jouer_sdl(ecran,snakes,NB_SERPENT,p,touche,1,temps_debut);
+                    bools* jouer = jouer_sdl(ecran,snakes,nbs,p,touche,difficulte,temps_debut);
                     if(!win(jouer,snakes,NB_SERPENT).b){
                         demarrer_jeu=1;
                         reset_snakes(snakes,NB_SERPENT,p.taille);
@@ -161,7 +165,7 @@ int main(){
                     }
                     break;
                 case 2:
-                    load_options_sdl(ecran,snakes,p,&difficulte,&nbs);
+                    selecteur_options=load_options_sdl(ecran,snakes,p,&difficulte,&nbs,touche,selecteur_options);
                     break;
                 case 3:
                     continuer=0;
