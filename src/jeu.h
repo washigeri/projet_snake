@@ -87,7 +87,7 @@ bool arrete_partie(snake* s, int n);
  */
 
 
-bool win(bools* bs,snake* s,int n);
+bools win(bools* bs,snake* s,int n);
 
 /**
  * \brief kbhit operation permet de preparer la console a lappui sur une touche

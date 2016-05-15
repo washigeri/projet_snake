@@ -253,20 +253,23 @@ bool arrete_partie(snake* s,int n){
  * \param s le serpent a test (toujours le joueur)
  * \return true si il n'y a pas eu de collision, false sinon
  */
-bool win(bools* bs,snake* s,int n){
-    bool res=true;
+bools win(bools* bs,snake* s,int n){
+    bools res;
+    res.b=true;
     if(!bs[0].b){
     	s[0].dead[0]=true;
-        res=false;
+        res.b=false;
+        res.s=s[0];
     }
     else {
         int i;
         for(i=1;i<n;i++){
             if(!bs[i].b){
                 kill_snake(s[i]);
+                res.s=s[i];
     	    }
         }
-        res=arrete_partie(s,n);
+        res.b=arrete_partie(s,n);
     }
     free(bs);
     return res;
@@ -275,6 +278,7 @@ bool win(bools* bs,snake* s,int n){
  * \brief kbhit operation permet de preparer la console a lappui sur une touche
  * \return le succes ou non de l'operation
  */
+ /*
 int kbhit()
 {
   struct termios oldt, newt;
@@ -295,27 +299,7 @@ int kbhit()
   }
 
   return 0;
-}
-
-void depart(snake* s,int n, plateau p){
-    int i;
-    char dir;
-    bool debut=false;
-    while(!debut){
-    	if(kbhit()){
-    	    dir=getchar();
-    	    if(dir=='z' || dir=='q' || dir=='s' || dir=='d'){
-    	        debut=true;
-    	    }
-    	}
-    }
-    movesnake(s[0],dir);
-    for(i=1;i<n;i++){
-        if(!s[i].dead[0]){
-            movesnake(s[i],choix_strategie(s[i],s,n,p,0));
-        }
-    }
-}
+}*/
 
 /**
  * \brief jouer permet de jouer un tour de jeu
@@ -327,36 +311,6 @@ void depart(snake* s,int n, plateau p){
  * \param p le plateau de jeu
  * \return la collision provoque dans le tour
  */
-bools* jouer(snake* s,int n,plateau p){
-    int i;
-    char dir=s[0].dir[0];
-    if(kbhit()){
-    	dir=getchar();
-    }
-    if(dir=='z' || dir=='q' || dir=='s' || dir=='d'){
-        affiche(p,s,n);
-        movesnake(s[0],choix_strategie(s[0],s,n,p,dir));
-        for(i=1;i<n;i++){
-            if(!s[i].dead[0]){
-    	        movesnake(s[i],choix_strategie(s[i],s,n,p,0));
-    	    }
-        }
-        affiche(p,s,n);
-    }
-    else {
-    	affiche(p,s,n);
-    	movesnake(s[0],s[0].dir[0]);
-    	for(i=1;i<n;i++){
-    	    if(!s[i].dead[0]){
-    	        movesnake(s[i],choix_strategie(s[i],s,n,p,0));
-    	    }
-    	}
-    	affiche(p,s,n);
-    }
-    bools* res=collisions(p,s,n);
-    usleep(100000);
-    return res;
-}
 
 bools* jouer_sdl(SDL_Surface* screen, snake* s, int nb_ser, plateau p, SDLKey touche,int difficulte,int temps_debut){
     char dir=s[0].dir[0];
@@ -399,24 +353,7 @@ bools* jouer_sdl(SDL_Surface* screen, snake* s, int nb_ser, plateau p, SDLKey to
     bools* res=collisions(p,s,nb_ser);
     SDL_Delay(difficulte*90);
     return res;
-
-    }
-
-/**
- * @brief Fonction utilisée dans les tests unitaires pour tester les collisions
- * @param s Tableau contenant tous les serpents en jeu
- * @param n Nombre de serpent en jeu
- * @param p Plateau de jeu
- * @return Tableau de bools indiquant si chaque serpent a gagné ou perdu la partie
- */
-bools* jouer_test_collisions(snake* s,int n, plateau p){
-    affiche(p,s,n);
-    movesnake(s[0],s[0].dir[0]);
-    bools* res=collisions(p,s,n);
-    usleep(100000);
-    return res;
 }
-
 
 
 

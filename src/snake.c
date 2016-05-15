@@ -116,7 +116,6 @@ void change_IA(snake snake, type typeAI)
  * \return vrai si occupe
  */
 bool estOccupe(coord c ,snake * snakes ,int nombreSerpent, plateau p)
-
 {
     bool res = false;
     int i=0,j=0;
@@ -127,17 +126,15 @@ bool estOccupe(coord c ,snake * snakes ,int nombreSerpent, plateau p)
     /*Test des serpents*/
     for(i= 0 ; i < nombreSerpent && !res ; i++)
     {
-        for(j= 0; j < snakes[i].taille && !res ; j++)
+        if(!snakes[i].dead[0])
         {
-            res  = (snakes[i].pos[j].x==c.x && snakes[i].pos[j].y==c.y);
-
+            for(j= 0; j < snakes[i].taille && !res ; j++)
+            {
+                res  = (snakes[i].pos[j].x==c.x && snakes[i].pos[j].y==c.y);
+            }
         }
     }
-
-
-
     return res;
-
 }
 /**
  * \brief estInverse Permet de savoir si deux coordonnees sont inversees utile pour savoir si le

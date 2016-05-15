@@ -53,10 +53,10 @@ snake* init_snakes(int n,int taille_plateau){
 void reset_snakes(snake* snakes, int nb,int taille_p){
     for(int i=0;i<nb;i++){
         delete_snake(snakes + i);
-        }
+    }
     free(snakes);
     snakes=init_snakes(nb,taille_p);
-    }
+}
 
 
 
@@ -74,6 +74,8 @@ int main(){
     const SDL_VideoInfo* videoInfo;
     videoInfo=SDL_GetVideoInfo();
     SDL_Event event;
+    SDL_Event event_debut_partie;
+    SDL_Event event_fin_partie;
     unsigned int maxW=videoInfo->current_w;
     unsigned int maxH=videoInfo->current_h;
     SDL_Surface* ecran=NULL;
@@ -93,67 +95,86 @@ int main(){
     positionTexte1.y=(ecran->h/2)-(texte->h/2);
     positionTexte2.x=positionTexte1.x;
     positionTexte2.y=positionTexte1.y+(texte2->h);
-    int continuer =1;
+    int continuer=1;
     int selecteur=0;
     int demarrer_jeu=1;
+    int retour_menu=1;
     SDLKey touche;
     int temps_debut;
     while(continuer){
         while(SDL_PollEvent(&event)){
-        //switch pour tester si on quitte le jeu ou non (avec la croix)
-        switch(event.type){
-            case SDL_QUIT:
-                continuer=0;
-                break;
-            case SDL_KEYDOWN:
-                touche=event.key.keysym.sym;
-                //switch pour savoir si on lance le jeu/options ou on quitte
-                switch(touche){
-                    case SDLK_KP1:
-                        if(selecteur==0){
-                            selecteur=1;
-                            temps_debut=SDL_GetTicks();
-                        }
-                        break;
-                    case SDLK_AMPERSAND:
-                        if(selecteur==0){
-                            selecteur=1;
-                            temps_debut=SDL_GetTicks();
-                        }
-                        break;
-                    case SDLK_KP2:
-                        if(selecteur==0)
-                            selecteur=2;
-                        break;
-                    default:
-                        break;
-                    }
-            default:
-                break;
-            }
-            }
-            //si selecteur=0, on reste sur le menu
-            //si selecteur=1, on joue
-            //si selecteur=2, le jeu se quitte
-            switch(selecteur){
-                case 0:
-                    SDL_FillRect(ecran,NULL,SDL_MapRGB(ecran->format,0,0,0));
-                    SDL_BlitSurface(texte,NULL,ecran,&positionTexte1);
-                    SDL_BlitSurface(texte2,NULL,ecran,&positionTexte2);
-                    break;
-                case 1:
-                    if(!win(jouer_sdl(ecran,snakes,NB_SERPENT,p,touche,1,temps_debut),snakes,NB_SERPENT)){
-                        selecteur=0;
-                        reset_snakes(snakes,NB_SERPENT,p.taille);
-                    }
-                    break;
-                case 2:
+
+            switch(event.type){
+                case SDL_QUIT:
                     continuer=0;
                     break;
+                case SDL_KEYDOWN:
+                    touche=event.key.keysym.sym;
+                    switch(touche){
+                        case SDLK_KP1:
+                            selecteur=1;
+                            break;
+                        case SDLK_AMPERSAND:
+                            selecteur=1;
+                            break;
+                        case SDLK_KP2:
+                            selecteur=2;
+                            break;
+                        default:
+                            break;
+                    }
                 default:
                     break;
             }
-            SDL_Flip(ecran);
+        }
+
+        switch(selecteur){
+            case 0:
+                SDL_FillRect(ecran,NULL,SDL_MapRGB(ecran->format,0,0,0));
+                SDL_BlitSurface(texte,NULL,ecran,&positionTexte1);
+                SDL_BlitSurface(texte2,NULL,ecran,&positionTexte2);
+                break;
+            case 1:
+                retour_menu=1;
+                affiche_sdl(ecran,snakes,NB_SERPENT,p,SDL_GetTicks());
+                while(demarrer_jeu){
+                    SDL_Flip(ecran);
+                    SDL_WaitEvent(&event_debut_partie);
+                    SDLKey input=event_debut_partie.key.keysym.sym;
+                    if(input==SDLK_DOWN || input==SDLK_s || input==SDLK_UP || input==SDLK_z || input==SDLK_LEFT || input==SDLK_q || input==SDLK_RIGHT || input==SDLK_d)
+                    {
+                        touche=event_debut_partie.key.keysym.sym;
+                        demarrer_jeu=0;
+                        temps_debut=SDL_GetTicks();
+                    }
+                }
+                bools* jouer = jouer_sdl(ecran,snakes,NB_SERPENT,p,touche,1,temps_debut);
+                if(!win(jouer,snakes,NB_SERPENT).b){
+                    demarrer_jeu=1;
+                    reset_snakes(snakes,NB_SERPENT,p.taille);
+                    while(retour_menu){
+                        SDL_WaitEvent(&event_fin_partie);
+                        switch(event_fin_partie.key.keysym.sym){
+                            case SDLK_KP1:
+                                retour_menu=0;
+                                break;
+                            case SDLK_KP2:
+                                selecteur=0;
+                                retour_menu=0;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+                break;
+            case 2:
+                continuer=0;
+                break;
+            default:
+                break;
+        }
+        SDL_Flip(ecran);
     }
     TTF_CloseFont(police);
     SDL_FreeSurface(texte);
