@@ -68,7 +68,7 @@ int main(){
     if(SDL_Init(SDL_INIT_VIDEO)==-1){
         printf("Error sdl_init %s\n",SDL_GetError());
         return 1;
-        }
+    }
     TTF_Init();
     SDL_Color couleurBlanche={255,255,255};
     const SDL_VideoInfo* videoInfo;
@@ -86,63 +86,55 @@ int main(){
     ecran=SDL_SetVideoMode(maxW,maxH,32, SDL_RESIZABLE | SDL_HWSURFACE | SDL_DOUBLEBUF);
     SDL_WM_SetCaption("Snake vs Schlangà",NULL);
     if(ecran==NULL){
-            printf("Error sdl_setvideomode %s\n",SDL_GetError());
-            return 1;
-            }
+        printf("Error sdl_setvideomode %s\n",SDL_GetError());
+        return 1;
+    }
     positionTexte1.x=(ecran->w/2)-(texte->w/2);
     positionTexte1.y=(ecran->h/2)-(texte->h/2);
     positionTexte2.x=positionTexte1.x;
     positionTexte2.y=positionTexte1.y+(texte2->h);
     int continuer =1;
     int selecteur=0;
+    int demarrer_jeu=1;
     SDLKey touche;
     int temps_debut;
-    SDL_EnableKeyRepeat(10,10);
-   /*printf("Position texte 1 x: %d y:%d\n",positionTexte1.x,positionTexte1.y);
-    printf("Dimensions texte 1 w: %d h: %d\n",texte->w,texte->h);*/
     while(continuer){
-        SDL_PollEvent(&event);
+        while(SDL_PollEvent(&event)){
+        //switch pour tester si on quitte le jeu ou non (avec la croix)
         switch(event.type){
             case SDL_QUIT:
                 continuer=0;
                 break;
-            /*case SDL_MOUSEBUTTONUP:
-                if((event.button.button==SDL_BUTTON_LEFT) && (selecteur==0) && (event.button.x>positionTexte1.x) && (event.button.x<positionTexte1.x+texte->w) && (event.button.y<positionTexte1.y) && (event.button.y>positionTexte1.y+texte->h)){
-                selecteur=1;
-
-                }
-               /* printf("%d %d\n",event.button.x,event.button.y);
-                printf("Selecteur : %d\n",selecteur);
-                break;*/
             case SDL_KEYDOWN:
                 touche=event.key.keysym.sym;
+                //switch pour savoir si on lance le jeu/options ou on quitte
                 switch(touche){
                     case SDLK_KP1:
                         if(selecteur==0){
                             selecteur=1;
                             temps_debut=SDL_GetTicks();
-                            }
+                        }
                         break;
                     case SDLK_AMPERSAND:
                         if(selecteur==0){
                             selecteur=1;
                             temps_debut=SDL_GetTicks();
-                            }
+                        }
                         break;
                     case SDLK_KP2:
                         if(selecteur==0)
                             selecteur=2;
                         break;
-
                     default:
                         break;
                     }
             default:
                 break;
             }
-
-           /* else if(selecteur==0 && positionMouse.x>positionTexte2.x && positionMouse.x<positionTexte2.x+texte2->w && positionMouse.y<positionTexte2.y && positionMouse.y>positionTexte2.y+texte2->h){
-                selecteur=2;}*/
+            }
+            //si selecteur=0, on reste sur le menu
+            //si selecteur=1, on joue
+            //si selecteur=2, le jeu se quitte
             switch(selecteur){
                 case 0:
                     SDL_FillRect(ecran,NULL,SDL_MapRGB(ecran->format,0,0,0));
@@ -150,10 +142,10 @@ int main(){
                     SDL_BlitSurface(texte2,NULL,ecran,&positionTexte2);
                     break;
                 case 1:
-                    if(!win(jouer_sdl(ecran,snakes,NB_SERPENT,p,touche,2,temps_debut),snakes,NB_SERPENT)){
+                    if(!win(jouer_sdl(ecran,snakes,NB_SERPENT,p,touche,1,temps_debut),snakes,NB_SERPENT)){
                         selecteur=0;
                         reset_snakes(snakes,NB_SERPENT,p.taille);
-                        }
+                    }
                     break;
                 case 2:
                     continuer=0;
@@ -162,11 +154,12 @@ int main(){
                     break;
             }
             SDL_Flip(ecran);
-        }
+    }
     TTF_CloseFont(police);
     SDL_FreeSurface(texte);
     SDL_FreeSurface(texte2);
     TTF_Quit();
     SDL_Quit();
     effacer_Partie(&p,snakes,NB_SERPENT);
-    return 0;}
+    return 0;
+}

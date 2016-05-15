@@ -141,7 +141,56 @@ void init_tab_couleur(){
             }
         }
     free(line_color);
+    fclose(fichier);
     }
+
+void score_snakes_sdl(SDL_Surface* screen, snake* s, int nb_ser, plateau p,int tps_debut, int taille_px, SDL_Rect position_scoreboard){
+    TTF_Font* police_score_snake=NULL;
+    police_score_snake=TTF_OpenFont("others/m01/m01.TTF",taille_px/2);
+    SDL_Surface* texte_score=NULL;
+    SDL_Rect position_score_snake;
+    SDL_Rect position_score;
+    position_score_snake.x=position_scoreboard.x+2*taille_px;
+    position_score_snake.y=position_scoreboard.y+4*taille_px;
+    SDL_Surface* square=SDL_CreateRGBSurface(0,taille_px,taille_px,32,0,0,0,0);
+    char texte[23];
+    char type[8];
+    for(int i=0;i<nb_ser;i++){
+        SDL_FillRect(square,NULL,SDL_MapRGB(screen->format,tab_couleur[i][0],tab_couleur[i][1],tab_couleur[i][2]));
+        position_score_snake.y+=2*taille_px;
+        SDL_BlitSurface(square,NULL,screen,&position_score_snake);
+        SDL_Color couleur_score={tab_couleur[i][0],tab_couleur[i][1],tab_couleur[i][2]};
+        position_score=position_score_snake;
+        position_score.y=position_score_snake.y+(taille_px/4);
+        position_score.x+=2*taille_px;
+        switch(s[i].playType){
+            case 0:
+                sprintf(type,"Joueur");
+                break;
+            case 1:
+                sprintf(type,"Idle");
+                break;
+            case 2:
+                sprintf(type,"Défensif");
+                break;
+            case 3:
+                sprintf(type,"Offensif");
+                break;
+            default:
+                sprintf(type,"VACPLS");
+                break;
+        }
+        if(!s[i].dead[0]){
+            s[i].score[0]=(SDL_GetTicks()-tps_debut)/10;
+        }
+        sprintf(texte,"Snake(%s): %06d",type,s[i].score[0]);
+        texte_score=TTF_RenderText_Solid(police_score_snake,texte,couleur_score);
+        SDL_BlitSurface(texte_score,NULL,screen,&position_score);
+
+    }
+    SDL_FreeSurface(square);
+    SDL_FreeSurface(texte_score);
+}
 
 
 void affiche_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p,int temps_debut){
@@ -209,54 +258,5 @@ void affiche_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p,int temps_deb
     TTF_CloseFont(police);
 
     }
-
-void score_snakes_sdl(SDL_Surface* screen, snake* s, int nb_ser, plateau p,int tps_debut, int taille_px, SDL_Rect position_scoreboard){
-    TTF_Font* police_score_snake=NULL;
-    police_score_snake=TTF_OpenFont("others/m01/m01.TTF",taille_px/2);
-    SDL_Surface* texte_score=NULL;
-    SDL_Rect position_score_snake;
-    SDL_Rect position_score;
-    position_score_snake.x=position_scoreboard.x+2*taille_px;
-    position_score_snake.y=position_scoreboard.y+4*taille_px;
-    SDL_Surface* square=SDL_CreateRGBSurface(0,taille_px,taille_px,32,0,0,0,0);
-    char texte[23];
-    char type[8];
-    for(int i=0;i<nb_ser;i++){
-        SDL_FillRect(square,NULL,SDL_MapRGB(screen->format,tab_couleur[i][0],tab_couleur[i][1],tab_couleur[i][2]));
-        position_score_snake.y+=2*taille_px;
-        SDL_BlitSurface(square,NULL,screen,&position_score_snake);
-        SDL_Color couleur_score={tab_couleur[i][0],tab_couleur[i][1],tab_couleur[i][2]};
-        position_score=position_score_snake;
-        position_score.y=position_score_snake.y+(taille_px/4);
-        position_score.x+=2*taille_px;
-        switch(s[i].playType){
-            case 0:
-                sprintf(type,"Joueur");
-                break;
-            case 1:
-                sprintf(type,"Idle");
-                break;
-            case 2:
-                sprintf(type,"Défensif");
-                break;
-            case 3:
-                sprintf(type,"Offensif");
-                break;
-            default:
-                sprintf(type,"VACPLS");
-                break;
-        }
-        if(!s[i].dead[0]){
-            s[i].score[0]=(SDL_GetTicks()-tps_debut)/10;
-        }
-        sprintf(texte,"Snake(%s): %06d",type,s[i].score[0]);
-        texte_score=TTF_RenderText_Solid(police_score_snake,texte,couleur_score);
-        SDL_BlitSurface(texte_score,NULL,screen,&position_score);
-
-    }
-    SDL_FreeSurface(square);
-    SDL_FreeSurface(texte_score);
-}
-
 
 
