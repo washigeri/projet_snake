@@ -45,6 +45,7 @@ typedef struct {coord* pos;
                 direction* dir;
                 type playType;
                 bool* dead;
+                int* score;
                 } snake;
 
 /**

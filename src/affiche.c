@@ -160,8 +160,8 @@ void affiche_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p,int temps_deb
 
     //wall=SDL_CreateRGBSurface(0,taille_cases_px,taille_cases_px,32,0,0,0,0);
     wall=IMG_Load("others/sprites/sprite_bricks_tutorial_1.png");
-    //snake=SDL_CreateRGBSurface(0,taille_cases_px,taille_cases_px,32,0,0,0,0);
-    snake=IMG_Load("others/sprites/snake_body_bg_mockup.png");
+    snake=SDL_CreateRGBSurface(0,taille_cases_px,taille_cases_px,32,0,0,0,0);
+    //snake=IMG_Load("others/sprites/snake_body_bg_mockup.png");
     score_board=SDL_CreateRGBSurface(0,(screen->w)-position_score_board.x,screen->h,32,0,0,0,0);
     //SDL_FillRect(wall,NULL,SDL_MapRGB(screen->format,255,140,0));
 
@@ -189,14 +189,15 @@ void affiche_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p,int temps_deb
     position_snake.y=0;
     int k;
     for(k=0;k<nbs;k++){
-        //SDL_FillRect(snake,NULL,SDL_MapRGB(screen->format,tab_couleur[k][0],tab_couleur[k][1],tab_couleur[k][2]));
-        for(i=0;i<s[k].taille;i++){
-            position_snake.x=s[k].pos[i].x*taille_cases_px;
-            position_snake.y=s[k].pos[i].y*taille_cases_px;
-            SDL_BlitSurface(snake,NULL,screen,&position_snake);
-
+        if(!s[k].dead[0]){
+            SDL_FillRect(snake,NULL,SDL_MapRGB(screen->format,tab_couleur[k][0],tab_couleur[k][1],tab_couleur[k][2]));
+            for(i=0;i<s[k].taille;i++){
+                position_snake.x=s[k].pos[i].x*taille_cases_px;
+                position_snake.y=s[k].pos[i].y*taille_cases_px;
+                SDL_BlitSurface(snake,NULL,screen,&position_snake);
             }
         }
+    }
 
     SDL_BlitSurface(score_board,NULL,screen,&position_score_board);
     position_score.x=position_score_board.x+taille_cases_px;
@@ -244,8 +245,11 @@ void score_snakes_sdl(SDL_Surface* screen, snake* s, int nb_ser, plateau p,int t
             default:
                 sprintf(type,"VACPLS");
                 break;
-            }
-        sprintf(texte,"Snake(%s): %06d",type,(SDL_GetTicks()-tps_debut)/10);
+        }
+        if(!s[i].dead[0]){
+            s[i].score[0]=(SDL_GetTicks()-tps_debut)/10;
+        }
+        sprintf(texte,"Snake(%s): %06d",type,s[i].score[0]);
         texte_score=TTF_RenderText_Solid(police_score_snake,texte,couleur_score);
         SDL_BlitSurface(texte_score,NULL,screen,&position_score);
 

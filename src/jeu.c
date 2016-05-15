@@ -257,7 +257,6 @@ bool win(bools* bs,snake* s,int n){
     bool res=true;
     if(!bs[0].b){
     	s[0].dead[0]=true;
-        printf("G A M E O V E R\n\n");
         res=false;
     }
     else {

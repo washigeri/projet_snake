@@ -47,6 +47,8 @@ snake init_snake(int len,type typesnake){
     res.playType=typesnake;
     res.dead=(bool*) malloc (sizeof(bool));
     res.dead[0]=false;
+    res.score=(int*)calloc(1,sizeof(int));
+    res.score[0]=0;
     return res;
 }
 

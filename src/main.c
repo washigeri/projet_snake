@@ -150,7 +150,7 @@ int main(){
                     SDL_BlitSurface(texte2,NULL,ecran,&positionTexte2);
                     break;
                 case 1:
-                    if(!win(jouer_sdl(ecran,snakes,NB_SERPENT,p,touche,1,temps_debut),snakes,NB_SERPENT)){
+                    if(!win(jouer_sdl(ecran,snakes,NB_SERPENT,p,touche,2,temps_debut),snakes,NB_SERPENT)){
                         selecteur=0;
                         reset_snakes(snakes,NB_SERPENT,p.taille);
                         }
