@@ -133,7 +133,7 @@ bool collisions_fruit(plateau p,snake cible,int n,direction dir){
     bool res;
     if( (res = detectionFruit(cible.pos[0],p))  )
 		{
-			retirerFruit(cible.pos[0],p);
+            retirerBonus(cible.pos[0],p);
 			add_taille_snake(&cible,dir);
 		}
 

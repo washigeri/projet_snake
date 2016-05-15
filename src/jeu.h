@@ -17,7 +17,7 @@
  * \param n taille des lignes et colonnes
  * \return le plateau forme
  */
-plateau init_plateau(int n);
+plateau* init_plateau(int n);
 /**
  * \brief erase_plateau Permet d effacer un plateau de jeu
  * \param platAEffacer le plateau a effacer
@@ -70,7 +70,7 @@ void depart(snake* s,int n, plateau p);
  * \return la collision provoque dans le tour
  */
 
-bools* jouer(snake* s,int n,plateau p);
+bools* jouer(snake* s,int n,plateau* p);
 
 /**
  * @brief Fonction utilisée dans les tests unitaires pour tester les collisions

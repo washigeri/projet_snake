@@ -17,16 +17,9 @@
 #include "snake.h"
 #include "collision.h"
 
-/* AntiBlocage, Plus le coefficient est eleve moins le serpents aura tendance a s'enrouler
- *autour de lui-meme*/
-#define COEFF_TARGETSNAKE 1
-/* Aggresivite, Plus le coefficient est haut plus le serpent evitera ses congeneres*/
-#define COEFF_OTHERSNAKE 3
-/* Liberte, plus le coefficient est eleve, plus le serpent voudra eloigner des murs du plateau*/
-#define COEFF_PLATEAU 5
-/* Prevoyance ,plus le coefficient est eleve plus le serpent se mefira de la tete des autres serpents*/
-#define COEFF_HEAD 9
 
+#define TAILLE_MIN 3
+#define TAILLE_MAX 32
 
 
 /**
@@ -142,7 +135,12 @@ coord convertDirectionToCoord(direction dir)
 
 void add_taille_snake(snake *snak,direction dir){
     int i;
+
+
+    if(snak->taille < TAILLE_MAX)
+    {
     snak->taille++;
+    }
 /*	snak->pos=(coord*)realloc(snak->pos,(snak->taille));
 //On décale les pos
 
@@ -162,7 +160,49 @@ void add_taille_snake(snake *snak,direction dir){
     new_pos[0].y= convertDirectionToCoord(dir).y + snak->pos[0].y;
 
     free(snak->pos);
+    snak->dir[0]=dir;
     snak->pos=new_pos;
-
-	//return snak.taille;
 }
+
+void remove_taille_snake(snake *snak,direction dir){
+
+
+    int i;
+    if(snak->taille > TAILLE_MIN)
+    {
+        snak->taille--;
+
+    }
+    /*	snak->pos=(coord*)realloc(snak->pos,(snak->taille));
+//On décale les pos
+
+    for(i=1;i<snak->taille;i++){
+        snak->pos[i]=snak->pos[i-1];
+    }
+*/
+
+    coord* new_pos=malloc((snak->taille)*sizeof(coord));
+    for(i=1;i<snak->taille;i++){
+        new_pos[i].x=snak->pos[i-1].x;
+        new_pos[i].y=snak->pos[i-1].y;
+
+    }
+
+    new_pos[0].x= convertDirectionToCoord(dir).x + snak->pos[0].x;
+    new_pos[0].y= convertDirectionToCoord(dir).y + snak->pos[0].y;
+
+    free(snak->pos);
+    snak->dir[0]=dir;
+    snak->pos=new_pos;
+}
+
+void teleport_snake(snake *snak,direction dir,coord cor)
+{
+    snak->pos[0].x = cor.x;
+    snak->pos[0].y = cor.y;
+
+    snak->dir[0]=dir;
+}
+
+
+

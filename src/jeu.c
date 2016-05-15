@@ -30,21 +30,22 @@
  * \return le plateau forme
  */
 
-plateau init_plateau(int n){
-    plateau res;
-    res.cases=(int**)calloc(n,sizeof(int*));
-    int i;
-    for(i=0;i<n;i++){
-        res.cases[i]=(int*)calloc(n,sizeof(int));
-    }
-    for(i=0;i<n;i++){
-    	res.cases[i][0]=1;
-    	res.cases[i][n-1]=1;
-    	res.cases[0][i]=1;
-    	res.cases[n-1][i]=1;
-    }
-    res.taille=n;
-    return res;
+plateau* init_plateau(int n){
+    plateau* res = malloc(sizeof(plateau));
+       res->cases=(int**)calloc(n,sizeof(int*));
+       int i;
+       for(i=0;i<n;i++){
+           res->cases[i]=(int*)calloc(n,sizeof(int));
+       }
+       for(i=0;i<n;i++){
+           res->cases[i][0]=1;
+           res->cases[i][n-1]=1;
+           res->cases[0][i]=1;
+           res->cases[n-1][i]=1;
+       }
+       res->taille=n;
+       res->nombreItem=5;
+       return res;
 }
 
 /**
@@ -59,6 +60,13 @@ void erase_plateau(plateau* platAEffacer)
         free(platAEffacer->cases[i]);
     }
     free(platAEffacer->cases);
+
+    /*
+    if(platAEffacer->troudever)
+    {
+        free(platAEffacer->troudever);
+    }
+    */
     /*free(platAEffacer);*/
 
 }
@@ -224,38 +232,50 @@ void depart(snake* s,int n, plateau p){
  * \param p le plateau de jeu
  * \return la collision provoque dans le tour
  */
-bools* jouer(snake* s,int n,plateau p){
+bools* jouer(snake* s,int n,plateau *p){
     int i;
-    char dir=s[0].dir[0];
+    char dir;
     if(kbhit()){
-    	dir=getchar();
+        dir=getchar();
+    }
+
+    if(!(dir=='z' || dir=='q' || dir=='s' || dir=='d'))
+    {
+        dir = *(s[0].dir);
     }
 
 
-        affiche(p,s,n);
+        affiche(*p,s,n);
         for(i=0;i<n;i++){
             if(!s[i].dead[0]){
 
-                if(!(dir=='z' || dir=='q' || dir=='s' || dir=='d'))
+
+                direction dirchoisi = choix_strategie(s[i],s,n,*p,dir);
+
+                if(detectionFruit(s[i].pos[0],*p))
                 {
-                    dir = *(s[i].dir);
+                   fruit_strategie(p,s+i,s[i].pos[0],dirchoisi);
+
                 }
-
-                direction dirchoisi = choix_strategie(s[i],s,n,p,dir);
-
+                else
+                {
+                    movesnake(s[i],dirchoisi);
+                }
+                /*
                 //assurer la collision entre fruit :utiliser la fonction...
                 if(!collisions_fruit(p,s[i],n,dirchoisi))
                 {
                     movesnake(s[i],dirchoisi);
                 }
+                */
 
     	    }
         }
-        affiche(p,s,n);
-    bools* res=collisions(p,s,n);
+        affiche(*p,s,n);
+    bools* res=collisions(*p,s,n);
 
 	//placement dunn fruit sur le plateau
-	placerFruit(p);
+    placerFruit(p);
 
     usleep(100000);
     return res;

@@ -26,10 +26,10 @@ bool check(bool* b, int n){
         i++;
     }
     if(i<n){
-    	res=true;
+        res=true;
     }
     else if(b[n-1]){
-    	res=true;
+        res=true;
     }
 
     free(b);
@@ -38,8 +38,8 @@ bool check(bool* b, int n){
 }
 /**
  * \brief cherche_snake fonction dont l'objectif est de déterminer si le corps d'un serpent (et pas sa tête) se situe sur la case de coordonnées i,j
- * \param i un entier correspondant a l'absisse d'une coordonnée 
- * \param j un entier correspondant a l'ordonnée d'une coordonnée 
+ * \param i un entier correspondant a l'absisse d'une coordonnée
+ * \param j un entier correspondant a l'ordonnée d'une coordonnée
  * \param s les serpents
  * \param n le nombre de serpents
  * \return Un tableau de booléens de taille n
@@ -48,24 +48,24 @@ bool* cherche_snake(int i, int j, snake* s, int n){
     bool* res=(bool*) calloc (n,sizeof(bool));
     int k,l;
     for(l=0;l<n;l++){
-    	k=1;
+        k=1;
         while(k<s[l].taille && !res[l]){
             if(!(s[l].dead[0]) && s[l].pos[k].x==j && s[l].pos[k].y==i){
                 res[l]=true;
             }
             else {
-            	res[l]=false;
+                res[l]=false;
             }
             k++;
         }
-    }    
+    }
     return res;
 }
 
 /**
  * \brief cherche_tete fonction dont l'objectif est de déterminer si la tête d'un serpent se situe sur la case de coordonnées i,j
- * \param i un entier correspondant a l'absisse d'une coordonnée 
- * \param j un entier correspondant a l'ordonnée d'une coordonnée 
+ * \param i un entier correspondant a l'absisse d'une coordonnée
+ * \param j un entier correspondant a l'ordonnée d'une coordonnée
  * \param s les serpents
  * \param n le nombre de serpents
  * \return Un tableau de booléens de taille n
@@ -101,9 +101,18 @@ void affiche(plateau p, snake* s,int n){
             else if (i==0 || i==p.taille-1){
                 printf("--");
             }
-			else if( p.cases[i][j]==2 ){
+            else if( p.cases[i][j]==2 ){
                 printf("@-");
-			}
+            }
+            else if( p.cases[i][j]==3 ){
+                printf("&-");
+            }
+            else if( p.cases[i][j]==4 ){
+                printf("()");
+            }
+            else if( p.cases[i][j]==5 ){
+                printf(")(");
+            }
             else if(check(cherche_tete(i,j,s,n),n)){
                 printf(":)");
             }
@@ -117,7 +126,6 @@ void affiche(plateau p, snake* s,int n){
         printf("\n");
     }
 }
-
 
 
 

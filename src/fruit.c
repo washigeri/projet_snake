@@ -12,43 +12,139 @@
 
 #define CH_SPAWNFRUIT 50 //sur 100
 
+#define MAX_NB_ITEM 100
+#define NB_TYPE_ITEM 3
 
 /** Gestion des Bonus
  * */
-void ajoutFruit(coord cor,plateau plat)
-{
-    if(plat.cases[cor.y][cor.x] == 0)
-    {
-        plat.cases[cor.y][cor.x] = 2;
-    }
 
-}
 
-void retirerFruit(coord cor,plateau plat)
+coord avoirCoordonneesLibreHasard(plateau plat)
 {
-    if(plat.cases[cor.y][cor.x] > 1)
-    {
-        plat.cases[cor.y][cor.x] = 0;
-    }
-}
-void placerFruit(plateau plat)
-{
-    int r;
+    coord c;
     int x,y;
-
-    r = rand() % 100;
-
-    if(r < CH_SPAWNFRUIT)
-    {
+    do{
 
         x = rand() % plat.taille;
         y = rand() % plat.taille;
 
-        coord c;
+
         c.x = x;
         c.y = y;
 
-        ajoutFruit(c,plat);
+
+
+    }while(plat.cases[y][x] > 0);
+
+    return c;
+}
+
+
+
+void ajoutFruit(coord cor,plateau* plat)
+{
+    if(plat->cases[cor.y][cor.x] == 0)
+    {
+        plat->cases[cor.y][cor.x] = 2;
+        plat->nombreItem++;
+    }
+
+}
+
+void ajoutPoison(coord cor,plateau* plat)
+{
+    if(plat->cases[cor.y][cor.x] == 0)
+    {
+        plat->cases[cor.y][cor.x] = 3;
+        plat->nombreItem++;
+    }
+
+}
+
+
+void creationTroudever(plateau* p)
+{
+    /* coord c = avoirCoordonneesLibreHasard(*p);
+
+    p->nombreTroudever++;
+
+    if(p->nombreTroudever == 0)
+    {
+        p->troudever = malloc(sizeof(coord));
+        p->troudever[0] = c;
+    }
+    else
+    {
+        coord * newtab = malloc(sizeof(coord)*p->nombreTroudever);
+        int i;
+        for(i = 1;i < p->nombreTroudever;i++)
+        {
+            newtab[i] = p->troudever[i-1];
+        }
+
+
+
+        free(p->troudever);
+        p->troudever = newtab;
+        newtab[0] = c;
+
+    }
+
+
+    p->cases[c.y][c.x] = 5;
+*/
+}
+
+void ajoutTeleporter(coord cor,plateau *plat)
+{
+    if(plat->cases[cor.y][cor.x] == 0)
+    {
+
+        plat->cases[cor.y][cor.x] = 4;
+        creationTroudever(plat);
+        plat->nombreItem = plat->nombreItem +1;
+
+    }
+}
+
+
+void retirerBonus(coord cor,plateau *plat)
+{
+    if(plat->cases[cor.y][cor.x] > 1)
+    {
+        plat->cases[cor.y][cor.x] = 0;
+        plat->nombreItem--;
+    }
+}
+void placerFruit(plateau *plat)
+{
+
+
+    if(plat->nombreItem < MAX_NB_ITEM)
+    {
+        int r;
+        int type;
+
+        r = rand() % 100;
+
+        if(r < CH_SPAWNFRUIT)
+        {
+            type = rand() % NB_TYPE_ITEM;
+            coord c = avoirCoordonneesLibreHasard(*plat);
+
+            switch (type) {
+            case 1:
+                ajoutPoison(c,plat);
+                break;
+            case 2:
+                ajoutTeleporter(c,plat);
+                break;
+            default:
+                ajoutFruit(c,plat);
+                break;
+            }
+
+        }
     }
 
 }
@@ -56,5 +152,65 @@ void placerFruit(plateau plat)
 
 bool detectionFruit(coord c,plateau plat)
 {
-    return plat.cases[c.y][c.x] == 2;
+    return plat.cases[c.y][c.x] >= 2;
+}
+
+void utiliserTeleporter(plateau* p ,snake* s,direction dSerpent)
+{
+    /*
+    int r;
+
+    r = rand() % p->nombreTroudever;
+
+    coord c = p->troudever[r];
+
+
+    int i,k = 0;
+
+    coord* newtab = malloc(sizeof(coord)*p->nombreTroudever-1);
+
+    for(i=0;i < p->nombreTroudever;i++)
+    {
+        if(i != r)
+        {
+            newtab[k] = p->troudever[i];
+            k++;
+        }
+
+    }
+    p->cases[c.y][c.x] = 0;
+
+    teleport_snake(s,dSerpent,c);
+
+    free(p->troudever);
+    p->troudever= newtab;
+    p->nombreTroudever--;
+    */
+
+
+}
+
+void fruit_strategie(plateau *p,snake *s,coord caseFruit,direction dserpent)
+{
+    switch (p->cases[caseFruit.y][caseFruit.x]) {
+    case 2: //fruit
+        retirerBonus(caseFruit,p);
+        add_taille_snake(s,dserpent);
+
+        break;
+    case 3: //poison
+        retirerBonus(caseFruit,p);
+        remove_taille_snake(s,dserpent);
+        break;
+    case 4: //teleporter
+        retirerBonus(caseFruit,p);
+        utiliserTeleporter(p,s,dserpent);
+    case 5: //Trou de vers
+
+        //NADA
+        break;
+    default:
+        //NADA
+        break;
+    }
 }

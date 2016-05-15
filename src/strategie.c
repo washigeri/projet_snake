@@ -18,12 +18,20 @@
 /* AntiBlocage, Plus le coefficient est eleve moins le serpents aura tendance a s'enrouler
  *autour de lui-meme*/
 #define COEFF_TARGETSNAKE 1
-/* Aggresivite, Plus le coefficient est haut plus le serpent evitera ses congeneres*/
-#define COEFF_OTHERSNAKE 3
+/* Timidite, Plus le coefficient est haut plus le serpent evitera ses congeneres*/
+#define COEFF_OTHERSNAKE 5
 /* Liberte, plus le coefficient est eleve, plus le serpent voudra eloigner des murs du plateau*/
-#define COEFF_PLATEAU 5
+#define COEFF_PLATEAU 3
 /* Prevoyance ,plus le coefficient est eleve plus le serpent se mefira de la tete des autres serpents*/
-#define COEFF_HEAD 9
+#define COEFF_HEAD 5
+
+#define COEFF_ATTACK 10
+
+#define PDS_MAX_ATTACK 250
+
+#define COEFF_DEFENSIV 2
+
+#define COEFF_OFFENSIV 1
 
 
 /**
@@ -285,6 +293,63 @@ direction defensiv_strat(snake cible,snake* snakes,int nombreSerpent,plateau p)
         if(!estOccupe(coor,snakes,nombreSerpent,p))
         {
             int poidscurrent = 0;
+            poidscurrent += calculPoidsTableau(coor,p) *COEFF_DEFENSIV;
+            poidscurrent += calculPoidsSerpent(coor,cible,snakes,nombreSerpent,p) * COEFF_DEFENSIV;
+
+
+            if(poids <= poidscurrent)
+            {
+              poids = poidscurrent;
+              res = actuel;
+
+            }
+
+        }
+
+        actuel = tournerAntiHoraire(actuel);
+    }
+
+    /*printf("calcul:%d\n",poids);*/
+
+    return res;
+}
+
+int  calculPoidsTete(snake cible,snake*snakes,int nombreSerpent)
+{
+    int res = 0;
+    int i;
+    for(i = 0; i<nombreSerpent;i++)
+    {
+        if(!egalite_snake(cible,snakes[i]))
+        {
+            res = 250 / calculDistanceTaxicab(snakes[i].pos[0],cible.pos[0]);
+
+        }
+    }
+
+    return res;
+
+}
+
+
+direction offensive_strat(snake cible,snake* snakes,int nombreSerpent,plateau p)
+{
+    int poids = -1;
+    direction actuel = *cible.dir;
+    direction res = *cible.dir;
+    coord coor;
+
+    int i;
+    for(i = 0; i < 4 ; i++)
+    {
+
+        coor.x = convertDirectionToCoord(actuel).x + cible.pos->x;
+        coor.y = convertDirectionToCoord(actuel).y + cible.pos->y;
+
+
+        if(!estOccupe(coor,snakes,nombreSerpent,p))
+        {
+            int poidscurrent = 0;
             poidscurrent += calculPoidsTableau(coor,p);
             poidscurrent += calculPoidsSerpent(coor,cible,snakes,nombreSerpent,p);
 
@@ -328,7 +393,7 @@ direction choix_strategie(snake cible,snake* snakes,int nombreSerpent, plateau p
         return defensiv_strat(cible,snakes,nombreSerpent,p);
         break;
     case offensif :
-        return 0;
+        return offensive_strat(cible,snakes,nombreSerpent,p);
         break;
     default :
         return toucheJoueur;

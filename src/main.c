@@ -56,18 +56,18 @@ float partie(int typeSerpent){
     time_t temps1,temps2;
 	time(&temps1);
 
-	plateau p=init_plateau(taille_plateau);
-    affiche(p,s,nombreSerpent);
+    plateau* p=init_plateau(taille_plateau);
+    affiche(*p,s,nombreSerpent);
 
 /*JEU*/
-    depart(s,nombreSerpent,p);
+    depart(s,nombreSerpent,*p);
     while(win(jouer(s,nombreSerpent,p),s,nombreSerpent))
 
 	time(&temps2);
 	float t=difftime(temps2,temps1);
     printf("Tu as tenus %f secondes.\n", t );
 
-    effacer_Partie(&p,s,nombreSerpent);
+    effacer_Partie(p,s,nombreSerpent);
 
 	return t;
 }

@@ -59,4 +59,10 @@ coord convertDirectionToCoord(direction dir);
 */
 void add_taille_snake(snake *snak,direction dir);
 
+
+void remove_taille_snake(snake *snak,direction dir);
+
+
+void teleport_snake(snake *snak,direction dir,coord cor);
+
 #endif // SNAKE_H_INCLUDED
