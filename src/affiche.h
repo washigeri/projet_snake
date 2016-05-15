@@ -59,5 +59,5 @@ void score_snakes_sdl(SDL_Surface* screen,snake* s,int nb_ser, plateau p, int tp
 void load_menu_sdl(SDL_Surface* screen);
 void load_options_sdl(SDL_Surface* screen, snake* snakes, plateau p, int* difficulte, int* nbs);
 
-
+int load_pause(SDL_Surface* screen, int taille_cases_px);
 #endif // AFFICHAGE_H_INCLUDED

@@ -112,7 +112,7 @@ void affiche_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p,int temps_deb
     int temps=(SDL_GetTicks()-temps_debut)/1000;
     sprintf(score_ch,"TEMPS: %d s",temps);
     score=TTF_RenderText_Solid(police,score_ch,color_white);
-    wall=IMG_Load("others/sprites/sprite_bricks_tutorial_1.png");
+    wall=IMG_Load("others/sprites/sprite_bricks_tutorial_1_25px.png");
     snake=SDL_CreateRGBSurface(0,taille_cases_px,taille_cases_px,32,0,0,0,0);
     score_board=SDL_CreateRGBSurface(0,(screen->w)-position_score_board.x,screen->h,32,0,0,0,0);
     SDL_FillRect(screen,NULL,SDL_MapRGB(screen->format,140,140,140));
@@ -259,7 +259,57 @@ void load_options_sdl(SDL_Surface* screen, snake* snakes, plateau p, int* diffic
         SDL_FreeSurface(snakes_surfaces[i][0]);
         SDL_FreeSurface(snakes_surfaces[i][1]);
         SDL_FreeSurface(snakes_surfaces[i][2]);
-        }
-
     }
+}
 
+int load_pause(SDL_Surface* screen,int taille_plateau){
+    taille_cases_px=screen->h/taille_plateau;
+    SDL_Surface* surface=SDL_CreateRGBSurface(SDL_HWSURFACE,(screen->w)-(screen->h),(screen->h)/3,32,0,0,0,0);
+    SDL_Rect position;
+    position.x=screen->h-(2*taille_cases_px/3);
+    position.y=2*(screen->h)/3-taille_cases_px;
+    SDL_FillRect(surface,NULL,SDL_MapRGB(screen->format,255,255,255));
+    SDL_BlitSurface(surface,NULL,screen,&position);
+    SDL_Color couleurNoire={0,0,0};
+    TTF_Font* police=NULL;
+    police=TTF_OpenFont("others/m01/m01.TTF",taille_cases_px/2);
+    SDL_Rect positionTexte1;
+    SDL_Rect positionTexte2;
+    SDL_Rect positionTexte3;
+    SDL_Surface* texte3=TTF_RenderText_Blended(police,"PAUSE",couleurNoire);
+    SDL_Surface* texte1=TTF_RenderText_Blended(police,"1-REPRENDRE",couleurNoire);
+    SDL_Surface* texte2=TTF_RenderText_Blended(police,"2-REVENIR AU MENU",couleurNoire);
+    positionTexte1.x=position.x+(surface->w)/2-(texte1->w)/2;
+    positionTexte1.y=position.y+(surface->h)/2-(texte1->h)/2;
+    positionTexte2.x=position.x+(surface->w)/2-(texte2->w)/2;
+    positionTexte2.y=position.y+(surface->h)/2-(texte2->h)/2+taille_cases_px;
+    positionTexte3.x=position.x+(surface->w)/2-(texte3->w)/2;
+    positionTexte3.y=position.y+(surface->h)/2-(texte3->h)/2-2*taille_cases_px;
+    SDL_BlitSurface(texte1,NULL,screen,&positionTexte1);
+    SDL_BlitSurface(texte2,NULL,screen,&positionTexte2);
+    SDL_BlitSurface(texte3,NULL,screen,&positionTexte3);
+    SDL_Flip(screen);
+    int selecteur;
+    SDL_Event event;
+    int pause=1;
+    while(pause){
+        SDL_WaitEvent(&event);
+        switch(event.key.keysym.sym){
+            case SDLK_KP1:
+                selecteur=1;
+                pause=0;
+                break;
+            case SDLK_AMPERSAND:
+                selecteur=1;
+                pause=0;
+                break;
+            case SDLK_KP2:
+                selecteur=0;
+                pause=0;
+                break;
+            default:
+                break;
+        }
+    }
+    return selecteur;
+}
