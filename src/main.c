@@ -61,6 +61,7 @@ void reset_snakes(snake* snakes, int nb,int taille_p){
 
 
 int main(){
+    int difficulte=2;
     init_tab_couleur();
     plateau p=init_plateau(30);
     snake* snakes=init_snakes(NB_SERPENT,p.taille);
@@ -70,50 +71,30 @@ int main(){
         return 1;
         }
     TTF_Init();
-    SDL_Color couleurBlanche={255,255,255};
     const SDL_VideoInfo* videoInfo;
     videoInfo=SDL_GetVideoInfo();
     SDL_Event event;
     unsigned int maxW=videoInfo->current_w;
     unsigned int maxH=videoInfo->current_h;
     SDL_Surface* ecran=NULL;
-    TTF_Font* police=NULL;
-    SDL_Rect positionTexte1;
-    SDL_Rect positionTexte2;
-    police=TTF_OpenFont("others/demolition_crack/Demolition_Crack.ttf",65);
-    SDL_Surface* texte=TTF_RenderText_Blended(police,"1-JOUER",couleurBlanche);
-    SDL_Surface* texte2=TTF_RenderText_Blended(police,"2-OPTIONS",couleurBlanche);
     ecran=SDL_SetVideoMode(maxW,maxH,32, SDL_RESIZABLE | SDL_HWSURFACE | SDL_DOUBLEBUF);
     SDL_WM_SetCaption("Snake vs Schlangà",NULL);
     if(ecran==NULL){
             printf("Error sdl_setvideomode %s\n",SDL_GetError());
             return 1;
             }
-    positionTexte1.x=(ecran->w/2)-(texte->w/2);
-    positionTexte1.y=(ecran->h/2)-(texte->h/2);
-    positionTexte2.x=positionTexte1.x;
-    positionTexte2.y=positionTexte1.y+(texte2->h);
     int continuer =1;
-    int selecteur=0;
+    int selecteur=0,demarrer_jeu=1;
     SDLKey touche;
+    int nbs=NB_SERPENT;
     int temps_debut;
-    SDL_EnableKeyRepeat(10,10);
-   /*printf("Position texte 1 x: %d y:%d\n",positionTexte1.x,positionTexte1.y);
-    printf("Dimensions texte 1 w: %d h: %d\n",texte->w,texte->h);*/
     while(continuer){
-        SDL_PollEvent(&event);
+        while(SDL_PollEvent(&event))
+        {
         switch(event.type){
             case SDL_QUIT:
                 continuer=0;
                 break;
-            /*case SDL_MOUSEBUTTONUP:
-                if((event.button.button==SDL_BUTTON_LEFT) && (selecteur==0) && (event.button.x>positionTexte1.x) && (event.button.x<positionTexte1.x+texte->w) && (event.button.y<positionTexte1.y) && (event.button.y>positionTexte1.y+texte->h)){
-                selecteur=1;
-
-                }
-               /* printf("%d %d\n",event.button.x,event.button.y);
-                printf("Selecteur : %d\n",selecteur);
-                break;*/
             case SDL_KEYDOWN:
                 touche=event.key.keysym.sym;
                 switch(touche){
@@ -133,29 +114,33 @@ int main(){
                         if(selecteur==0)
                             selecteur=2;
                         break;
-
+                    case SDLK_KP3:
+                        if(selecteur==0)
+                            selecteur=3;
+                        break;
                     default:
                         break;
                     }
+
             default:
                 break;
             }
-
-           /* else if(selecteur==0 && positionMouse.x>positionTexte2.x && positionMouse.x<positionTexte2.x+texte2->w && positionMouse.y<positionTexte2.y && positionMouse.y>positionTexte2.y+texte2->h){
-                selecteur=2;}*/
+        }
             switch(selecteur){
                 case 0:
-                    SDL_FillRect(ecran,NULL,SDL_MapRGB(ecran->format,0,0,0));
-                    SDL_BlitSurface(texte,NULL,ecran,&positionTexte1);
-                    SDL_BlitSurface(texte2,NULL,ecran,&positionTexte2);
+                    load_menu_sdl(ecran);
                     break;
                 case 1:
-                    if(!win(jouer_sdl(ecran,snakes,NB_SERPENT,p,touche,2,temps_debut),snakes,NB_SERPENT)){
+                    if(!win(jouer_sdl(ecran,snakes,NB_SERPENT,p,touche,difficulte,temps_debut),snakes,NB_SERPENT)){
                         selecteur=0;
                         reset_snakes(snakes,NB_SERPENT,p.taille);
                         }
                     break;
                 case 2:
+
+                    load_options_sdl(ecran,snakes,p,&difficulte,&nbs);
+                    break;
+                case 3:
                     continuer=0;
                     break;
                 default:
@@ -163,9 +148,6 @@ int main(){
             }
             SDL_Flip(ecran);
         }
-    TTF_CloseFont(police);
-    SDL_FreeSurface(texte);
-    SDL_FreeSurface(texte2);
     TTF_Quit();
     SDL_Quit();
     effacer_Partie(&p,snakes,NB_SERPENT);
