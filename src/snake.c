@@ -65,6 +65,7 @@ void delete_snake(snake* snakeAeffacer){
     free(snakeAeffacer->dir);
     free(snakeAeffacer->pos);
     free(snakeAeffacer->dead);
+    free(snakeAeffacer->score);
 }
 
 /**

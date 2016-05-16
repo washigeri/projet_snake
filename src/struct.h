@@ -9,24 +9,24 @@
 /**
  * \enum direction
  * \brief Type énuméré permettant de stocker la direction de déplacement
- * 
+ *
  */
- 
+
 typedef enum {left='q',right='d',up='z',down='s'} direction;
 
 /**
  * \enum type
  * \brief Type énuméré permettant d'indiquer la nature d'un serpent (joueur ou ia, et quel type d'ia)
- * 
+ *
  */
- 
+
 typedef enum {joueur,idle,defensif,offensif} type ;
 
 /**
  * \struct coord struct.h Structures
  * \brief Structure permettant de stocker les coordonnées d'un point dans l'espace
  */
- 
+
 typedef struct {int x;int y;} coord;
 
 /**
@@ -53,7 +53,7 @@ typedef struct {coord* pos;
  * \struct plateau
  * \brief Structure permettant de stocker les cases d'un plateau, ainsi que sa taille
  */
- 
+
 typedef struct {int** cases;
                 int taille;
                 int nombreItem;
@@ -66,7 +66,7 @@ typedef struct {int** cases;
  * \struct bools
  * \brief Structure permettant de savoir si un serpent perd la partie ou la continue. Si b vaut false le serpent a perdu sinon il continue la partie.
  */
-  
+
 typedef struct {bool b; snake s;} bools;
 
 #endif // STRUCT_H_INCLUDED

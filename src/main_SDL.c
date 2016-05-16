@@ -60,10 +60,29 @@ void placement_serpent(snake* res, int nbs, int taille_plateau){
 void reset_snakes(snake* snakes, int nb,int taille_p){
     for(int i=0;i<nb;i++){
         snakes[i].dead[0]=false;
+        free(snakes[i].pos);
+        snakes[i].taille=4;
+        snakes[i].pos=(coord*)malloc(4*sizeof(coord));
     }
     placement_serpent(snakes, nb,taille_p);
 }
 
+void reset_plateau(plateau *p){
+    int i,j;
+    for(i=1;i<p->taille-1;i++){
+        for(j=1;j<p->taille-1;j++){
+            p->cases[j][i]=0;
+        }
+    }
+    p->nombreItem=0;
+    p->nombreTroudever=0;
+    p->troudever=NULL;
+}
+
+void reset_partie(snake* snakes, int nbs,plateau *p){
+    reset_snakes(snakes,nbs,p->taille);
+    reset_plateau(p);
+}
 
 
 
@@ -158,7 +177,7 @@ int main(){
                 if(!jouer.b){
                     demarrer_jeu=1;
                     selecteur=fin_partie_sdl(ecran,jouer,snakes,nbs,*p,temps_debut);
-                    reset_snakes(snakes,nbs,p->taille);
+                    reset_partie(snakes,nbs,p);
                 }
                 break;
             case 2:
