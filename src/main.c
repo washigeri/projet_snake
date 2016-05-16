@@ -176,7 +176,7 @@ int main(){
                 bools jouer=win(jouer_sdl(ecran,snakes,nbs,p,touche,difficulte,temps_debut),snakes,nbs);
                 if(!jouer.b){
                     demarrer_jeu=1;
-                    selecteur=fin_partie_sdl(ecran,jouer,snakes,nbs,*p,temps_debut);
+                    selecteur=fin_partie_sdl(ecran,jouer,snakes,nbs,*p,temps_debut,&continuer);
                     reset_partie(snakes,nbs,p);
                 }
                 break;
@@ -188,7 +188,7 @@ int main(){
                 continuer=0;
                 break;
             case 4:
-                selecteur=load_pause(ecran,p->taille,&temps_debut);
+                selecteur=load_pause(ecran,p->taille,&temps_debut,&continuer);
                 if(!selecteur)
                     reset_snakes(snakes,nbs,p->taille);
                 break;
