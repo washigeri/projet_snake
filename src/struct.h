@@ -1,6 +1,6 @@
 /**
  * \file struct.h
- * \brief Ce fichier d'en-tête contient les structures et types utilisés pour la conception et l'utilisation du jeu
+ * \brief Ce fichier d'en-tete contient les structures et types utilises pour la conception et l'utilisation du jeu
  */
 
 #ifndef STRUCT_H_INCLUDED
@@ -8,7 +8,7 @@
 #include<stdbool.h>
 /**
  * \enum direction
- * \brief Type énuméré permettant de stocker la direction de déplacement
+ * \brief Type enumere permettant de stocker la direction de deplacement
  *
  */
 
@@ -16,7 +16,7 @@ typedef enum {left='q',right='d',up='z',down='s'} direction;
 
 /**
  * \enum type
- * \brief Type énuméré permettant d'indiquer la nature d'un serpent (joueur ou ia, et quel type d'ia)
+ * \brief Type enumere permettant d'indiquer la nature d'un serpent (joueur ou ia, et quel type d'ia)
  *
  */
 
@@ -24,7 +24,7 @@ typedef enum {joueur,idle,defensif,offensif} type ;
 
 /**
  * \struct coord struct.h Structures
- * \brief Structure permettant de stocker les coordonnées d'un point dans l'espace
+ * \brief Structure permettant de stocker les coordonnees d'un point dans l'espace
  */
 
 typedef struct {int x;int y;} coord;
@@ -32,11 +32,11 @@ typedef struct {int x;int y;} coord;
 /**
  *
  * \struct snake
- * \brief Structure permettant de créer un serpent
- * \details Cette structure contient 3 éléments : - un tableau de coord à une dimension permettant de stocker les coordonnées de chaque partie du corps du serpent
+ * \brief Structure permettant de creer un serpent
+ * \details Cette structure contient 3 elements : - un tableau de coord à une dimension permettant de stocker les coordonnees de chaque partie du corps du serpent
  *						  - un entier permmettant de stocker la taille du serpent
  *						  - une direction indiquant la direction actuelle du serpent
-						  - un type indiquant le type du serpent (joueur, ia défensive ou offensive ...)
+						  - un type indiquant le type du serpent (joueur, ia defensive ou offensive ...)
 						  - un booleen indiquand si le serpent est mort ou non
  */
 

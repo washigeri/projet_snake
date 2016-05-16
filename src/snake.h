@@ -1,6 +1,6 @@
 /**
  * \file snake.h
- * \brief Header contenant le prototype des fonctions implémentées dans snake.c
+ * \brief Header contenant le prototype des fonctions implementees dans snake.c
  */
 
 
@@ -15,7 +15,7 @@
  * \param len taille du serpent
  * \return le serpent cree
  */
- 
+
 snake init_snake(int len,type typesnake);
 
 /**
@@ -32,7 +32,7 @@ void kill_snake(snake s);
 void delete_snake(snake* snakeAeffacer);
 
 /**
- * \brief test si 2 serpents sont égaux
+ * \brief test si 2 serpents sont egaux
  * \param snake serpent 1
  * \param snake serpent 2
  */

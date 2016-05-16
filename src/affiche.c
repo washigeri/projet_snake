@@ -33,12 +33,12 @@ bool check(bool* b, int n){
     return res;
 }
 /**
- * \brief cherche_snake fonction dont l'objectif est de déterminer si le corps d'un serpent (et pas sa tête) se situe sur la case de coordonnées i,j
- * \param i un entier correspondant a l'absisse d'une coordonnée
- * \param j un entier correspondant a l'ordonnée d'une coordonnée
+ * \brief cherche_snake fonction dont l'objectif est de determiner si le corps d'un serpent (et pas sa tete) se situe sur la case de coordonnees i,j
+ * \param i un entier correspondant a l'absisse d'une coordonnee
+ * \param j un entier correspondant a l'ordonnee d'une coordonnee
  * \param s les serpents
  * \param n le nombre de serpents
- * \return Un tableau de booléens de taille n
+ * \return Un tableau de booleens de taille n
  */
 bool* cherche_snake(int i, int j, snake* s, int n){
     bool* res=(bool*) calloc (n,sizeof(bool));
@@ -59,12 +59,12 @@ bool* cherche_snake(int i, int j, snake* s, int n){
 }
 
 /**
- * \brief cherche_tete fonction dont l'objectif est de déterminer si la tête d'un serpent se situe sur la case de coordonnées i,j
- * \param i un entier correspondant a l'absisse d'une coordonnée
- * \param j un entier correspondant a l'ordonnée d'une coordonnée
+ * \brief cherche_tete fonction dont l'objectif est de determiner si la tete d'un serpent se situe sur la case de coordonnees i,j
+ * \param i un entier correspondant a l'absisse d'une coordonnee
+ * \param j un entier correspondant a l'ordonnee d'une coordonnee
  * \param s les serpents
  * \param n le nombre de serpents
- * \return Un tableau de booléens de taille n
+ * \return Un tableau de booleens de taille n
  */
 bool* cherche_tete(int i,int j, snake* s, int n){
     bool* res=(bool*) calloc (n,sizeof(bool));
@@ -78,7 +78,7 @@ bool* cherche_tete(int i,int j, snake* s, int n){
     }
 
 /**
- * \brief affiche Permet d'afficher le plateau et les serpents à un instant donné
+ * \brief affiche Permet d'afficher le plateau et les serpents à un instant donne
  * \param s les serpents
  * \param n le nombre de serpents
  * \return void
@@ -134,6 +134,11 @@ int tab_couleur[NB_MAX_SERPENT][3];
 int taille_cases_px;
 SDL_Surface* sprites[5];
 
+/**
+ * \brief init_tab_couleur fonction stockant dans une variable globale les differentes couleurs utilisees pour l affichage
+ * \return le tableau contenant les couleurs
+ */
+
 void init_tab_couleur(){
     FILE* fichier=NULL;
     fichier=fopen("others/snakes_color.data","r");
@@ -156,9 +161,29 @@ void init_tab_couleur(){
     fclose(fichier);
 }
 
+/**
+ * \brief init_sprites fonction stockant dans une variable globale les differentes images utilisees pour l affichage
+ * \return void
+ */
+void init_sprites(){
+    sprites[0]=IMG_Load("others/sprites/pomme-wh.png");
+    sprites[1]=IMG_Load("others/sprites/poison.png");
+    sprites[2]=IMG_Load("others/sprites/portail_entree.png");
+    sprites[3]=IMG_Load("others/sprites/portail_sortie.png");
+    sprites[4]=IMG_Load("others/sprites/sprite_bricks_tutorial_1_25px.png");
+}
 
-
-
+/**
+ * \brief score_snakes_sdl Permet d'affiche les scores de tous les serpents en jeu a un instant donne
+ * \param screen fenetre de jeu
+ * \param s les serpents en jeu
+ * \param nb_ser le nombre de serpents en jeu
+ * \param p le plateau de jeu
+ * \param temps_debut temps entre le lancement du programme et le debut de la partie actuelle
+ * \param taille_px nombre de pixels representant une case d un plateau
+ * \param position_scoreboard endroit où on doit afficher le score
+ * \return void
+ */
 
 void score_snakes_sdl(SDL_Surface* screen, snake* s, int nb_ser, plateau p,int tps_debut, int taille_px, SDL_Rect position_scoreboard){
     TTF_Font* police_score_snake=NULL;
@@ -215,13 +240,15 @@ void score_snakes_sdl(SDL_Surface* screen, snake* s, int nb_ser, plateau p,int t
     TTF_CloseFont(police_score_snake);
 }
 
-void init_sprites(){
-    sprites[0]=IMG_Load("others/sprites/pomme-wh.png");
-    sprites[1]=IMG_Load("others/sprites/poison.png");
-    sprites[2]=IMG_Load("others/sprites/portail_entree.png");
-    sprites[3]=IMG_Load("others/sprites/portail_sortie.png");
-    sprites[4]=IMG_Load("others/sprites/sprite_bricks_tutorial_1_25px.png");
-}
+/**
+ * \brief affiche_sdl Permet d'afficher le plateau et les serpents à un instant donne
+ * \param screen fenetre de jeu
+ * \param s les serpents en jeu
+ * \param nbs le nombre de serpents en jeu
+ * \param p le plateau de jeu
+ * \param temps_debut temps entre le lancement du programme et le debut de la partie actuelle
+ * \return void
+ */
 
 void affiche_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p,int temps_debut){
     taille_cases_px=screen->h/p.taille;
@@ -300,6 +327,11 @@ void affiche_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p,int temps_deb
     TTF_CloseFont(police);
 }
 
+/**
+ * \brief load_menu_sdl Affiche le menu du jeu
+ * \param screen fenetre de jeu
+ * \return void
+ */
 
 
 void load_menu_sdl(SDL_Surface* screen){
@@ -377,6 +409,22 @@ void load_menu_sdl(SDL_Surface* screen){
     TTF_CloseFont(police);
     TTF_CloseFont(policeTitre);
 }
+
+/**
+ * \brief load_options_sdl Permet d'afficher les options de jeu
+ * \param screen fenetre de jeu
+ * \param snakes les serpents en jeu
+ * \param p le plateau de jeu
+ * \param difficulte vitesse des serpents (plus difficulte est grand plus les serpents vont vite)
+ * \param nbs nombre de serpents
+ * \param touche Touche du clavier recuperee par le programme pour se deplacer dans les options
+ * \param selecteur_position variable globale definie dans le main permettant de se deplacer dans ce dernier
+ * \param continuer variable globale definie dans le main permettant de se deplacer dans ce dernier
+ * \param selecteur_menu variable globale definie dans le main permettant de se deplacer dans ce dernier
+ * \return un entier indiquant dans quel champ on se trouve dans les options
+ */
+
+
 
 int load_options_sdl(SDL_Surface* screen, snake* snakes, plateau p, int* difficulte, int* nbs,SDLKey touche,int selecteur_position, int* continuer, int* selecteur_menu){
     taille_cases_px=screen->h/p.taille;
@@ -730,7 +778,17 @@ int load_options_sdl(SDL_Surface* screen, snake* snakes, plateau p, int* difficu
     return selecteur_position;
 }
 
-int load_pause(SDL_Surface* screen,int taille_plateau,int* temps_debut, int* continuer){
+/**
+ * \brief load_pause_sdl Fonction permettant de mettre le jeu en pause
+ * \param screen fenetre de jeu
+ * \param taille_cases_px nombre de pixels representant une case d un plateau
+ * \param temps_debut temps entre le lancement du programme et le debut de la partie actuelle
+ * \param continuer variable globale definie dans le main permettant de se deplacer dans ce dernier
+ * \return un entier servant a modifier une variable definie dans le main. Si cet entier vaut 1, alors le joueur reprend sa partie, si il vaut 0, alors il revient au menu
+ */
+
+
+int load_pause_sdl(SDL_Surface* screen,int taille_plateau,int* temps_debut, int* continuer){
     int debut=SDL_GetTicks();
     taille_cases_px=screen->h/taille_plateau;
     SDL_Surface* surface=SDL_CreateRGBSurface(SDL_HWSURFACE,(screen->h)/2,(screen->h)/3,32,0,0,0,0);
@@ -817,6 +875,19 @@ int load_pause(SDL_Surface* screen,int taille_plateau,int* temps_debut, int* con
     SDL_FreeSurface(contour_vertical);
     return selecteur;
 }
+
+/**
+ * \brief fin_partie_sdl Fonction demandant au joueur si il souhaite retouner au menu ou rejouer une fois sa partie terminee
+ * \param screen fenetre de jeu
+ * \param resultat_partie variable permettant de determiner si le joueur a perdu ou gagne
+ * \param snakes les serpents en jeu
+ * \param nbs le nombre de serpents
+ * \param p le plateau de jeu
+ * \param temps_debut temps entre le lancement du programme et le debut de la partie actuelle
+ * \param continuer variable globale definie dans le main permettant de se deplacer dans ce dernier
+ * \return un entier servant a modifier une variable definie dans le main. Si cet entier vaut 1, alors le joueur recommence une partie et si il vaut 0, il retourne au menu
+ */
+
 
 int fin_partie_sdl(SDL_Surface* screen, bools resultat_partie, snake* snakes,int nbs, plateau p,int temps_debut, int* continuer){
     affiche_sdl(screen,snakes,nbs,p,temps_debut);

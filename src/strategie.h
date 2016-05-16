@@ -1,6 +1,6 @@
 /**
  * \file strategie.h
- * \brief Header contenant le prototype des fonctions implémentées dans strategie.c
+ * \brief Header contenant le prototype des fonctions implementees dans strategie.c
  */
 
 
@@ -45,7 +45,7 @@ unsigned int calculDistanceTaxicab(coord cor1,coord cor2);
 
 /**
  * \brief calculPoidsTableau permet de calculer l influence des murs du plateaux sur une coordonnees donnees
- * Plus la case est eloigné des murs du tableau plus le poids est eleve
+ * Plus la case est eloigne des murs du tableau plus le poids est eleve
  * \note COEFF_PLATEAU est le coefficient de multiplication du poids
  * \param cor la coordonnee
  * \param p le plateau de jeu
@@ -128,7 +128,7 @@ int calculStrategie(snake cible, direction directiontest, snake snakeProche);
 /**
  * @brief offensive_strat la gestion de la strategie offensive
  * *Les coefficients des constantes defensives sont reduites par rapport a la strategie defensive
- * *Le serpent est attirées par les tetes de ces adversaires
+ * *Le serpent est attirees par les tetes de ces adversaires
  * *Le serpent connait des coups strategiques a appliquer
  * @param cible le serpent cible
  * @param snakes la liste des serpents

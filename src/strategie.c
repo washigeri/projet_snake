@@ -30,10 +30,10 @@
 
 /*Valeurs offensives*/
 
-/*Aggresivité, attirance pour les tetes des serpents*/
+/*Aggresivite, attirance pour les tetes des serpents*/
 #define PDS_MAX_ATTIRANCE_HEAD 1000
 
-/*Bonus strategie, Le bonus gagné lorsque que le serpent fait un coup strategique*/
+/*Bonus strategie, Le bonus gagne lorsque que le serpent fait un coup strategique*/
 #define PDS_BONUS_COUP_STRATEGIQ 1500
 
 /*Application strategie, a quel distance le serpent doit etre au minimun pour appliquer des coups strategique*/
@@ -166,7 +166,7 @@ unsigned int calculDistanceTaxicab(coord cor1,coord cor2)
 
 /**
  * \brief calculPoidsTableau permet de calculer l influence des murs du plateaux sur une coordonnees donnees
- * Plus la case est eloigné des murs du tableau plus le poids est eleve
+ * Plus la case est eloigne des murs du tableau plus le poids est eleve
  * \note COEFF_PLATEAU est le coefficient de multiplication du poids
  * \param cor la coordonnee
  * \param p le plateau de jeu
@@ -522,7 +522,7 @@ int calculStrategie(snake cible, direction directiontest, snake snakeProche)
 /**
  * @brief offensive_strat la gestion de la strategie offensive
  * *Les coefficients des constantes defensives sont reduites par rapport a la strategie defensive
- * *Le serpent est attirées par les tetes de ces adversaires
+ * *Le serpent est attirees par les tetes de ces adversaires
  * *Le serpent connait des coups strategiques a appliquer
  * @param cible le serpent cible
  * @param snakes la liste des serpents

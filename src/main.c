@@ -1,6 +1,6 @@
 /**
  * @file main.c
- * @brief Main d'éxecution
+ * @brief Main d'execution
  */
 
 
@@ -21,6 +21,12 @@
 
 #define NB_MAX_SERPENT 8
 
+/**
+ *
+ *  @brief fonction permettant d'initialiser un tableau contenant NB_MAX_SERPENT
+ *  @param void
+ *  @return pointeur sur le tableau contenant tout les serpents initalises
+ */
 
 snake* init_snakes(){
     snake* res=(snake*)calloc(NB_MAX_SERPENT,sizeof(snake));
@@ -35,6 +41,16 @@ snake* init_snakes(){
         }
     return res;
     }
+
+/**
+ *
+ *  @brief Fonction permettant de placer les serpents sur le plateau
+ *  @details Les serpents sont places selon deux "colonnes", afin que les serpents en jeu soient repartis de maniere equillibree dans chaque moitie de plateau
+ *  @param res le tableau contenant les serpents que l'on place
+ *  @param nbs le nombre de serpent à placer (varie selon le menu d'option)
+ *  @param taille_plateau la taille du plateau connue afin de placer les serpents
+ *  @return void
+ */
 
 void placement_serpent(snake* res, int nbs, int taille_plateau){
     int espacement_vert_g=(taille_plateau)/(nbs/2+1);
@@ -56,7 +72,12 @@ void placement_serpent(snake* res, int nbs, int taille_plateau){
         }
     }
 
-
+/**
+ *  @brief fonction permettant de reinitialiser le tableau contenant les serpents arpes chaque partie, on reinitialise leur etat "mort" ou "vivant",leur taille et leur position
+ *  @param snakes le tableau à reinitialiser
+ *  @param nb le nombre de serpents à reinitaliser
+ *  @param taille_p taille du plateau afin d'appeller placement_serpent apres avoir reinitialiser l'etat des serpents
+ */
 
 void reset_snakes(snake* snakes, int nb,int taille_p){
     for(int i=0;i<nb;i++){
@@ -67,6 +88,14 @@ void reset_snakes(snake* snakes, int nb,int taille_p){
     }
     placement_serpent(snakes, nb,taille_p);
 }
+
+/**
+ *  @brief fonction reinitialisant le plateau de jeu
+ *  @param p plateau à reinitaliser
+ *  @return void
+ *
+ */
+
 
 void reset_plateau(plateau *p){
     int i,j;
@@ -80,11 +109,26 @@ void reset_plateau(plateau *p){
     p->troudever=NULL;
 }
 
+/**
+ *  @brief fonction reinitialisant la partie, fait appel aux fonctions reset_plateau et reset_snakes
+ *  @param snakes serpents à reinitialiser
+ *  @param nbs nombre de serpents à reinitialiser
+ *  @param p plateau à reinitialiser
+ *  @return void
+ */
+
 void reset_partie(snake* snakes, int nbs,plateau *p){
     reset_snakes(snakes,nbs,p->taille);
     reset_plateau(p);
 }
 
+
+/**
+ * @brief main d'execution du programme
+ * @details Le main contient tout le code d'initialisation de SDL ainsi que la boucle permettant le jeu en continu, gerant les evenements utilisateurs,
+ * envoyant les donnees necessaires aux fonctions de controle et d'affichage
+ * @return 0 en cas d'execution sans probleme, une autre valeur sinon
+ */
 
 
 int main(){
@@ -97,7 +141,10 @@ int main(){
         printf("Error sdl_init %s\n",SDL_GetError());
         return 1;
     }
-    TTF_Init();
+    if(TTF_Init()==-1){
+        printf("Error ttf_init %s\n",TTF_GetError());
+        return 1;
+    }
     init_sprites();
     const SDL_VideoInfo* videoInfo;
     videoInfo=SDL_GetVideoInfo();
@@ -197,7 +244,7 @@ int main(){
                 continuer=0;
                 break;
             case 4:
-                selecteur=load_pause(ecran,p->taille,&temps_debut,&continuer);
+                selecteur=load_pause_sdl(ecran,p->taille,&temps_debut,&continuer);
                 if(!selecteur)
                     reset_snakes(snakes,nbs,p->taille);
                 break;
@@ -206,10 +253,7 @@ int main(){
         }
     SDL_Flip(ecran);
 
-    }/*
-    for(int i=0;i<5;i++){
-            SDL_FreeSurface(sprites[i]);
-    }*/
+    }
     TTF_Quit();
     SDL_Quit();
     effacer_Partie(p,snakes,nbs);

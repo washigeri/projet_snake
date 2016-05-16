@@ -1,6 +1,6 @@
 /**
  * \file jeu.h
- * \brief Ce header contient les prototypes des fonctions implémentées dans jeu.c.
+ * \brief Ce header contient les prototypes des fonctions implementees dans jeu.c.
 
  */
 
@@ -77,14 +77,24 @@ void depart(snake* s,int n, plateau p);
 bools* jouer(snake* s,int n,plateau* p);
 
 /**
- * @brief Fonction utilisée dans les tests unitaires pour tester les collisions
+ * @brief Fonction utilisee dans les tests unitaires pour tester les collisions
  * @param s Tableau contenant tous les serpents en jeu
  * @param n Nombre de serpent en jeu
  * @param p Plateau de jeu
- * @return Tableau de bools indiquant si chaque serpent a gagné ou perdu la partie
+ * @return Tableau de bools indiquant si chaque serpent a gagne ou perdu la partie
  */
 
 bools* jouer_test_collisions(snake* s,int n, plateau p);
+
+/**
+ * @brief jouer_sdl permet de jouer un tour de jeu, deplacer les serpents en jeu selon leurs strategies ainsi que detecter les collisions serpent/serpent et serpents/murs
+ * Cette fonction appelle la fonnction d'affichage GUI, affiche_sdl
+ * @param screen pointeur sur une SDL_Surface, representant ici la fenetre de jeu creee par SDL_SetVideoMode
+ * @param s Tableau contenant tous les serpents en jeu
+ * @param p plateau de jeu
+ * @return Tableau de bools indiquant si chaque serpent a gagne ou perdu la partie
+ */
+
 
 bools* jouer_sdl(SDL_Surface* screen,snake* s,int nb_ser,plateau *p,SDLKey touche,int difficulte,int temps_debut);
 

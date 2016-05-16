@@ -1,6 +1,6 @@
 /**
  * \file snake.c
- * \brief Ce source contient l'implémentation des fonctions permettant la manipulation des serpents
+ * \brief Ce source contient l'implementation des fonctions permettant la manipulation des serpents
 */
 
 #include <stdbool.h>
@@ -65,7 +65,7 @@ void delete_snake(snake* snakeAeffacer){
 }
 
 /**
- * \brief test si 2 serpents sont égaux
+ * \brief test si 2 serpents sont egaux
  * \param snake serpent 1
  * \param snake serpent 2
  */

@@ -1,9 +1,9 @@
 
 /**
  * \file jeu.c
- * \brief Ce source contient l'implémentation des fonctions gérant les fonctions prncipales du jeu
- * \details Les fonctions dans ce fichier permettent notamment la création du plateau de jeu, la détection des entrées utilisateurs
- et le déplacement des serpents. Ce fichier implémente aussi les deux types d'IA: idle et défensive.
+ * \brief Ce source contient l'implementation des fonctions gerant les fonctions prncipales du jeu
+ * \details Les fonctions dans ce fichier permettent notamment la creation du plateau de jeu, la detection des entrees utilisateurs
+ et le deplacement des serpents. Ce fichier implemente aussi les deux types d'IA: idle et defensive.
 
  */
 #define _BSD_SOURCE
@@ -250,11 +250,11 @@ bools* jouer(snake* s,int n,plateau* p){
     return res;
 }
 /**
- * @brief Fonction utilisée dans les tests unitaires pour tester les collisions
+ * @brief Fonction utilisee dans les tests unitaires pour tester les collisions
  * @param s Tableau contenant tous les serpents en jeu
  * @param n Nombre de serpent en jeu
  * @param p Plateau de jeu
- * @return Tableau de bools indiquant si chaque serpent a gagné ou perdu la partie
+ * @return Tableau de bools indiquant si chaque serpent a gagne ou perdu la partie
  */
 bools* jouer_test_collisions(snake* s,int n, plateau p){
     affiche(p,s,n);
@@ -262,6 +262,15 @@ bools* jouer_test_collisions(snake* s,int n, plateau p){
     bools* res=collisions(p,s,n);
     usleep(PAS_TEMPS);
     return res;}
+
+/**
+ * @brief jouer_sdl permet de jouer un tour de jeu, deplacer les serpents en jeu selon leurs strategies ainsi que detecter les collisions serpent/serpent et serpents/murs
+ * Cette fonction appelle la fonnction d'affichage GUI, affiche_sdl
+ * @param screen pointeur sur une SDL_Surface, representant ici la fenetre de jeu creee par SDL_SetVideoMode
+ * @param s Tableau contenant tous les serpents en jeu
+ * @param p plateau de jeu
+ * @return Tableau de bools indiquant si chaque serpent a gagne ou perdu la partie
+ */
 
 
 bools* jouer_sdl(SDL_Surface* screen, snake* s, int nb_ser, plateau *p, SDLKey touche,int difficulte,int temps_debut){
