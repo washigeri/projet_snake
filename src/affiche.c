@@ -213,8 +213,8 @@ void score_snakes_sdl(SDL_Surface* screen, snake* s, int nb_ser, plateau p,int t
 void init_sprites(){
     sprites[0]=IMG_Load("others/sprites/pomme.png");
     sprites[1]=IMG_Load("others/sprites/poison.png");
-    sprites[2]=IMG_Load("others/portail_entree.png");
-    sprites[3]=IMG_Load("others/portail_sortie.png");
+    sprites[2]=IMG_Load("others/sprites/portail_entree.png");
+    sprites[3]=IMG_Load("others/sprites/portail_sortie.png");
     sprites[4]=IMG_Load("others/sprites/sprite_bricks_tutorial_1_25px.png");
 }
 
@@ -248,22 +248,22 @@ void affiche_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p,int temps_deb
                 position_mur.y=j*taille_cases_px;
                 SDL_BlitSurface(sprites[4],NULL,screen,&position_mur);
             }
-            else if(p.cases[i][j]==2){
+            else if(p.cases[j][i]==2){
                 position_objet.x=i*taille_cases_px;
                 position_objet.y=j*taille_cases_px;
                 SDL_BlitSurface(sprites[0],NULL,screen,&position_objet);
             }
-            else if(p.cases[i][j]==3){
+            else if(p.cases[j][i]==3){
                 position_objet.x=i*taille_cases_px;
                 position_objet.y=j*taille_cases_px;
                 SDL_BlitSurface(sprites[1],NULL,screen,&position_objet);
             }
-            else if(p.cases[i][j]==4){
+            else if(p.cases[j][i]==4){
                 position_objet.x=i*taille_cases_px;
                 position_objet.y=j*taille_cases_px;
                 SDL_BlitSurface(sprites[2],NULL,screen,&position_objet);
             }
-            else if(p.cases[i][j]==5){
+            else if(p.cases[j][i]==5){
                 position_objet.x=i*taille_cases_px;
                 position_objet.y=j*taille_cases_px;
                 SDL_BlitSurface(sprites[3],NULL,screen,&position_objet);
