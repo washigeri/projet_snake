@@ -124,7 +124,7 @@ void affiche(plateau p, snake* s,int n){
     }
 }
 
-/*
+
 int tab_couleur[NB_MAX_SERPENT][3];
 int taille_cases_px;
 
@@ -856,4 +856,3 @@ int fin_partie_sdl(SDL_Surface* screen, bools resultat_partie, snake* snakes,int
     return selecteur;
 }
 
-*/

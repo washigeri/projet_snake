@@ -258,7 +258,7 @@ bools* jouer_test_collisions(snake* s,int n, plateau p){
     usleep(PAS_TEMPS);
     return res;}
 
-/*
+
 bools* jouer_sdl(SDL_Surface* screen, snake* s, int nb_ser, plateau p, SDLKey touche,int difficulte,int temps_debut){
     char dir=s[0].dir[0];
     switch(touche){
@@ -302,4 +302,3 @@ bools* jouer_sdl(SDL_Surface* screen, snake* s, int nb_ser, plateau p, SDLKey to
 
     return res;
 }
-*/
