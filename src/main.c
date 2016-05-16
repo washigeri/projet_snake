@@ -198,6 +198,9 @@ int main(){
     SDL_Flip(ecran);
 
     }
+    for(int i=0;i<5;i++){
+            SDL_FreeSurface(sprites[i]);
+    }
     TTF_Quit();
     SDL_Quit();
     effacer_Partie(p,snakes,nbs);
