@@ -211,7 +211,7 @@ void score_snakes_sdl(SDL_Surface* screen, snake* s, int nb_ser, plateau p,int t
 }
 
 void init_sprites(){
-    sprites[0]=IMG_Load("others/sprites/pomme.png");
+    sprites[0]=IMG_Load("others/sprites/pomme-wh.png");
     sprites[1]=IMG_Load("others/sprites/poison.png");
     sprites[2]=IMG_Load("others/sprites/portail_entree.png");
     sprites[3]=IMG_Load("others/sprites/portail_sortie.png");
