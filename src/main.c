@@ -48,7 +48,7 @@ snake* init_snakes(int n,int taille_plateau){
     }
 
 
-#define NB_SERPENT 4
+#define NB_SERPENT 8
 
 void reset_snakes(snake* snakes, int nb,int taille_p){
     for(int i=0;i<nb;i++){
