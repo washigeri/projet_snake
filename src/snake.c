@@ -14,7 +14,7 @@
 #include "collision.h"
 
 
-#define TAILLE_MIN 3
+#define TAILLE_MIN 2
 #define TAILLE_MAX 32
 
 
@@ -61,6 +61,8 @@ void delete_snake(snake* snakeAeffacer){
     free(snakeAeffacer->dir);
     free(snakeAeffacer->pos);
     free(snakeAeffacer->dead);
+    free(snakeAeffacer->score);
+
 }
 
 /**

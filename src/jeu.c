@@ -14,8 +14,8 @@
 #include <termios.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include <SDL/SDL.h>
-#include <SDL/SDL_ttf.h>
+//#include <SDL/SDL.h>
+//#include <SDL/SDL_ttf.h>
 #include "struct.h"
 #include "snake.h"
 #include "affiche.h"
@@ -66,8 +66,7 @@ void erase_plateau(plateau* platAEffacer)
     }
     free(platAEffacer->cases);
 
-
-    if(platAEffacer->troudever)
+    if(platAEffacer->troudever !=0)
     {
         free(platAEffacer->troudever);
     }

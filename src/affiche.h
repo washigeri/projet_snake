@@ -8,8 +8,8 @@
 #ifndef AFFICHAGE_H_INCLUDED
 #define AFFICHAGE_H_INCLUDED
 
-#include <SDL/SDL.h>
-#include <SDL/SDL_ttf.h>
+//#include <SDL/SDL.h>
+//#include <SDL/SDL_ttf.h>
 /**
  * \brief check Fonction cherchant si un tableau de booléen contient une valeur true
  * \param un tableau de booléens
