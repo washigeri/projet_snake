@@ -225,12 +225,13 @@ unsigned int calculPoidsSerpent(coord pos,snake cible,snake * snakes,int nombreS
         {
             for(j = 0; j < snakes[i].taille ; j++)
             {
+                if(!snakes[i].dead[0]){
                 esttete = (j==0);
 
 
 
                 poidstotalserpent += calculDistanceTaxicab(snakes[i].pos[j],pos) * COEFF_OTHERSNAKE * (1 + esttete*COEFF_HEAD);
-
+            }
             }
         }
 
@@ -308,7 +309,7 @@ int  calculPoidsTete(coord coor,snake cible,snake*snakes,int nombreSerpent)
     int i;
     for(i = 0; i<nombreSerpent;i++)
     {
-        if(!egalite_snake(cible,snakes[i]))
+        if(!egalite_snake(cible,snakes[i]) && !snakes[i].dead[0])
         {
             res = PDS_MAX_ATTIRANCE_HEAD / (calculDistanceTaxicab(snakes[i].pos[0],coor)+1);
 
@@ -334,7 +335,7 @@ snake connaitreSnakeLePlusProche(snake cible,snake*snakes,int nombreSerpent)
 
     for(i=0;i<nombreSerpent;i++)
     {
-        if(!egalite_snake(cible,snakes[i]))
+        if(!egalite_snake(cible,snakes[i]) && !snakes[i].dead[0])
         {
             if(distance>calculDistanceTaxicab(snakes[i].pos[0],cible.pos[0]) || distance == -1)
             {
