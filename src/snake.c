@@ -65,6 +65,7 @@ void delete_snake(snake* snakeAeffacer){
     free(snakeAeffacer->dir);
     free(snakeAeffacer->pos);
     free(snakeAeffacer->dead);
+    free(snakeAeffacer->score);
 }
 
 /**
@@ -225,7 +226,6 @@ void movesnake(snake s,direction dir){
 
 void add_taille_snake(snake *snak,direction dir){
     int i;
-
 
     if(snak->taille < TAILLE_MAX)
     {

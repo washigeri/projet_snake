@@ -9,10 +9,10 @@
 #include "snake.h"
 #include "fruit.h"
 
-#define CH_SPAWNFRUIT 50 //sur 100
+#define CH_SPAWNFRUIT 10 //sur 100
 
-#define MAX_NB_ITEM 100
-#define MAX_TELEPORT 3
+#define MAX_NB_ITEM 10
+#define MAX_TELEPORT 1
 
 #define NB_TYPE_ITEM 3
 

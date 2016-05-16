@@ -38,15 +38,15 @@ mac : $(BINDIR)/Snake_Schlangà_SDL_mac  $(BINDIR)/Snake_Schlangà_cmd_mac $(BIN
 
 $(BINDIR)/Snake_Schlangà_SDL_mac: $(OBJDIR)/main.o $(OBJDIR)/affiche.o $(OBJDIR)/jeu.o $(OBJDIR)/snake.o $(OBJDIR)/collision.o $(OBJDIR)/strategie.o $(OBJDIR)/fruit.o
 	@$(LINKER) $@  $(OBJDIR)/main.o $(OBJDIR)/affiche.o $(OBJDIR)/jeu.o $(OBJDIR)/snake.o $(OBJDIR)/collision.o $(OBJDIR)/strategie.o $(OBJDIR)/fruit.o $(LFLAGS)
-	@echo "Linking for Snake_Schlangà_SDL complete!"
+	@echo "Linking for Snake_Schlangà_SDL_mac complete!"
 
 $(BINDIR)/Snake_Schlangà_cmd_mac: $(OBJDIR)/main_console.o $(OBJDIR)/affiche.o $(OBJDIR)/jeu.o $(OBJDIR)/snake.o $(OBJDIR)/collision.o $(OBJDIR)/strategie.o $(OBJDIR)/fruit.o
 	@$(LINKER) $@  $(OBJDIR)/main_console.o $(OBJDIR)/affiche.o $(OBJDIR)/jeu.o $(OBJDIR)/snake.o $(OBJDIR)/collision.o $(OBJDIR)/strategie.o $(OBJDIR)/fruit.o $(LFLAGS)
-	@echo "Linking for Snake_Schlangà_cmd complete!"
+	@echo "Linking for Snake_Schlangà_cmd_mac complete!"
 
 $(BINDIR)/Tests_Snake_mac:  $(OBJDIR)/Testmain.o $(OBJDIR)/affiche.o $(OBJDIR)/jeu.o $(OBJDIR)/snake.o $(OBJDIR)/collision.o $(OBJDIR)/strategie.o $(OBJDIR)/fruit.o
 	@$(LINKER) $@ $(LFLAGS) $(OBJDIR)/Testmain.o $(OBJDIR)/affiche.o $(OBJDIR)/jeu.o $(OBJDIR)/snake.o $(OBJDIR)/collision.o $(OBJDIR)/strategie.o $(OBJDIR)/fruit.o $(LFLAGS)
-	@echo "Linking for Tests_Snake complete !"
+	@echo "Linking for Tests_Snake_mac complete !"
 
 .PHONEY: clean
 clean:

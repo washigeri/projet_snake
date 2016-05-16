@@ -127,6 +127,7 @@ void affiche(plateau p, snake* s,int n){
 
 int tab_couleur[NB_MAX_SERPENT][3];
 int taille_cases_px;
+SDL_Surface* sprites[5];
 
 void init_tab_couleur(){
     FILE* fichier=NULL;
@@ -209,9 +210,17 @@ void score_snakes_sdl(SDL_Surface* screen, snake* s, int nb_ser, plateau p,int t
     TTF_CloseFont(police_score_snake);
 }
 
+void init_sprites(){
+    sprites[0]=IMG_Load("others/sprites/pomme-wh.png");
+    sprites[1]=IMG_Load("others/sprites/poison.png");
+    sprites[2]=IMG_Load("others/sprites/portail_entree.png");
+    sprites[3]=IMG_Load("others/sprites/portail_sortie.png");
+    sprites[4]=IMG_Load("others/sprites/sprite_bricks_tutorial_1_25px.png");
+}
+
 void affiche_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p,int temps_debut){
     taille_cases_px=screen->h/p.taille;
-    SDL_Surface* wall=NULL;
+    SDL_Rect position_objet;
     SDL_Surface* snake=NULL;
     SDL_Surface* score=NULL;
     SDL_Rect position_score_board;
@@ -223,7 +232,6 @@ void affiche_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p,int temps_deb
     int temps=(SDL_GetTicks()-temps_debut)/1000;
     sprintf(score_ch,"TEMPS: %d s",temps);
     score=TTF_RenderText_Solid(police,score_ch,color_white);
-    wall=IMG_Load("others/sprites/sprite_bricks_tutorial_1_25px.png");
     snake=SDL_CreateRGBSurface(SDL_HWSURFACE,taille_cases_px,taille_cases_px,32,0,0,0,0);
     score_board=SDL_CreateRGBSurface(SDL_HWSURFACE,(screen->w)-position_score_board.x,screen->h,32,0,0,0,0);
     SDL_FillRect(screen,NULL,SDL_MapRGB(screen->format,140,140,140));
@@ -238,11 +246,30 @@ void affiche_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p,int temps_deb
         for(j=0;j<p.taille;j++){
             if(i==0 || j==0 || i==p.taille-1 || j==p.taille-1){
                 position_mur.y=j*taille_cases_px;
-                SDL_BlitSurface(wall,NULL,screen,&position_mur);
+                SDL_BlitSurface(sprites[4],NULL,screen,&position_mur);
+            }
+            else if(p.cases[j][i]==2){
+                position_objet.x=i*taille_cases_px;
+                position_objet.y=j*taille_cases_px;
+                SDL_BlitSurface(sprites[0],NULL,screen,&position_objet);
+            }
+            else if(p.cases[j][i]==3){
+                position_objet.x=i*taille_cases_px;
+                position_objet.y=j*taille_cases_px;
+                SDL_BlitSurface(sprites[1],NULL,screen,&position_objet);
+            }
+            else if(p.cases[j][i]==4){
+                position_objet.x=i*taille_cases_px;
+                position_objet.y=j*taille_cases_px;
+                SDL_BlitSurface(sprites[2],NULL,screen,&position_objet);
+            }
+            else if(p.cases[j][i]==5){
+                position_objet.x=i*taille_cases_px;
+                position_objet.y=j*taille_cases_px;
+                SDL_BlitSurface(sprites[3],NULL,screen,&position_objet);
             }
         }
     }
-    SDL_FreeSurface(wall);
     SDL_Rect position_snake;
     position_snake.x=0;
     position_snake.y=0;
