@@ -61,5 +61,5 @@ void load_options_sdl(SDL_Surface* screen, snake* snakes, plateau p, int* diffic
 
 int load_pause(SDL_Surface* screen, int taille_cases_px, int* temps_debut);
 
-void fin_partie_sdl(SDL_Surface* screen, bools resultat_partie, snake* snakes, int taille_plateau);
+int fin_partie_sdl(SDL_Surface* screen, bools resultat_partie, snake* snakes,int nbs, plateau p,int temps_debut);
 #endif // AFFICHAGE_H_INCLUDED

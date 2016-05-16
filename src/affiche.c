@@ -340,8 +340,9 @@ int load_pause(SDL_Surface* screen,int taille_plateau,int* temps_debut){
     return selecteur;
 }
 
-void fin_partie_sdl(SDL_Surface* screen, bools resultat_partie, snake* snakes, int taille_plateau){
-    taille_cases_px=screen->h/taille_plateau;
+int fin_partie_sdl(SDL_Surface* screen, bools resultat_partie, snake* snakes,int nbs, plateau p,int temps_debut){
+    affiche_sdl(screen,snakes,nbs,p,temps_debut);
+    taille_cases_px=screen->h/p.taille;
     SDL_Surface* surface=SDL_CreateRGBSurface(SDL_HWSURFACE,(screen->h)/2,(screen->h)/3,32,0,0,0,0);
     SDL_Rect position;
     position.x=(screen->h)/2-(surface->w)/2;
@@ -375,9 +376,45 @@ void fin_partie_sdl(SDL_Surface* screen, bools resultat_partie, snake* snakes, i
     }
     SDL_BlitSurface(texte2,NULL,screen,&positionTexte2);
     SDL_BlitSurface(texte3,NULL,screen,&positionTexte3);
+    SDL_Surface* contour_horizontal=SDL_CreateRGBSurface(SDL_HWSURFACE,surface->w+taille_cases_px,taille_cases_px/2,32,0,0,0,0);
+    SDL_Surface* contour_vertical=SDL_CreateRGBSurface(SDL_HWSURFACE,taille_cases_px/2,surface->h,32,0,0,0,0);
+    SDL_FillRect(contour_horizontal,NULL,SDL_MapRGB(screen->format,0,0,0));
+    SDL_FillRect(contour_vertical,NULL,SDL_MapRGB(screen->format,0,0,0));
+    SDL_Rect position_contour_hor;
+    SDL_Rect position_contour_vert;
+    position_contour_hor.x=position.x-taille_cases_px/2;
+    position_contour_hor.y=position.y-taille_cases_px/2;
+    position_contour_vert.x=position.x-taille_cases_px/2;
+    position_contour_vert.y=position.y;
+    SDL_BlitSurface(contour_horizontal,NULL,screen,&position_contour_hor);
+    SDL_BlitSurface(contour_vertical,NULL,screen,&position_contour_vert);
+    position_contour_hor.y=position.y+surface->h;
+    position_contour_vert.x=position.x+surface->w;
+    SDL_BlitSurface(contour_horizontal,NULL,screen,&position_contour_hor);
+    SDL_BlitSurface(contour_vertical,NULL,screen,&position_contour_vert);
     SDL_Flip(screen);
     SDL_FreeSurface(surface);
     SDL_FreeSurface(texte1);
     SDL_FreeSurface(texte2);
     SDL_FreeSurface(texte3);
+    SDL_FreeSurface(contour_horizontal);
+    SDL_FreeSurface(contour_vertical);
+    SDL_Event event_fin_partie;
+    int retour_menu=1;
+    int selecteur=1;
+    while(retour_menu){
+        SDL_WaitEvent(&event_fin_partie);
+        switch(event_fin_partie.key.keysym.sym){
+            case SDLK_KP1:
+                retour_menu=0;
+                break;
+            case SDLK_KP2:
+                selecteur=0;
+                retour_menu=0;
+                break;
+            default:
+                break;
+        }
+    }
+    return selecteur;
 }

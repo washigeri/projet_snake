@@ -48,7 +48,7 @@ snake* init_snakes(int n,int taille_plateau){
     }
 
 
-#define NB_SERPENT 8
+#define NB_SERPENT 4
 
 void reset_snakes(snake* snakes, int nb,int taille_p){
     for(int i=0;i<nb;i++){
@@ -75,7 +75,6 @@ int main(){
     videoInfo=SDL_GetVideoInfo();
     SDL_Event event;
     SDL_Event event_debut_partie;
-    SDL_Event event_fin_partie;
     unsigned int maxW=videoInfo->current_w;
     unsigned int maxH=videoInfo->current_h;
     SDL_Surface* ecran=NULL;
@@ -88,7 +87,6 @@ int main(){
     int continuer=1;
     int selecteur=0;
     int demarrer_jeu=1;
-    int retour_menu=1;
     SDLKey touche;
     int nbs=NB_SERPENT;
     int temps_debut;
@@ -131,11 +129,9 @@ int main(){
         switch(selecteur){
             case 0:
                 demarrer_jeu=1;
-                retour_menu=1;
                 load_menu_sdl(ecran);
                 break;
             case 1:
-                retour_menu=1;
                 affiche_sdl(ecran,snakes,NB_SERPENT,p,SDL_GetTicks());
                 while(demarrer_jeu){
                     SDL_Flip(ecran);
@@ -150,23 +146,9 @@ int main(){
                 }
                 bools jouer=win(jouer_sdl(ecran,snakes,NB_SERPENT,p,touche,difficulte,temps_debut),snakes,NB_SERPENT);
                 if(!jouer.b){
-                    fin_partie_sdl(ecran,jouer,snakes,p.taille);
                     demarrer_jeu=1;
+                    selecteur=fin_partie_sdl(ecran,jouer,snakes,NB_SERPENT,p,temps_debut);
                     reset_snakes(snakes,NB_SERPENT,p.taille);
-                    while(retour_menu){
-                        SDL_WaitEvent(&event_fin_partie);
-                        switch(event_fin_partie.key.keysym.sym){
-                            case SDLK_KP1:
-                                retour_menu=0;
-                                break;
-                            case SDLK_KP2:
-                                selecteur=0;
-                                retour_menu=0;
-                                break;
-                            default:
-                                break;
-                        }
-                    }
                 }
                 break;
             case 2:
