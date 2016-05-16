@@ -57,7 +57,7 @@ void affiche_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p,int temps_deb
 void score_snakes_sdl(SDL_Surface* screen,snake* s,int nb_ser, plateau p, int tps_debut,int taille_px,SDL_Rect position_scoreboard);
 
 void load_menu_sdl(SDL_Surface* screen);
-void load_options_sdl(SDL_Surface* screen, snake* snakes, plateau p, int* difficulte, int* nbs);
+int load_options_sdl(SDL_Surface* screen, snake* snakes, plateau p, int* difficulte, int* nbs,SDLKey touche,int selecteur_position,int* continuer, int* selecteur_menu);
 
 int load_pause(SDL_Surface* screen, int taille_cases_px, int* temps_debut);
 

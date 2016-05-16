@@ -12,6 +12,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_ttf.h>
+#include <SDL/SDL_gfxPrimitives.h>
 #include "struct.h"
 #include "snake.h"
 
@@ -53,7 +54,7 @@ void score_snakes_sdl(SDL_Surface* screen, snake* s, int nb_ser, plateau p,int t
     SDL_Rect position_score;
     position_score_snake.x=position_scoreboard.x+2*taille_px;
     position_score_snake.y=position_scoreboard.y+4*taille_px;
-    SDL_Surface* square=SDL_CreateRGBSurface(0,taille_px,taille_px,32,0,0,0,0);
+    SDL_Surface* square=SDL_CreateRGBSurface(SDL_HWSURFACE,taille_px,taille_px,32,0,0,0,0);
     char texte[23];
     char type[8];
     for(int i=0;i<nb_ser;i++){
@@ -113,8 +114,8 @@ void affiche_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p,int temps_deb
     sprintf(score_ch,"TEMPS: %d s",temps);
     score=TTF_RenderText_Solid(police,score_ch,color_white);
     wall=IMG_Load("others/sprites/sprite_bricks_tutorial_1_25px.png");
-    snake=SDL_CreateRGBSurface(0,taille_cases_px,taille_cases_px,32,0,0,0,0);
-    score_board=SDL_CreateRGBSurface(0,(screen->w)-position_score_board.x,screen->h,32,0,0,0,0);
+    snake=SDL_CreateRGBSurface(SDL_HWSURFACE,taille_cases_px,taille_cases_px,32,0,0,0,0);
+    score_board=SDL_CreateRGBSurface(SDL_HWSURFACE,(screen->w)-position_score_board.x,screen->h,32,0,0,0,0);
     SDL_FillRect(screen,NULL,SDL_MapRGB(screen->format,140,140,140));
     SDL_FillRect(score_board,NULL,SDL_MapRGB(screen->format,0,0,0));
     SDL_Rect position_mur;
@@ -235,8 +236,9 @@ void load_menu_sdl(SDL_Surface* screen){
     TTF_CloseFont(policeTitre);
 }
 
-void load_options_sdl(SDL_Surface* screen, snake* snakes, plateau p, int* difficulte, int* nbs){
+int load_options_sdl(SDL_Surface* screen, snake* snakes, plateau p, int* difficulte, int* nbs,SDLKey touche,int selecteur_position, int* continuer, int* selecteur_menu){
     taille_cases_px=screen->h/p.taille;
+
     SDL_FillRect(screen,NULL,SDL_MapRGB(screen->format,0,0,0));
     SDL_Color couleurBlanche={255,255,255};
     TTF_Font* police=TTF_OpenFont("others/m01/m01.TTF",taille_cases_px*0.9);
@@ -269,7 +271,7 @@ void load_options_sdl(SDL_Surface* screen, snake* snakes, plateau p, int* diffic
             }
             sprintf(buffer3,"Snake %d %s",i+1,type);
             snakes_surfaces[i][0]=TTF_RenderText_Blended(police,buffer3,couleurBlanche);
-            snakes_surfaces[i][1]=SDL_CreateRGBSurface(0,taille_cases_px,taille_cases_px,32,0,0,0,0);
+            snakes_surfaces[i][1]=SDL_CreateRGBSurface(SDL_HWSURFACE,taille_cases_px,taille_cases_px,32,0,0,0,0);
             SDL_FillRect(snakes_surfaces[i][1],NULL,SDL_MapRGB(screen->format,tab_couleur[i][0],tab_couleur[i][1],tab_couleur[i][2]));
             snakes_surfaces[i][2]=TTF_RenderText_Blended(police,type,couleurBlanche);
         }
@@ -280,7 +282,7 @@ void load_options_sdl(SDL_Surface* screen, snake* snakes, plateau p, int* diffic
     positionTexte_vitesse_jeu.y=ecart_hauteur+texte_vitesse_jeu->h/2; positionTexte_vitesse_jeu.x=screen->w/4-texte_vitesse_jeu->w/2.0;
     positionTexte_vitesse.y=ecart_hauteur+texte_vitesse->h/2; positionTexte_vitesse.x=screen->w*(3.0/4.0)-texte_vitesse->w/2.0;
     positionTexte_type_snakes.y=2*ecart_hauteur+texte_type_snakes->h/2; positionTexte_type_snakes.x=screen->w/4.0-texte_type_snakes->w/2.0;
-    for(int j=0;j<NB_MAX_SERPENT;j++){
+    for(int j=0;j<(*nbs);j++){
         positionSnakes_surface[j].y=(j+3)*ecart_hauteur+snakes_surfaces[j][0]->h/2;
         positionSnakes_surface[j].x=0;
         }
@@ -299,17 +301,290 @@ void load_options_sdl(SDL_Surface* screen, snake* snakes, plateau p, int* diffic
         temp.x=screen->w*(3.0/4.0)-snakes_surfaces[k][2]->w/2.0;
         SDL_BlitSurface(snakes_surfaces[k][2],NULL,screen,&temp);
         }
+    SDL_Surface* selecteur=SDL_CreateRGBSurface(SDL_HWSURFACE,taille_cases_px,taille_cases_px,32,0,0,0,0);
+    SDL_FillRect(selecteur,NULL,SDL_MapRGB(screen->format,255,255,255));
+    SDL_Rect positionSelecteur;
+    int nombre_serpent=(*nbs);
+    int vitesse=(*difficulte);
+    SDL_Event event;
+    if(SDL_WaitEvent(&event)){
+        touche=event.key.keysym.sym;
+        switch(event.type)
+        {
+            case SDL_QUIT:
+                (*continuer)=0;
+            case SDL_KEYDOWN:
+                switch(event.key.keysym.sym){
+                    case SDLK_ESCAPE:
+                        (*selecteur_menu)=0;
+                    break;
+                    case SDLK_RETURN:
+                        (*selecteur_menu)=0;
+                    break;
+                    default:
+                        break;
+                    }
+            }
+        switch(selecteur_position)
+        {
+            case 0:
+                positionSelecteur.x=taille_cases_px;positionSelecteur.y=texte_nb_ser_jeu->h/2;
+                SDL_BlitSurface(selecteur,NULL,screen,&positionSelecteur);
+                if(event.type==SDL_KEYDOWN){
+                switch(touche){
+                    case SDLK_DOWN:
+                        selecteur_position=1;
+                        break;
+                    case SDLK_LEFT:
+                        if(nombre_serpent<=8 && nombre_serpent>1)
+                            nombre_serpent--;
+                        break;
+                    case SDLK_RIGHT:
+                        if(nombre_serpent>=1 && nombre_serpent<8)
+                            nombre_serpent++;
+                        break;
+                    default:
+                        break;
+                    }
+                }
+                break;
+            case 1:
+                positionSelecteur.x=taille_cases_px;positionSelecteur.y=texte_vitesse_jeu->h/2+ecart_hauteur;
+                SDL_BlitSurface(selecteur,NULL,screen,&positionSelecteur);
+                if(event.type==SDL_KEYDOWN){
+                switch(touche){
+                        case SDLK_DOWN:
+                            selecteur_position=2;
+                            break;
+                        case SDLK_UP:
+                            selecteur_position=0;
+                            break;
+                        case SDLK_LEFT:
+                            if(vitesse>1 && vitesse<=3)
+                                vitesse--;
+                            break;
+                        case SDLK_RIGHT:
+                            if(vitesse>=1 && vitesse<3)
+                                vitesse++;
+                            break;
+                        default:
+                            break;
+                            }
+                        }
+                    break;
+            case 2:
+                positionSelecteur.x=taille_cases_px; positionSelecteur.y=snakes_surfaces[1][0]->h/2+4*ecart_hauteur;
+                SDL_BlitSurface(selecteur,NULL,screen,&positionSelecteur);
+                if(event.type == SDL_KEYDOWN){
+                switch(touche){
+                    case SDLK_DOWN:
+                        if(nombre_serpent>2)
+                            selecteur_position=3;
+                        else
+                            selecteur_position=0;
+                        break;
+                    case SDLK_UP:
+                        selecteur_position=1;
+                        break;
+                    case SDLK_LEFT:
+                        if(snakes[1].playType>1 && snakes[1].playType<=3)
+                            snakes[1].playType--;
+                        break;
+                    case SDLK_RIGHT:
+                        if(snakes[1].playType<3 && snakes[1].playType>=1)
+                            snakes[1].playType++;
+
+                    default:
+                        break;
+                    }
+                }
+                break;
+
+            case 3:
+                positionSelecteur.x=taille_cases_px; positionSelecteur.y=snakes_surfaces[2][0]->h/2+5*ecart_hauteur;
+                SDL_BlitSurface(selecteur,NULL,screen,&positionSelecteur);
+                if(event.type == SDL_KEYDOWN){
+                    switch(touche){
+                        case SDLK_DOWN:
+                            if(nombre_serpent>3)
+                                selecteur_position=4;
+                            else
+                                selecteur_position=0;
+                            break;
+                        case SDLK_UP:
+                            selecteur_position=2;
+                            break;
+                        case SDLK_LEFT:
+                            if(snakes[2].playType>1 && snakes[2].playType<=3)
+                                snakes[2].playType--;
+                            break;
+                        case SDLK_RIGHT:
+                            if(snakes[2].playType<3 && snakes[2].playType>=1)
+                                snakes[2].playType++;
+                            break;
+                        default:
+                            break;
+
+                        }
+                    }
+                break;
+            case 4:
+                positionSelecteur.x=taille_cases_px; positionSelecteur.y=snakes_surfaces[3][0]->h/2+6*ecart_hauteur;
+                SDL_BlitSurface(selecteur,NULL,screen,&positionSelecteur);
+                if(event.type == SDL_KEYDOWN){
+                    switch(touche){
+                        case SDLK_DOWN:
+                            if(nombre_serpent>4)
+                                selecteur_position=5;
+                            else
+                                selecteur_position=0;
+                            break;
+                        case SDLK_UP:
+                            selecteur_position=3;
+                            break;
+                        case SDLK_LEFT:
+                            if(snakes[3].playType>1 && snakes[3].playType<=3)
+                                snakes[3].playType--;
+                            break;
+                        case SDLK_RIGHT:
+                            if(snakes[3].playType<3 && snakes[3].playType>=1)
+                                snakes[3].playType++;
+                            break;
+                        default:
+                            break;
+
+                        }
+                    }
+                break;
+            case 5:
+                positionSelecteur.x=taille_cases_px; positionSelecteur.y=snakes_surfaces[4][0]->h/2 + 7*ecart_hauteur;
+                SDL_BlitSurface(selecteur,NULL,screen,&positionSelecteur);
+                if(event.type == SDL_KEYDOWN){
+                    switch(touche){
+                        case SDLK_DOWN:
+                            if(nombre_serpent>5)
+                                selecteur_position=6;
+                            else
+                                selecteur_position=0;
+                            break;
+                        case SDLK_UP:
+                            selecteur_position=4;
+                            break;
+                        case SDLK_LEFT:
+                            if(snakes[4].playType>1 && snakes[4].playType<=3)
+                                snakes[4].playType--;
+                            break;
+                        case SDLK_RIGHT:
+                            if(snakes[4].playType<3 && snakes[4].playType>=1)
+                                snakes[4].playType++;
+                            break;
+                        default:
+                            break;
+
+                    }
+                }
+            break;
+
+            case 6:
+                positionSelecteur.x=taille_cases_px; positionSelecteur.y = snakes_surfaces[5][0]->h/2 + 8*ecart_hauteur;
+                SDL_BlitSurface(selecteur,NULL,screen,&positionSelecteur);
+                if( event.type == SDL_KEYDOWN){
+                    switch(touche){
+                        case SDLK_DOWN:
+                            if(nombre_serpent>6)
+                                selecteur_position=7;
+                            else
+                                selecteur_position=0;
+                            break;
+                        case SDLK_UP:
+                            selecteur_position=5;
+                            break;
+                        case SDLK_LEFT:
+                            if(snakes[5].playType>1 && snakes[5].playType<=3)
+                                snakes[5].playType--;
+                            break;
+                        case SDLK_RIGHT:
+                            if(snakes[5].playType<3 && snakes[5].playType>=1)
+                                snakes[5].playType++;
+                            break;
+                        default:
+                            break;
+
+                        }
+                    }
+                break;
+            case 7:
+                positionSelecteur.x=taille_cases_px; positionSelecteur.y = snakes_surfaces[6][0] -> h/2 + 9*ecart_hauteur;
+                SDL_BlitSurface(selecteur,NULL,screen,&positionSelecteur);
+                if( event.type == SDL_KEYDOWN){
+                    switch(touche){
+                        case SDLK_DOWN:
+                            if(nombre_serpent>7)
+                                selecteur_position=8;
+                            else
+                                selecteur_position=0;
+                            break;
+                        case SDLK_UP:
+                            selecteur_position=6;
+                        break;
+                        case SDLK_LEFT:
+                            if(snakes[6].playType>1 && snakes[6].playType<=3)
+                                snakes[6].playType--;
+                            break;
+                        case SDLK_RIGHT:
+                            if(snakes[6].playType<3 && snakes[6].playType>=1)
+                                snakes[6].playType++;
+                            break;
+                        default:
+                            break;
+                      }
+                    }
+                break;
+            case 8:
+                positionSelecteur.x=taille_cases_px; positionSelecteur.y = snakes_surfaces[7][0] -> h/2 + 10*ecart_hauteur;
+                SDL_BlitSurface(selecteur,NULL,screen,&positionSelecteur);
+                if( event.type == SDL_KEYDOWN){
+                    switch(touche){
+                        case SDLK_DOWN:
+                            selecteur_position=0;
+                            break;
+                        case SDLK_UP:
+                            selecteur_position=7;
+                        break;
+                        case SDLK_LEFT:
+                            if(snakes[7].playType>1 && snakes[7].playType<=3)
+                                snakes[7].playType--;
+                            break;
+                        case SDLK_RIGHT:
+                            if(snakes[7].playType<3 && snakes[7].playType>=1)
+                                snakes[7].playType++;
+                            break;
+                        default:
+                            break;
+                      }
+                    }
+                break;
+        }
+
+    }
+
+    //filledTrigonRGBA(screen,positionTexte_nb_ser_jeu.x,positionTexte_nb_ser_jeu.y,positionTexte_nb_ser_jeu.x,positionTexte_nb_ser_jeu.y+texte_nb_ser_jeu->h,positionTexte_nb_ser_jeu.x+texte_nb_ser_jeu->h/2,positionTexte_nb_ser_jeu.y+texte_nb_ser_jeu->h/2,255,255,255,255);
     TTF_CloseFont(police);
     SDL_FreeSurface(texte_nb_ser);
     SDL_FreeSurface(texte_nb_ser_jeu);
     SDL_FreeSurface(texte_vitesse_jeu);
     SDL_FreeSurface(texte_vitesse);
     SDL_FreeSurface(texte_type_snakes);
+    SDL_FreeSurface(selecteur);
     for(int i=0;i<(*nbs);i++){
         SDL_FreeSurface(snakes_surfaces[i][0]);
         SDL_FreeSurface(snakes_surfaces[i][1]);
         SDL_FreeSurface(snakes_surfaces[i][2]);
+
     }
+    (*nbs)=nombre_serpent;
+    (*difficulte)=vitesse;
+    return selecteur_position;
 }
 
 int load_pause(SDL_Surface* screen,int taille_plateau,int* temps_debut){
@@ -377,6 +652,7 @@ int load_pause(SDL_Surface* screen,int taille_plateau,int* temps_debut){
             default:
                 break;
         }
+
     }
     int fin=SDL_GetTicks();
     (*temps_debut)+=(fin-debut);

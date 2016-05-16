@@ -351,7 +351,8 @@ bools* jouer_sdl(SDL_Surface* screen, snake* s, int nb_ser, plateau p, SDLKey to
         }
     affiche_sdl(screen,s,nb_ser,p,temps_debut);
     bools* res=collisions(p,s,nb_ser);
-    SDL_Delay(difficulte*50);
+    SDL_Delay(30/difficulte);
+
     return res;
 }
 
