@@ -216,20 +216,11 @@ void init_sprites(){
     sprites[2]=IMG_Load("others/portail_entree.png");
     sprites[3]=IMG_Load("others/portail_sortie.png");
     sprites[4]=IMG_Load("others/sprites/sprite_bricks_tutorial_1_25px.png");
-    }
+}
 
 void affiche_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p,int temps_debut){
     taille_cases_px=screen->h/p.taille;
-   /* SDL_Surface* pomme=NULL;
-    SDL_Surface* poison=NULL;
-    SDL_Surface* portail_entree=NULL;
-    SDL_Surface* portail_sortie=NULL;
-    pomme=IMG_Load("others/sprites/pomme.png");
-    poison=IMG_Load("others/sprites/poison.png");
-    portail_entree=IMG_Load("others/portail_entree.png");
-    portail_sortie=IMG_Load("others/portail_sortie.png");*/
     SDL_Rect position_objet;
-   //SDL_Surface* wall=NULL;
     SDL_Surface* snake=NULL;
     SDL_Surface* score=NULL;
     SDL_Rect position_score_board;
@@ -241,7 +232,6 @@ void affiche_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p,int temps_deb
     int temps=(SDL_GetTicks()-temps_debut)/1000;
     sprintf(score_ch,"TEMPS: %d s",temps);
     score=TTF_RenderText_Solid(police,score_ch,color_white);
-    //wall=IMG_Load("others/sprites/sprite_bricks_tutorial_1_25px.png");
     snake=SDL_CreateRGBSurface(SDL_HWSURFACE,taille_cases_px,taille_cases_px,32,0,0,0,0);
     score_board=SDL_CreateRGBSurface(SDL_HWSURFACE,(screen->w)-position_score_board.x,screen->h,32,0,0,0,0);
     SDL_FillRect(screen,NULL,SDL_MapRGB(screen->format,140,140,140));
@@ -280,11 +270,6 @@ void affiche_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p,int temps_deb
             }
         }
     }
-   /* SDL_FreeSurface(pomme);
-    SDL_FreeSurface(poison);
-    SDL_FreeSurface(portail_entree);
-    SDL_FreeSurface(portail_sortie);
-    SDL_FreeSurface(wall);*/
     SDL_Rect position_snake;
     position_snake.x=0;
     position_snake.y=0;

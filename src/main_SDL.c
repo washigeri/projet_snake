@@ -68,12 +68,10 @@ void reset_snakes(snake* snakes, int nb,int taille_p){
 
 
 int main(){
-
     int nbs=2;
     int difficulte=2;
     init_tab_couleur();
-    plateau* p_point=init_plateau(30);
-    plateau p=(*p_point);
+    plateau* p=init_plateau(30);
     snake* snakes=init_snakes();
     if(SDL_Init(SDL_INIT_VIDEO)==-1){
         printf("Error sdl_init %s\n",SDL_GetError());
@@ -99,7 +97,7 @@ int main(){
     int selecteur_options=0;
     int demarrer_jeu=1;
     SDLKey touche;
-    placement_serpent(snakes,nbs,p.taille);
+    placement_serpent(snakes,nbs,p->taille);
     int temps_debut;
     while(continuer){
         while(SDL_PollEvent(&event)){
@@ -144,7 +142,7 @@ int main(){
                 load_menu_sdl(ecran);
                 break;
             case 1:
-                affiche_sdl(ecran,snakes,nbs,p,SDL_GetTicks());
+                affiche_sdl(ecran,snakes,nbs,*p,SDL_GetTicks());
                 while(demarrer_jeu){
                     SDL_Flip(ecran);
                     SDL_WaitEvent(&event_debut_partie);
@@ -159,21 +157,21 @@ int main(){
                 bools jouer=win(jouer_sdl(ecran,snakes,nbs,p,touche,difficulte,temps_debut),snakes,nbs);
                 if(!jouer.b){
                     demarrer_jeu=1;
-                    selecteur=fin_partie_sdl(ecran,jouer,snakes,nbs,p,temps_debut);
-                    reset_snakes(snakes,nbs,p.taille);
+                    selecteur=fin_partie_sdl(ecran,jouer,snakes,nbs,*p,temps_debut);
+                    reset_snakes(snakes,nbs,p->taille);
                 }
                 break;
             case 2:
-                selecteur_options=load_options_sdl(ecran,snakes,p,&difficulte,&nbs,touche,selecteur_options,&continuer,&selecteur);
-                placement_serpent(snakes,nbs,p.taille);
+                selecteur_options=load_options_sdl(ecran,snakes,*p,&difficulte,&nbs,touche,selecteur_options,&continuer,&selecteur);
+                placement_serpent(snakes,nbs,p->taille);
                 break;
             case 3:
                 continuer=0;
                 break;
             case 4:
-                selecteur=load_pause(ecran,p.taille,&temps_debut);
+                selecteur=load_pause(ecran,p->taille,&temps_debut);
                 if(!selecteur)
-                    reset_snakes(snakes,nbs,p.taille);
+                    reset_snakes(snakes,nbs,p->taille);
                 break;
             default:
                 break;
@@ -183,7 +181,7 @@ int main(){
     }
     TTF_Quit();
     SDL_Quit();
-    effacer_Partie(p_point,snakes,nbs);
+    effacer_Partie(p,snakes,nbs);
     return 0;
 }
 

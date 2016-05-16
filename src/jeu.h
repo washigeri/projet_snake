@@ -77,7 +77,7 @@ bools* jouer(snake* s,int n,plateau* p);
  * @param p Plateau de jeu
  * @return Tableau de bools indiquant si chaque serpent a gagné ou perdu la partie
  */
-bools* jouer_sdl(SDL_Surface* screen,snake* s,int nb_ser,plateau p,SDLKey touche,int difficulte,int temps_debut);
+bools* jouer_sdl(SDL_Surface* screen,snake* s,int nb_ser,plateau *p,SDLKey touche,int difficulte,int temps_debut);
 
 bools* jouer_test_collisions(snake* s,int n, plateau p);
 
