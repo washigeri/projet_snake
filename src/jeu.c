@@ -8,14 +8,14 @@
  */
 
 #include <stdio.h>
-#include <stdio_ext.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <math.h>
 #include <termios.h>
 #include <fcntl.h>
 #include <unistd.h>
-
+#include <SDL/SDL.h>
+#include <SDL/SDL_ttf.h>
 #include "struct.h"
 #include "snake.h"
 #include "affiche.h"
@@ -25,7 +25,7 @@
 
 
 #define PAS_TEMPS 100000
-
+#define MAX_NB_SNAKE 8
 /**
  *
  * \brief init_plateau Permet la creation d un tableau de n * n cases
@@ -95,6 +95,11 @@ void effacer_Partie(plateau* plat,snake* tabSerpent,int nombreSerpent)
 
 }
 
+
+
+
+
+
 bool arrete_partie(snake* s,int n){
     bool res=false;
     for(int i=1;i<n && !res;i++)
@@ -113,21 +118,23 @@ bool arrete_partie(snake* s,int n){
  * \param s le serpent a test (toujours le joueur)
  * \return true si il n'y a pas eu de collision, false sinon
  */
-bool win(bools* bs,snake* s,int n){
-    bool res=true;
+bools win(bools* bs,snake* s,int n){
+    bools res;
+    res.b=true;
     if(!bs[0].b){
-        s[0].dead[0]=true;
-        printf("G A M E O V E R\n\n");
-        res=false;
+    	s[0].dead[0]=true;
+        res.b=false;
+        res.s=s[0];
     }
     else {
         int i;
         for(i=1;i<n;i++){
             if(!bs[i].b){
                 kill_snake(s[i]);
-            }
+                res.s=s[i];
+    	    }
         }
-        res=arrete_partie(s,n);
+        res.b=arrete_partie(s,n);
     }
     free(bs);
     return res;
@@ -136,6 +143,7 @@ bool win(bools* bs,snake* s,int n){
  * \brief kbhit operation permet de preparer la console a lappui sur une touche
  * \return le succes ou non de l'operation
  */
+
 int kbhit()
 {
     struct termios oldt, newt;
@@ -177,6 +185,7 @@ void depart(snake* s,int n, plateau p){
         }
     }
 }
+
 
 /**
  * \brief jouer permet de jouer un tour de jeu
@@ -247,14 +256,50 @@ bools* jouer_test_collisions(snake* s,int n, plateau p){
     movesnake(s[0],s[0].dir[0]);
     bools* res=collisions(p,s,n);
     usleep(PAS_TEMPS);
+    return res;}
+
+/*
+bools* jouer_sdl(SDL_Surface* screen, snake* s, int nb_ser, plateau p, SDLKey touche,int difficulte,int temps_debut){
+    char dir=s[0].dir[0];
+    switch(touche){
+        case SDLK_DOWN:
+            dir=down;
+            break;
+        case SDLK_s:
+            dir=down;
+            break;
+        case SDLK_UP:
+            dir=up;
+            break;
+        case SDLK_z:
+            dir=up;
+            break;
+        case SDLK_LEFT:
+            dir=left;
+            break;
+        case SDLK_q:
+            dir=left;
+            break;
+        case SDLK_RIGHT:
+            dir=right;
+            break;
+        case SDLK_d:
+            dir=right;
+            break;
+        default:
+            break;
+        }
+    //affiche_sdl(screen,s,nb_ser,p);
+    movesnake(s[0],choix_strategie(s[0],s,nb_ser,p,dir));
+    for(int i=1;i<nb_ser;i++){
+        if(!s[i].dead[0]){
+            movesnake(s[i],choix_strategie(s[i],s,nb_ser,p,0));
+            }
+        }
+    affiche_sdl(screen,s,nb_ser,p,temps_debut);
+    bools* res=collisions(p,s,nb_ser);
+    SDL_Delay(30/difficulte);
+
     return res;
 }
-
-
-
-
-
-
-
-
-
+*/

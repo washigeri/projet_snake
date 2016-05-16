@@ -41,6 +41,8 @@ snake init_snake(int len,type typesnake){
     res.playType=typesnake;
     res.dead=(bool*) malloc (sizeof(bool));
     res.dead[0]=false;
+    res.score=(int*)calloc(1,sizeof(int));
+    res.score[0]=0;
     return res;
 }
 
@@ -52,7 +54,7 @@ snake init_snake(int len,type typesnake){
 void kill_snake(snake s){
     s.dead[0]=true;
 }
- 
+
 /**
  * \brief delete_snake permet de detruire un snake
  * \param snakeAeffacer serpent a detruire
@@ -85,6 +87,23 @@ bool egalite_snake(snake s1, snake s2){
 }
 
 /**
+
+ * \brief change_IA Permet le changement de l'intelligence artificielle d un serpent
+ * \param snake le serpent
+ * \param typeAI le nouveau type dAI
+ */
+void change_IA(snake snake, type typeAI)
+
+{
+    snake.playType = typeAI;
+}
+
+
+
+
+
+
+/**
  * \brief estInverse Permet de savoir si deux coordonnees sont inversees utile pour savoir si le
  * serpent ne fais pas marche arriere
  * \param dir1
@@ -100,6 +119,9 @@ bool estInverse(direction dir1,direction dir2)
     else if (dir1 == right)
     {
         return (dir2 == left);
+
+
+
     }
     else if (dir1 == up)
     {
@@ -112,16 +134,7 @@ bool estInverse(direction dir1,direction dir2)
 }
 
 
-/**
- * \brief change_IA Permet le changement de l'intelligence artificielle d un serpent
- * \param snake le serpent
- * \param typeAI le nouveau type dAI
- */
-void change_IA(snake snake, type typeAI)
 
-{
-    snake.playType = typeAI;
-}
 
 
 /**
