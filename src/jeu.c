@@ -6,7 +6,7 @@
  et le déplacement des serpents. Ce fichier implémente aussi les deux types d'IA: idle et défensive.
 
  */
-
+#define _BSD_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
