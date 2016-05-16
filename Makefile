@@ -32,6 +32,9 @@ $(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.c
 	@echo "Compiled "$<" successfully!"
 	
 
+
+	
+
 .PHONEY: clean
 clean:
 	@$(rm) $(OBJECTS)

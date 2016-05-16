@@ -699,7 +699,7 @@ int load_options_sdl(SDL_Surface* screen, snake* snakes, plateau p, int* difficu
     return selecteur_position;
 }
 
-int load_pause(SDL_Surface* screen,int taille_plateau,int* temps_debut){
+int load_pause(SDL_Surface* screen,int taille_plateau,int* temps_debut, int* continuer){
     int debut=SDL_GetTicks();
     taille_cases_px=screen->h/taille_plateau;
     SDL_Surface* surface=SDL_CreateRGBSurface(SDL_HWSURFACE,(screen->h)/2,(screen->h)/3,32,0,0,0,0);
@@ -747,25 +747,31 @@ int load_pause(SDL_Surface* screen,int taille_plateau,int* temps_debut){
     SDL_Event event;
     int pause=1;
     while(pause){
-        SDL_WaitEvent(&event);
-        switch(event.key.keysym.sym){
-            case SDLK_KP1:
-                selecteur=1;
+        if(SDL_WaitEvent(&event)){
+            if(event.type==SDL_QUIT){
+                (*continuer)=0;
                 pause=0;
-                break;
-            case SDLK_AMPERSAND:
-                selecteur=1;
-                pause=0;
-                break;
-            case SDLK_KP2:
-                selecteur=0;
-                pause=0;
-                break;
-            default:
-                break;
-        }
+                }
+            switch(event.key.keysym.sym){
+                    case SDLK_KP1:
+                        selecteur=1;
+                        pause=0;
+                        break;
+                    case SDLK_AMPERSAND:
+                        selecteur=1;
+                        pause=0;
+                        break;
+                    case SDLK_KP2:
+                        selecteur=0;
+                        pause=0;
+                        break;
+                    default:
+                        break;
+                  }
+       }
 
     }
+
     int fin=SDL_GetTicks();
     (*temps_debut)+=(fin-debut);
     SDL_FreeSurface(surface);
@@ -777,7 +783,7 @@ int load_pause(SDL_Surface* screen,int taille_plateau,int* temps_debut){
     return selecteur;
 }
 
-int fin_partie_sdl(SDL_Surface* screen, bools resultat_partie, snake* snakes,int nbs, plateau p,int temps_debut){
+int fin_partie_sdl(SDL_Surface* screen, bools resultat_partie, snake* snakes,int nbs, plateau p,int temps_debut, int* continuer){
     affiche_sdl(screen,snakes,nbs,p,temps_debut);
     taille_cases_px=screen->h/p.taille;
     SDL_Surface* surface=SDL_CreateRGBSurface(SDL_HWSURFACE,(screen->h)/2,(screen->h)/3,32,0,0,0,0);
@@ -840,18 +846,25 @@ int fin_partie_sdl(SDL_Surface* screen, bools resultat_partie, snake* snakes,int
     int retour_menu=1;
     int selecteur=1;
     while(retour_menu){
-        SDL_WaitEvent(&event_fin_partie);
-        switch(event_fin_partie.key.keysym.sym){
-            case SDLK_KP1:
+        if(SDL_WaitEvent(&event_fin_partie)){
+            if (event_fin_partie.type==SDL_QUIT){
                 retour_menu=0;
-                break;
-            case SDLK_KP2:
-                selecteur=0;
-                retour_menu=0;
-                break;
-            default:
+                (*continuer)=0;
+                }
+            else if(event_fin_partie.type == SDL_KEYDOWN){
+            switch(event_fin_partie.key.keysym.sym){
+                case SDLK_KP1:
+                    retour_menu=0;
+                    break;
+                case SDLK_KP2:
+                    selecteur=0;
+                    retour_menu=0;
+                    break;
+                default:
                 break;
         }
+        }
+    }
     }
     return selecteur;
 }
