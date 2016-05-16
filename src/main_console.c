@@ -56,11 +56,11 @@ float partie(int typeSerpent){
 
 /*JEU*/
     depart(s,nombreSerpent,*p);
-    while(win(jouer(s,nombreSerpent,p),s,nombreSerpent))
+    while(win(jouer(s,nombreSerpent,p),s,nombreSerpent).b)
 
 	time(&temps2);
 	float t=difftime(temps2,temps1);
-    printf("Tu as tenus %f secondes.\n", t );
+    printf("Tu as tenu %f secondes.\n", t );
 
     effacer_Partie(p,s,nombreSerpent);
 

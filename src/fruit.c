@@ -8,14 +8,16 @@
 #include "fruit.h"
 
 
+
 /*la chance de spawn dun objet a cahque tour */
-#define CH_SPAWNFRUIT 50 //sur 100
+#define CH_SPAWNFRUIT 10 //sur 100
 
 /*le nombre maximum de bonus sur le plateau*/
-#define MAX_NB_ITEM 100
+#define MAX_NB_ITEM 10
 /*le nombre maximum de teleporter et de trou de ver*/
-#define MAX_TELEPORT 3
-/*le nombre de type dobjet troudever non compris*/
+#define MAX_TELEPORT 1
+/*le nombre de type d'objets troudever non compris*/
+
 #define NB_TYPE_ITEM 3
 
 /*la marge d'apparition des trou de ver*/

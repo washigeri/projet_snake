@@ -4,14 +4,14 @@
  *
  *
  */
-
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <math.h>
-//#include <SDL/SDL.h>
-//#include <SDL/SDL_image.h>
-//#include <SDL/SDL_ttf.h>
+#include <SDL/SDL.h>
+#include <SDL/SDL_image.h>
+#include <SDL/SDL_ttf.h>
 #include "struct.h"
 #include "snake.h"
 
@@ -89,8 +89,8 @@ void affiche(plateau p, snake* s,int n){
     int i,j;
     for(i=0;i<p.taille;i++){
         for(j=0;j<p.taille;j++){
-            bool* ct = cherche_tete(i,j,s,n);
-            bool* cs =cherche_snake(i,j,s,n);
+	    bool* ct=cherche_tete(i,j,s,n);
+	    bool* cs=cherche_snake(i,j,s,n);
             if((i==0 && j==0)||(i==p.taille-1 && j==0)||(i==0 && j==p.taille-1)||(i==p.taille-1 && j==p.taille-1)){
                 printf("+");
             }
@@ -121,16 +121,18 @@ void affiche(plateau p, snake* s,int n){
             else{
                 printf("  ");
             }
-            free(ct);
-            free(cs);
+
+	    free(ct);
+        free(cs);
         }
         printf("\n");
     }
 }
 
-/*
+
 int tab_couleur[NB_MAX_SERPENT][3];
 int taille_cases_px;
+SDL_Surface* sprites[5];
 
 void init_tab_couleur(){
     FILE* fichier=NULL;
@@ -192,7 +194,7 @@ void score_snakes_sdl(SDL_Surface* screen, snake* s, int nb_ser, plateau p,int t
                 sprintf(type,"Idle");
                 break;
             case 2:
-                sprintf(type,"Défensif");
+                sprintf(type,"Defensif");
                 break;
             case 3:
                 sprintf(type,"Offensif");
@@ -213,9 +215,17 @@ void score_snakes_sdl(SDL_Surface* screen, snake* s, int nb_ser, plateau p,int t
     TTF_CloseFont(police_score_snake);
 }
 
+void init_sprites(){
+    sprites[0]=IMG_Load("others/sprites/pomme-wh.png");
+    sprites[1]=IMG_Load("others/sprites/poison.png");
+    sprites[2]=IMG_Load("others/sprites/portail_entree.png");
+    sprites[3]=IMG_Load("others/sprites/portail_sortie.png");
+    sprites[4]=IMG_Load("others/sprites/sprite_bricks_tutorial_1_25px.png");
+}
+
 void affiche_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p,int temps_debut){
     taille_cases_px=screen->h/p.taille;
-    SDL_Surface* wall=NULL;
+    SDL_Rect position_objet;
     SDL_Surface* snake=NULL;
     SDL_Surface* score=NULL;
     SDL_Rect position_score_board;
@@ -227,7 +237,6 @@ void affiche_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p,int temps_deb
     int temps=(SDL_GetTicks()-temps_debut)/1000;
     sprintf(score_ch,"TEMPS: %d s",temps);
     score=TTF_RenderText_Solid(police,score_ch,color_white);
-    wall=IMG_Load("others/sprites/sprite_bricks_tutorial_1_25px.png");
     snake=SDL_CreateRGBSurface(SDL_HWSURFACE,taille_cases_px,taille_cases_px,32,0,0,0,0);
     score_board=SDL_CreateRGBSurface(SDL_HWSURFACE,(screen->w)-position_score_board.x,screen->h,32,0,0,0,0);
     SDL_FillRect(screen,NULL,SDL_MapRGB(screen->format,140,140,140));
@@ -242,11 +251,30 @@ void affiche_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p,int temps_deb
         for(j=0;j<p.taille;j++){
             if(i==0 || j==0 || i==p.taille-1 || j==p.taille-1){
                 position_mur.y=j*taille_cases_px;
-                SDL_BlitSurface(wall,NULL,screen,&position_mur);
+                SDL_BlitSurface(sprites[4],NULL,screen,&position_mur);
+            }
+            else if(p.cases[j][i]==2){
+                position_objet.x=i*taille_cases_px;
+                position_objet.y=j*taille_cases_px;
+                SDL_BlitSurface(sprites[0],NULL,screen,&position_objet);
+            }
+            else if(p.cases[j][i]==3){
+                position_objet.x=i*taille_cases_px;
+                position_objet.y=j*taille_cases_px;
+                SDL_BlitSurface(sprites[1],NULL,screen,&position_objet);
+            }
+            else if(p.cases[j][i]==4){
+                position_objet.x=i*taille_cases_px;
+                position_objet.y=j*taille_cases_px;
+                SDL_BlitSurface(sprites[2],NULL,screen,&position_objet);
+            }
+            else if(p.cases[j][i]==5){
+                position_objet.x=i*taille_cases_px;
+                position_objet.y=j*taille_cases_px;
+                SDL_BlitSurface(sprites[3],NULL,screen,&position_objet);
             }
         }
     }
-    SDL_FreeSurface(wall);
     SDL_Rect position_snake;
     position_snake.x=0;
     position_snake.y=0;
@@ -450,11 +478,11 @@ int load_options_sdl(SDL_Surface* screen, snake* snakes, plateau p, int* difficu
                         selecteur_position=1;
                         break;
                     case SDLK_LEFT:
-                        if(nombre_serpent<=8 && nombre_serpent>1)
+                        if(nombre_serpent<=8 && nombre_serpent>2)
                             nombre_serpent--;
                         break;
                     case SDLK_RIGHT:
-                        if(nombre_serpent>=1 && nombre_serpent<8)
+                        if(nombre_serpent>=2 && nombre_serpent<8)
                             nombre_serpent++;
                         break;
                     case SDLK_UP:
@@ -684,7 +712,6 @@ int load_options_sdl(SDL_Surface* screen, snake* snakes, plateau p, int* difficu
 
     }
 
-    //filledTrigonRGBA(screen,positionTexte_nb_ser_jeu.x,positionTexte_nb_ser_jeu.y,positionTexte_nb_ser_jeu.x,positionTexte_nb_ser_jeu.y+texte_nb_ser_jeu->h,positionTexte_nb_ser_jeu.x+texte_nb_ser_jeu->h/2,positionTexte_nb_ser_jeu.y+texte_nb_ser_jeu->h/2,255,255,255,255);
     TTF_CloseFont(police);
     SDL_FreeSurface(texte_nb_ser);
     SDL_FreeSurface(texte_nb_ser_jeu);
@@ -703,7 +730,7 @@ int load_options_sdl(SDL_Surface* screen, snake* snakes, plateau p, int* difficu
     return selecteur_position;
 }
 
-int load_pause(SDL_Surface* screen,int taille_plateau,int* temps_debut){
+int load_pause(SDL_Surface* screen,int taille_plateau,int* temps_debut, int* continuer){
     int debut=SDL_GetTicks();
     taille_cases_px=screen->h/taille_plateau;
     SDL_Surface* surface=SDL_CreateRGBSurface(SDL_HWSURFACE,(screen->h)/2,(screen->h)/3,32,0,0,0,0);
@@ -751,25 +778,35 @@ int load_pause(SDL_Surface* screen,int taille_plateau,int* temps_debut){
     SDL_Event event;
     int pause=1;
     while(pause){
-        SDL_WaitEvent(&event);
-        switch(event.key.keysym.sym){
-            case SDLK_KP1:
-                selecteur=1;
+        if(SDL_WaitEvent(&event)){
+            if(event.type==SDL_QUIT){
+                (*continuer)=0;
                 pause=0;
-                break;
-            case SDLK_AMPERSAND:
-                selecteur=1;
-                pause=0;
-                break;
-            case SDLK_KP2:
-                selecteur=0;
-                pause=0;
-                break;
-            default:
-                break;
-        }
+                }
+            switch(event.key.keysym.sym){
+                    case SDLK_KP1:
+                        selecteur=1;
+                        pause=0;
+                        break;
+                    case SDLK_AMPERSAND:
+                        selecteur=1;
+                        pause=0;
+                        break;
+                    case SDLK_KP2:
+                        selecteur=0;
+                        pause=0;
+                        break;
+                    case SDLK_WORLD_73:
+                       selecteur=0;
+                       pause=0;
+                       break;
+                    default:
+                        break;
+                  }
+       }
 
     }
+
     int fin=SDL_GetTicks();
     (*temps_debut)+=(fin-debut);
     SDL_FreeSurface(surface);
@@ -781,7 +818,7 @@ int load_pause(SDL_Surface* screen,int taille_plateau,int* temps_debut){
     return selecteur;
 }
 
-int fin_partie_sdl(SDL_Surface* screen, bools resultat_partie, snake* snakes,int nbs, plateau p,int temps_debut){
+int fin_partie_sdl(SDL_Surface* screen, bools resultat_partie, snake* snakes,int nbs, plateau p,int temps_debut, int* continuer){
     affiche_sdl(screen,snakes,nbs,p,temps_debut);
     taille_cases_px=screen->h/p.taille;
     SDL_Surface* surface=SDL_CreateRGBSurface(SDL_HWSURFACE,(screen->h)/2,(screen->h)/3,32,0,0,0,0);
@@ -844,20 +881,33 @@ int fin_partie_sdl(SDL_Surface* screen, bools resultat_partie, snake* snakes,int
     int retour_menu=1;
     int selecteur=1;
     while(retour_menu){
-        SDL_WaitEvent(&event_fin_partie);
-        switch(event_fin_partie.key.keysym.sym){
-            case SDLK_KP1:
+        if(SDL_WaitEvent(&event_fin_partie)){
+            if (event_fin_partie.type==SDL_QUIT){
                 retour_menu=0;
-                break;
-            case SDLK_KP2:
-                selecteur=0;
-                retour_menu=0;
-                break;
-            default:
+                (*continuer)=0;
+                }
+            else if(event_fin_partie.type == SDL_KEYDOWN){
+            switch(event_fin_partie.key.keysym.sym){
+                case SDLK_KP1:
+                    retour_menu=0;
+                    break;
+                case SDLK_AMPERSAND:
+                    retour_menu=0;
+                    break;
+                case SDLK_KP2:
+                    selecteur=0;
+                    retour_menu=0;
+                    break;
+                case SDLK_WORLD_73:
+                    selecteur=0;
+                    retour_menu=0;
+                    break;
+                default:
                 break;
         }
+        }
+    }
     }
     return selecteur;
 }
 
-*/

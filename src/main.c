@@ -1,3 +1,9 @@
+/**
+ * @file main.c
+ * @brief Main d'éxecution
+ */
+
+
 #include "struct.h"
 #include "jeu.h"
 #include "snake.h"
@@ -9,141 +15,204 @@
 #include <ctype.h>
 #include <string.h>
 #include <stdbool.h>
+#include <SDL/SDL.h>
+#include <SDL/SDL_ttf.h>
+#include <SDL/SDL_image.h>
 
-float partie(int typeSerpent){
-
-    int nombreSerpent = 2;
-/*LE SNAKE*/
-    snake snak=init_snake(4,joueur);
-    snak.pos[0].x=10;snak.pos[0].y=10;
-    snak.pos[1].x=9;snak.pos[1].y=10;
-    snak.pos[2].x=8;snak.pos[2].y=10;
-    snak.pos[3].x=7;snak.pos[3].y=10;
-/*LE SCHLANGA*/
-    snake schlanga=init_snake(4,typeSerpent);
-    schlanga.pos[0].x=15;schlanga.pos[0].y=15;
-    schlanga.pos[1].x=16;schlanga.pos[1].y=15;
-    schlanga.pos[2].x=17;schlanga.pos[2].y=15;
-    schlanga.pos[3].x=18;schlanga.pos[3].y=15;
-    schlanga.dir[0]=left;
-    snake* s=(snake*) malloc (nombreSerpent*sizeof(snake));
-    s[0]=snak;
-    s[1]=schlanga;
-
-/*INITILAISATION*/
-	/*DEBUT DU JEU*/
+#define NB_MAX_SERPENT 8
 
 
-	int taille_plateau=0;
-	printf("\n****LE JEU VA COMMENCER****\n\n");
-	printf("\nSaisissez la taille_plateau du tableau (minimum 20x20) puis ENTER\n");
-
-	scanf("%d",&taille_plateau);
-	if( taille_plateau<=19 ){ printf("\n! Erreur de saisie:dimension trop petite ou saisie differente d'un nombre !\nMode par defaut: dim=20\n"); taille_plateau=20 ;}
-
-
-	printf("\nReady!\n");
-	printf("Pour se deplacer:\n     ^\n     |\n     z\n<--q    d-->\n     s\n     |\n     v\n");
-	system("sleep 1;clear");
-
-
-	/*time->score*/
-    time_t temps1,temps2;
-	time(&temps1);
-
-    plateau* p=init_plateau(taille_plateau);
-    affiche(*p,s,nombreSerpent);
-
-/*JEU*/
-    depart(s,nombreSerpent,*p);
-    while(win(jouer(s,nombreSerpent,p),s,nombreSerpent).b)
-
-	time(&temps2);
-	float t=difftime(temps2,temps1);
-    printf("Tu as tenu %f secondes.\n", t );
-
-    effacer_Partie(p,s,nombreSerpent);
-
-	return t;
-}
-
-void afficher_score(){
-    FILE* fichier =NULL;
-    FILE* temp;
-    temp=fopen("others/temp.txt","w+");
-    fichier=fopen("others/score.txt", "r");
-	float res;
-	float max=0;
-	int i, len;
-	system("cat others/score.txt | wc -l > others/temp.txt");
-	fscanf(temp,"%d",&len);
-	fclose(temp);
-	for(i=0;i<len && i<20;i++){
-       	fscanf(fichier, "%f", &res);
-       	if( res!=EOF ){printf("[%d]: %f\n",i+1, res);}
-		if( res>max ){ max=res; }
-	}
-	printf("\nMeilleur score: %f\n", max);
-    fclose(fichier);
-    system("rm -f others/temp.txt");
-
-}
-
-void write_score(float score_de_la_partie){
-	FILE* fichier=NULL;
-	fichier=fopen("others/score.txt","a+");
-	fprintf(fichier,"%f\n",score_de_la_partie);
-	fclose(fichier);
-}
-
-
-int main()
-{
-	/*MENU*/
-	printf("Saisissez le numreo puis ENTER pour acceder à votre programme\n");
-	printf("\n1) Jouer\n2) Voir les scores\n3) Quitter\n");
-	int replay=0;
-	scanf("%d",&replay);
-
-
-    if( replay!=1 &&  replay!=2 &&  replay!=3 )
-            { printf("\n! Erreur de saisie:hors borne ou saisie differente d'un nombre !\nMode par defaut: jouer\n"); replay=1;}
-
-
-	if( replay==3 ){ printf("\n**Au revoir**\n"); exit(1); }
-	else if( replay==2 ){
-		/*score();*/
-		printf("\nscores (en s):\n");
-		afficher_score();
-
-	}
-	else {
-
-	replay=1;
-	int typeSerpent;
-
-	/*LES PARTIES JOUEES*/
-	while( replay==1 ){
-		system("clear");
-        printf("Choisissez le type de l'IA\n  1- idle\n  2- defensive\n 3- offensive\n  autre- Joueur\n");
-		scanf("%d",&typeSerpent);
-		write_score( partie(typeSerpent) );
-
-		/*PARTIE POUR RECOMMENCER UNE PARTIE*/
-
-		printf("\nVoulez vous refaire une partie?\nSi oui ecrivez 1 puis ENTER, si non ecrivez 0 puis ENTER\n");
-
-		scanf("%d",&replay);
-
-
-		if( replay!=0 && replay!=1 ){
-		    printf("\n! Erreur de saisie !\nMode par defaut: Quitter\n");
-		    replay=0 ;
-		}
-
-	}
-	printf("\n**Au revoir**\n");
+snake* init_snakes(){
+    snake* res=(snake*)calloc(NB_MAX_SERPENT,sizeof(snake));
+    int taille_serpent=4;
+    for(int i=0;i<NB_MAX_SERPENT;i++){
+        if(i==0){
+            res[i]=init_snake(taille_serpent,joueur);
+            }
+        else{
+            res[i]=init_snake(taille_serpent,idle);
+            }
+        }
+    return res;
     }
 
+void placement_serpent(snake* res, int nbs, int taille_plateau){
+    int espacement_vert_g=(taille_plateau)/(nbs/2+1);
+    int espacement_vert_d=(taille_plateau)/(nbs-(nbs/2)+1);
+    int taille_serpent=4;
+    for(int i=0;i<nbs;i++){
+        for(int k=0;k<taille_serpent;k++){
+            if(i<(nbs/2)){
+                res[i].pos[k].y=(i+1)*espacement_vert_g;
+                res[i].pos[k].x=(taille_plateau/4)+(taille_serpent/2)-k;
+                res[i].dir[0]=right;
+                }
+            else{
+                res[i].pos[k].y=(i+1 - nbs/2)*espacement_vert_d;
+                res[i].pos[k].x=(3*taille_plateau/4)-(taille_serpent/2)+k;
+                res[i].dir[0]=left;
+                }
+            }
+        }
+    }
+
+
+
+void reset_snakes(snake* snakes, int nb,int taille_p){
+    for(int i=0;i<nb;i++){
+        snakes[i].dead[0]=false;
+        free(snakes[i].pos);
+        snakes[i].taille=4;
+        snakes[i].pos=(coord*)malloc(4*sizeof(coord));
+    }
+    placement_serpent(snakes, nb,taille_p);
+}
+
+void reset_plateau(plateau *p){
+    int i,j;
+    for(i=1;i<p->taille-1;i++){
+        for(j=1;j<p->taille-1;j++){
+            p->cases[j][i]=0;
+        }
+    }
+    p->nombreItem=0;
+    p->nombreTroudever=0;
+    p->troudever=NULL;
+}
+
+void reset_partie(snake* snakes, int nbs,plateau *p){
+    reset_snakes(snakes,nbs,p->taille);
+    reset_plateau(p);
+}
+
+
+
+int main(){
+    int nbs=2;
+    int difficulte=2;
+    init_tab_couleur();
+    plateau* p=init_plateau(30);
+    snake* snakes=init_snakes();
+    if(SDL_Init(SDL_INIT_VIDEO)==-1){
+        printf("Error sdl_init %s\n",SDL_GetError());
+        return 1;
+    }
+    TTF_Init();
+    init_sprites();
+    const SDL_VideoInfo* videoInfo;
+    videoInfo=SDL_GetVideoInfo();
+    SDL_Event event;
+    SDL_Event event_debut_partie;
+    unsigned int maxW=videoInfo->current_w;
+    unsigned int maxH=videoInfo->current_h;
+    SDL_Surface* ecran=NULL;
+    ecran=SDL_SetVideoMode(maxW,maxH,32, SDL_RESIZABLE | SDL_HWSURFACE | SDL_DOUBLEBUF);
+    SDL_WM_SetCaption("Snake vs Schlangà",NULL);
+    if(ecran==NULL){
+        printf("Error sdl_setvideomode %s\n",SDL_GetError());
+        return 1;
+    }
+    int continuer=1;
+    int selecteur=0;
+    int selecteur_options=0;
+    int demarrer_jeu=1;
+    SDLKey touche;
+    placement_serpent(snakes,nbs,p->taille);
+    int temps_debut;
+    while(continuer){
+        while(SDL_PollEvent(&event)){
+            switch(event.type){
+                case SDL_QUIT:
+                    continuer=0;
+                    break;
+                case SDL_KEYDOWN:
+                    touche=event.key.keysym.sym;
+                    switch(touche){
+                        case SDLK_KP1:
+                            if(selecteur==0)
+                                selecteur=1;
+                            break;
+                        case SDLK_AMPERSAND:
+                            if(selecteur==0)
+                                selecteur=1;
+                            break;
+                        case SDLK_KP2:
+                            if(selecteur==0)
+                                selecteur=2;
+                            break;
+                         case SDLK_WORLD_73:
+                            if(selecteur==0)
+                                selecteur=2;
+                            break;
+                        case SDLK_KP3:
+                            if(selecteur==0)
+                                selecteur=3;
+                            break;
+                            case SDLK_QUOTEDBL:
+                            if(selecteur==0)
+                                selecteur=3;
+                            break;
+                        case SDLK_ESCAPE:
+                            if(selecteur==1)
+                                selecteur=4;
+                            break;
+                        default:
+                            break;
+                    }
+                default:
+                    break;
+            }
+        }
+
+        switch(selecteur){
+            case 0:
+                demarrer_jeu=1;
+                load_menu_sdl(ecran);
+                break;
+            case 1:
+                affiche_sdl(ecran,snakes,nbs,*p,SDL_GetTicks());
+                while(demarrer_jeu){
+                    SDL_Flip(ecran);
+                    SDL_WaitEvent(&event_debut_partie);
+                    SDLKey input=event_debut_partie.key.keysym.sym;
+                    if(input==SDLK_DOWN || input==SDLK_s || input==SDLK_UP || input==SDLK_z || input==SDLK_LEFT || input==SDLK_q || input==SDLK_RIGHT || input==SDLK_d)
+                    {
+                        touche=event_debut_partie.key.keysym.sym;
+                        demarrer_jeu=0;
+                        temps_debut=SDL_GetTicks();
+                    }
+                }
+                bools jouer=win(jouer_sdl(ecran,snakes,nbs,p,touche,difficulte,temps_debut),snakes,nbs);
+                if(!jouer.b){
+                    demarrer_jeu=1;
+                    selecteur=fin_partie_sdl(ecran,jouer,snakes,nbs,*p,temps_debut,&continuer);
+                    reset_partie(snakes,nbs,p);
+                }
+                break;
+            case 2:
+                selecteur_options=load_options_sdl(ecran,snakes,*p,&difficulte,&nbs,touche,selecteur_options,&continuer,&selecteur);
+                placement_serpent(snakes,nbs,p->taille);
+                break;
+            case 3:
+                continuer=0;
+                break;
+            case 4:
+                selecteur=load_pause(ecran,p->taille,&temps_debut,&continuer);
+                if(!selecteur)
+                    reset_snakes(snakes,nbs,p->taille);
+                break;
+            default:
+                break;
+        }
+    SDL_Flip(ecran);
+
+    }/*
+    for(int i=0;i<5;i++){
+            SDL_FreeSurface(sprites[i]);
+    }*/
+    TTF_Quit();
+    SDL_Quit();
+    effacer_Partie(p,snakes,nbs);
     return 0;
 }
+

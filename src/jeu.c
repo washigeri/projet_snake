@@ -6,7 +6,7 @@
  et le déplacement des serpents. Ce fichier implémente aussi les deux types d'IA: idle et défensive.
 
  */
-
+#define _BSD_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -14,8 +14,8 @@
 #include <termios.h>
 #include <fcntl.h>
 #include <unistd.h>
-//#include <SDL/SDL.h>
-//#include <SDL/SDL_ttf.h>
+#include <SDL/SDL.h>
+#include <SDL/SDL_ttf.h>
 #include "struct.h"
 #include "snake.h"
 #include "affiche.h"
@@ -263,8 +263,8 @@ bools* jouer_test_collisions(snake* s,int n, plateau p){
     usleep(PAS_TEMPS);
     return res;}
 
-/*
-bools* jouer_sdl(SDL_Surface* screen, snake* s, int nb_ser, plateau p, SDLKey touche,int difficulte,int temps_debut){
+
+bools* jouer_sdl(SDL_Surface* screen, snake* s, int nb_ser, plateau *p, SDLKey touche,int difficulte,int temps_debut){
     char dir=s[0].dir[0];
     switch(touche){
         case SDLK_DOWN:
@@ -294,17 +294,23 @@ bools* jouer_sdl(SDL_Surface* screen, snake* s, int nb_ser, plateau p, SDLKey to
         default:
             break;
         }
-    //affiche_sdl(screen,s,nb_ser,p);
-    movesnake(s[0],choix_strategie(s[0],s,nb_ser,p,dir));
-    for(int i=1;i<nb_ser;i++){
+    for(int i=0;i<nb_ser;i++){
         if(!s[i].dead[0]){
-            movesnake(s[i],choix_strategie(s[i],s,nb_ser,p,0));
+            direction dirchoisi = choix_strategie(s[i],s,nb_ser,*p,dir);
+            if(detectionFruit(s[i].pos[0],p)){
+                fruit_strategie(p,s+i,s[i].pos[0],dirchoisi);
+
+            }
+            else{
+                movesnake(s[i],dirchoisi);
             }
         }
-    affiche_sdl(screen,s,nb_ser,p,temps_debut);
-    bools* res=collisions(p,s,nb_ser);
-    SDL_Delay(30/difficulte);
+    }
+    affiche_sdl(screen,s,nb_ser,*p,temps_debut);
+    bools* res=collisions(*p,s,nb_ser);
+    placerFruit(p);
+    SDL_Delay(100/difficulte);
 
     return res;
 }
-*/
+

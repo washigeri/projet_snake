@@ -49,8 +49,10 @@ bool* cherche_tete(int i,int j, snake* s, int n);
  */
 
 void affiche(plateau p, snake* s,int n);
-/*
+
 int** init_tab_couleur();
+
+void init_sprites();
 
 void affiche_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p,int temps_debut);
 
@@ -60,8 +62,8 @@ void load_menu_sdl(SDL_Surface* screen);
 
 int load_options_sdl(SDL_Surface* screen, snake* snakes, plateau p, int* difficulte, int* nbs,SDLKey touche,int selecteur_position,int* continuer, int* selecteur_menu);
 
-int load_pause(SDL_Surface* screen, int taille_cases_px, int* temps_debut);
+int load_pause(SDL_Surface* screen, int taille_cases_px, int* temps_debut, int* continuer);
 
-int fin_partie_sdl(SDL_Surface* screen, bools resultat_partie, snake* snakes,int nbs, plateau p,int temps_debut);
-*/
+int fin_partie_sdl(SDL_Surface* screen, bools resultat_partie, snake* snakes,int nbs, plateau p,int temps_debut,int* continuer);
+
 #endif // AFFICHAGE_H_INCLUDED
