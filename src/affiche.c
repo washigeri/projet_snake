@@ -89,6 +89,8 @@ void affiche(plateau p, snake* s,int n){
     int i,j;
     for(i=0;i<p.taille;i++){
         for(j=0;j<p.taille;j++){
+	    bool* ct=cherche_tete(i,j,s,n);
+	    bool* cs=cherche_snake(i,j,s,n);
             if((i==0 && j==0)||(i==p.taille-1 && j==0)||(i==0 && j==p.taille-1)||(i==p.taille-1 && j==p.taille-1)){
                 printf("+");
             }
@@ -110,15 +112,17 @@ void affiche(plateau p, snake* s,int n){
             else if( p.cases[i][j]==5 ){
                 printf(")(");
             }
-            else if(check(cherche_tete(i,j,s,n),n)){
+            else if(check(ct,n)){
                 printf(":)");
             }
-            else if(check(cherche_snake(i,j,s,n),n)){
+            else if(check(cs,n)){
                 printf("==");
             }
             else{
                 printf("  ");
             }
+	    free(ct);
+            free(cs);
         }
         printf("\n");
     }
