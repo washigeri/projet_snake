@@ -211,6 +211,15 @@ void score_snakes_sdl(SDL_Surface* screen, snake* s, int nb_ser, plateau p,int t
 
 void affiche_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p,int temps_debut){
     taille_cases_px=screen->h/p.taille;
+    SDL_Surface* pomme=NULL;
+    SDL_Surface* poison=NULL;
+    SDL_Surface* portail_entree=NULL;
+    SDL_Surface* portail_sortie=NULL;
+    pomme=IMG_Load("others/sprites/pomme.png");
+    poison=IMG_Load("others/sprites/poison.png");
+    portail_entree=IMG_Load("others/portail_entree.png");
+    portail_sortie=IMG_Load("others/portail_sortie.png");
+    SDL_Rect position_objet;
     SDL_Surface* wall=NULL;
     SDL_Surface* snake=NULL;
     SDL_Surface* score=NULL;
@@ -240,8 +249,32 @@ void affiche_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p,int temps_deb
                 position_mur.y=j*taille_cases_px;
                 SDL_BlitSurface(wall,NULL,screen,&position_mur);
             }
+            else if(p.cases[i][j]==2){
+                position_objet.x=i*taille_cases_px;
+                position_objet.y=j*taille_cases_px;
+                SDL_BlitSurface(pomme,NULL,screen,&position_objet);
+            }
+            else if(p.cases[i][j]==3){
+                position_objet.x=i*taille_cases_px;
+                position_objet.y=j*taille_cases_px;
+                SDL_BlitSurface(poison,NULL,screen,&position_objet);
+            }
+            else if(p.cases[i][j]==4){
+                position_objet.x=i*taille_cases_px;
+                position_objet.y=j*taille_cases_px;
+                SDL_BlitSurface(portail_entree,NULL,screen,&position_objet);
+            }
+            else if(p.cases[i][j]==5){
+                position_objet.x=i*taille_cases_px;
+                position_objet.y=j*taille_cases_px;
+                SDL_BlitSurface(portail_sortie,NULL,screen,&position_objet);
+            }
         }
     }
+    SDL_FreeSurface(pomme);
+    SDL_FreeSurface(poison);
+    SDL_FreeSurface(portail_entree);
+    SDL_FreeSurface(portail_sortie);
     SDL_FreeSurface(wall);
     SDL_Rect position_snake;
     position_snake.x=0;
@@ -446,11 +479,11 @@ int load_options_sdl(SDL_Surface* screen, snake* snakes, plateau p, int* difficu
                         selecteur_position=1;
                         break;
                     case SDLK_LEFT:
-                        if(nombre_serpent<=8 && nombre_serpent>1)
+                        if(nombre_serpent<=8 && nombre_serpent>2)
                             nombre_serpent--;
                         break;
                     case SDLK_RIGHT:
-                        if(nombre_serpent>=1 && nombre_serpent<8)
+                        if(nombre_serpent>=2 && nombre_serpent<8)
                             nombre_serpent++;
                         break;
                     case SDLK_UP:
