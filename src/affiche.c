@@ -12,7 +12,6 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_ttf.h>
-#include <SDL/SDL_gfxPrimitives.h>
 #include "struct.h"
 #include "snake.h"
 
@@ -343,6 +342,8 @@ int load_options_sdl(SDL_Surface* screen, snake* snakes, plateau p, int* difficu
                         if(nombre_serpent>=1 && nombre_serpent<8)
                             nombre_serpent++;
                         break;
+                    case SDLK_UP:
+                        selecteur_position=nombre_serpent;
                     default:
                         break;
                     }
