@@ -188,7 +188,7 @@ void score_snakes_sdl(SDL_Surface* screen, snake* s, int nb_ser, plateau p,int t
                 sprintf(type,"Idle");
                 break;
             case 2:
-                sprintf(type,"Défensif");
+                sprintf(type,"Defensif");
                 break;
             case 3:
                 sprintf(type,"Offensif");
@@ -446,11 +446,11 @@ int load_options_sdl(SDL_Surface* screen, snake* snakes, plateau p, int* difficu
                         selecteur_position=1;
                         break;
                     case SDLK_LEFT:
-                        if(nombre_serpent<=8 && nombre_serpent>1)
+                        if(nombre_serpent<=8 && nombre_serpent>2)
                             nombre_serpent--;
                         break;
                     case SDLK_RIGHT:
-                        if(nombre_serpent>=1 && nombre_serpent<8)
+                        if(nombre_serpent>=2 && nombre_serpent<8)
                             nombre_serpent++;
                         break;
                     case SDLK_UP:
