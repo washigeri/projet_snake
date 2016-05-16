@@ -68,6 +68,7 @@ void reset_snakes(snake* snakes, int nb,int taille_p){
 
 
 int main(){
+
     int nbs=2;
     int difficulte=2;
     init_tab_couleur();
@@ -79,6 +80,7 @@ int main(){
         return 1;
     }
     TTF_Init();
+    init_sprites();
     const SDL_VideoInfo* videoInfo;
     videoInfo=SDL_GetVideoInfo();
     SDL_Event event;

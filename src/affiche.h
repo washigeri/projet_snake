@@ -52,6 +52,8 @@ void affiche(plateau p, snake* s,int n);
 
 int** init_tab_couleur();
 
+void init_sprites();
+
 void affiche_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p,int temps_debut);
 
 void score_snakes_sdl(SDL_Surface* screen,snake* s,int nb_ser, plateau p, int tps_debut,int taille_px,SDL_Rect position_scoreboard);
