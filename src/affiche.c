@@ -153,6 +153,7 @@ void affiche_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p,int temps_deb
     score_snakes_sdl(screen,s,nbs,p,temps_debut,taille_cases_px,position_score_board);
     SDL_FreeSurface(snake);
     SDL_FreeSurface(score);
+    SDL_FreeSurface(score_board);
     TTF_CloseFont(police);
 }
 
@@ -262,12 +263,13 @@ void load_options_sdl(SDL_Surface* screen, snake* snakes, plateau p, int* diffic
     }
 }
 
-int load_pause(SDL_Surface* screen,int taille_plateau){
+int load_pause(SDL_Surface* screen,int taille_plateau,int* temps_debut){
+    int debut=SDL_GetTicks();
     taille_cases_px=screen->h/taille_plateau;
-    SDL_Surface* surface=SDL_CreateRGBSurface(SDL_HWSURFACE,(screen->w)-(screen->h),(screen->h)/3,32,0,0,0,0);
+    SDL_Surface* surface=SDL_CreateRGBSurface(SDL_HWSURFACE,(screen->h)/2,(screen->h)/3,32,0,0,0,0);
     SDL_Rect position;
-    position.x=screen->h-(2*taille_cases_px/3);
-    position.y=2*(screen->h)/3-taille_cases_px;
+    position.x=(screen->h)/2-(surface->w)/2;
+    position.y=(screen->h)/2-(surface->h)/2;
     SDL_FillRect(surface,NULL,SDL_MapRGB(screen->format,255,255,255));
     SDL_BlitSurface(surface,NULL,screen,&position);
     SDL_Color couleurNoire={0,0,0};
@@ -288,6 +290,22 @@ int load_pause(SDL_Surface* screen,int taille_plateau){
     SDL_BlitSurface(texte1,NULL,screen,&positionTexte1);
     SDL_BlitSurface(texte2,NULL,screen,&positionTexte2);
     SDL_BlitSurface(texte3,NULL,screen,&positionTexte3);
+    SDL_Surface* contour_horizontal=SDL_CreateRGBSurface(SDL_HWSURFACE,surface->w+taille_cases_px,taille_cases_px/2,32,0,0,0,0);
+    SDL_Surface* contour_vertical=SDL_CreateRGBSurface(SDL_HWSURFACE,taille_cases_px/2,surface->h,32,0,0,0,0);
+    SDL_FillRect(contour_horizontal,NULL,SDL_MapRGB(screen->format,0,0,0));
+    SDL_FillRect(contour_vertical,NULL,SDL_MapRGB(screen->format,0,0,0));
+    SDL_Rect position_contour_hor;
+    SDL_Rect position_contour_vert;
+    position_contour_hor.x=position.x-taille_cases_px/2;
+    position_contour_hor.y=position.y-taille_cases_px/2;
+    position_contour_vert.x=position.x-taille_cases_px/2;
+    position_contour_vert.y=position.y;
+    SDL_BlitSurface(contour_horizontal,NULL,screen,&position_contour_hor);
+    SDL_BlitSurface(contour_vertical,NULL,screen,&position_contour_vert);
+    position_contour_hor.y=position.y+surface->h;
+    position_contour_vert.x=position.x+surface->w;
+    SDL_BlitSurface(contour_horizontal,NULL,screen,&position_contour_hor);
+    SDL_BlitSurface(contour_vertical,NULL,screen,&position_contour_vert);
     SDL_Flip(screen);
     int selecteur;
     SDL_Event event;
@@ -311,5 +329,55 @@ int load_pause(SDL_Surface* screen,int taille_plateau){
                 break;
         }
     }
+    int fin=SDL_GetTicks();
+    (*temps_debut)+=(fin-debut);
+    SDL_FreeSurface(surface);
+    SDL_FreeSurface(texte1);
+    SDL_FreeSurface(texte2);
+    SDL_FreeSurface(texte3);
+    SDL_FreeSurface(contour_horizontal);
+    SDL_FreeSurface(contour_vertical);
     return selecteur;
+}
+
+void fin_partie_sdl(SDL_Surface* screen, bools resultat_partie, snake* snakes, int taille_plateau){
+    taille_cases_px=screen->h/taille_plateau;
+    SDL_Surface* surface=SDL_CreateRGBSurface(SDL_HWSURFACE,(screen->h)/2,(screen->h)/3,32,0,0,0,0);
+    SDL_Rect position;
+    position.x=(screen->h)/2-(surface->w)/2;
+    position.y=(screen->h)/2-(surface->h)/2;
+    SDL_FillRect(surface,NULL,SDL_MapRGB(screen->format,255,255,255));
+    SDL_BlitSurface(surface,NULL,screen,&position);
+    SDL_Color couleurNoire={0,0,0};
+    TTF_Font* police=NULL;
+    police=TTF_OpenFont("others/m01/m01.TTF",taille_cases_px/2);
+    SDL_Surface* texte1;
+    SDL_Rect positionTexte1;
+    SDL_Rect positionTexte2;
+    SDL_Rect positionTexte3;
+    SDL_Surface* texte2=TTF_RenderText_Blended(police,"1-REJOUER",couleurNoire);
+    SDL_Surface* texte3=TTF_RenderText_Blended(police,"2-MENU",couleurNoire);
+    positionTexte2.x=position.x+(surface->w)/2-(texte2->w)/2;
+    positionTexte2.y=position.y+(surface->h)/2-(texte2->h)/2;
+    positionTexte3.x=position.x+(surface->w)/2-(texte3->w)/2;
+    positionTexte3.y=position.y+(surface->h)/2-(texte3->h)/2+taille_cases_px;
+    if(!egalite_snake(resultat_partie.s,snakes[0])){
+        texte1=TTF_RenderText_Blended(police,"VICTOIRE",couleurNoire);
+        positionTexte1.x=position.x+(surface->w)/2-(texte1->w)/2;
+        positionTexte1.y=position.y+(surface->h)/2-(texte1->h)/2-2*taille_cases_px;
+        SDL_BlitSurface(texte1,NULL,screen,&positionTexte1);
+    }
+    else{
+        texte1=TTF_RenderText_Blended(police,"GAME OVER",couleurNoire);
+        positionTexte1.x=position.x+(surface->w)/2-(texte1->w)/2;
+        positionTexte1.y=position.y+(surface->h)/2-(texte1->h)/2-2*taille_cases_px;
+        SDL_BlitSurface(texte1,NULL,screen,&positionTexte1);
+    }
+    SDL_BlitSurface(texte2,NULL,screen,&positionTexte2);
+    SDL_BlitSurface(texte3,NULL,screen,&positionTexte3);
+    SDL_Flip(screen);
+    SDL_FreeSurface(surface);
+    SDL_FreeSurface(texte1);
+    SDL_FreeSurface(texte2);
+    SDL_FreeSurface(texte3);
 }

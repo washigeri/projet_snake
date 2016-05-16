@@ -148,8 +148,9 @@ int main(){
                         temps_debut=SDL_GetTicks();
                     }
                 }
-                bools* jouer = jouer_sdl(ecran,snakes,NB_SERPENT,p,touche,difficulte,temps_debut);
-                if(!win(jouer,snakes,NB_SERPENT).b){
+                bools jouer=win(jouer_sdl(ecran,snakes,NB_SERPENT,p,touche,difficulte,temps_debut),snakes,NB_SERPENT);
+                if(!jouer.b){
+                    fin_partie_sdl(ecran,jouer,snakes,p.taille);
                     demarrer_jeu=1;
                     reset_snakes(snakes,NB_SERPENT,p.taille);
                     while(retour_menu){
@@ -175,7 +176,7 @@ int main(){
                 continuer=0;
                 break;
             case 4:
-                selecteur=load_pause(ecran,p.taille);
+                selecteur=load_pause(ecran,p.taille,&temps_debut);
                 if(!selecteur)
                     reset_snakes(snakes,NB_SERPENT,p.taille);
                 break;
