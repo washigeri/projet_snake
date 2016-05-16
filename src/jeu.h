@@ -7,6 +7,8 @@
 #ifndef JEU_H_INCLUDED
 #define JEU_H_INCLUDED
 #include <stdbool.h>
+#include <SDL/SDL.h>
+#include <SDL/SDL_ttf.h>
 
 
 
@@ -47,8 +49,7 @@ bool arrete_partie(snake* s,int n);
  * \param s le serpent a test (toujours le joueur)
  * \return true si il n'y a pas eu de collision, false sinon
  */
-bool win(bools* bs,snake* s,int n);
-
+bools win(bools* bs,snake* s,int n);
 
 /**
  * \brief kbhit operation permet de preparer la console a lappui sur une touche
@@ -82,7 +83,7 @@ bools* jouer(snake* s,int n,plateau* p);
  * @param p Plateau de jeu
  * @return Tableau de bools indiquant si chaque serpent a gagné ou perdu la partie
  */
-
+bools* jouer_sdl(SDL_Surface* screen,snake* s,int nb_ser,plateau p,SDLKey touche,int difficulte,int temps_debut);
 
 bools* jouer_test_collisions(snake* s,int n, plateau p);
 

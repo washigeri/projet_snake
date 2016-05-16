@@ -56,7 +56,7 @@ float partie(int typeSerpent){
 
 /*JEU*/
     depart(s,nombreSerpent,*p);
-    while(win(jouer(s,nombreSerpent,p),s,nombreSerpent).b)
+    while(win(jouer(s,nombreSerpent,p),s,nombreSerpent))
 
 	time(&temps2);
 	float t=difftime(temps2,temps1);
