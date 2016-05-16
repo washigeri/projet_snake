@@ -72,15 +72,22 @@ coord convertDirectionToCoord(direction dir);
 void movesnake(snake s,direction dir);
 
 /**
- * \brief add_taille_snake Fonction qui permet d'augmenter de 1 la taille du snake
- * \param snak le serpent dont la taille doit être modifié
-*/
+ * @brief add_taille_snake permet d augmenter la taille du serpent pendant son movement
+ * @param snak le serpent
+ * @param dir la direction
+ */
 void add_taille_snake(snake *snak,direction dir);
-
-
+/**
+ * @brief remove_taille_snake permet de reduire la taille du serpent pendant son movement
+ * @param snak le serpent
+ * @param dir la direction
+ */
 void remove_taille_snake(snake *snak,direction dir);
-
-
+/**
+ * @brief teleport_snake permet de teleporter la tete du  serpent sur une case donne
+ * @param snak le serpent
+ * @param dir la direction
+ * @param cor la coordonnes ou mettre la tete du serpent
+ */
 void teleport_snake(snake *snak,direction dir,coord cor);
-
 #endif // SNAKE_H_INCLUDED

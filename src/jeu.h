@@ -33,10 +33,13 @@ void erase_plateau(plateau* platAEffacer);
 void effacer_Partie(plateau* plat,snake* tabSerpent,int nombreSerpent);
 
 
-
-
-
-bool arrete_partie(snake* s, int n);
+/**
+ * @brief arrete_partie permet darrete la partie quand tous les serpent sont mort
+ * @param s la liste des serpent
+ * @param n la nombre de serpent
+ * @return
+ */
+bool arrete_partie(snake* s,int n);
 
 /**
  * \brief win Permet de test si le joueur humain a gagne ou perdu
@@ -44,16 +47,20 @@ bool arrete_partie(snake* s, int n);
  * \param s le serpent a test (toujours le joueur)
  * \return true si il n'y a pas eu de collision, false sinon
  */
-
-
 bool win(bools* bs,snake* s,int n);
+
 
 /**
  * \brief kbhit operation permet de preparer la console a lappui sur une touche
  * \return le succes ou non de l'operation
  */
 int kbhit();
-
+/**
+ * @brief depart initie le depart du jeu le jeu attend que le joueur appuye sur un touche pour commencer le jeu
+ * @param s la liste des serpent
+ * @param n le nombre de serpent
+ * @param p le plateau
+ */
 void depart(snake* s,int n, plateau p);
 /**
  * \brief jouer permet de jouer un tour de jeu

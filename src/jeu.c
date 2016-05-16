@@ -94,7 +94,12 @@ void effacer_Partie(plateau* plat,snake* tabSerpent,int nombreSerpent)
 
 
 }
-
+/**
+ * @brief arrete_partie permet darrete la partie quand tous les serpent sont mort
+ * @param s la liste des serpent
+ * @param n la nombre de serpent
+ * @return
+ */
 bool arrete_partie(snake* s,int n){
     bool res=false;
     for(int i=1;i<n && !res;i++)
@@ -158,6 +163,12 @@ int kbhit()
     return 0;
 }
 
+/**
+ * @brief depart initie le depart du jeu le jeu attend que le joueur appuye sur un touche pour commencer le jeu
+ * @param s la liste des serpent
+ * @param n le nombre de serpent
+ * @param p le plateau
+ */
 void depart(snake* s,int n, plateau p){
     int i;
     char dir;

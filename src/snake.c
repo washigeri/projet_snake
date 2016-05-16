@@ -7,10 +7,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <string.h>
 #include <math.h>
 
 #include "struct.h"
@@ -209,7 +205,11 @@ void movesnake(snake s,direction dir){
 }
 
 
-
+/**
+ * @brief add_taille_snake permet d augmenter la taille du serpent pendant son movement
+ * @param snak le serpent
+ * @param dir la direction
+ */
 void add_taille_snake(snake *snak,direction dir){
     int i;
 
@@ -218,13 +218,6 @@ void add_taille_snake(snake *snak,direction dir){
     {
     snak->taille++;
     }
-/*	snak->pos=(coord*)realloc(snak->pos,(snak->taille));
-//On décale les pos
-
-    for(i=1;i<snak->taille;i++){
-       	snak->pos[i]=snak->pos[i-1];
-    }
-*/
 
     coord* new_pos=malloc((snak->taille)*sizeof(coord));
     for(i=1;i<snak->taille;i++){
@@ -240,7 +233,11 @@ void add_taille_snake(snake *snak,direction dir){
     snak->dir[0]=dir;
     snak->pos=new_pos;
 }
-
+/**
+ * @brief remove_taille_snake permet de reduire la taille du serpent pendant son movement
+ * @param snak le serpent
+ * @param dir la direction
+ */
 void remove_taille_snake(snake *snak,direction dir){
 
 
@@ -250,13 +247,6 @@ void remove_taille_snake(snake *snak,direction dir){
         snak->taille--;
 
     }
-    /*	snak->pos=(coord*)realloc(snak->pos,(snak->taille));
-//On décale les pos
-
-    for(i=1;i<snak->taille;i++){
-        snak->pos[i]=snak->pos[i-1];
-    }
-*/
 
     coord* new_pos=malloc((snak->taille)*sizeof(coord));
     for(i=1;i<snak->taille;i++){
@@ -272,7 +262,12 @@ void remove_taille_snake(snake *snak,direction dir){
     snak->dir[0]=dir;
     snak->pos=new_pos;
 }
-
+/**
+ * @brief teleport_snake permet de teleporter la tete du  serpent sur une case donne
+ * @param snak le serpent
+ * @param dir la direction
+ * @param cor la coordonnes ou mettre la tete du serpent
+ */
 void teleport_snake(snake *snak,direction dir,coord cor)
 {
     snak->pos[0].x = cor.x;
