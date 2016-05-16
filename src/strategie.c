@@ -15,6 +15,8 @@
 #include "collision.h"
 #include "strategie.h"
 
+
+/*Valeurs defensives*/
 /* AntiBlocage, Plus le coefficient est eleve moins le serpents aura tendance a s'enrouler
  *autour de lui-meme*/
 #define COEFF_TARGETSNAKE 1
@@ -25,13 +27,21 @@
 /* Prevoyance ,plus le coefficient est eleve plus le serpent se mefira de la tete des autres serpents*/
 #define COEFF_HEAD 5
 
+/* Coefficient attribuee au valeurs defensives pour IA defensive*/
 #define COEFF_DEFENSIV 2
 
+/* Coefficient attribuee au valeurs defensives pour IA offensives*/
 #define COEFF_OFFENSIV 1
-#define PDS_MAX_ATTIRANCE_HEAD 500
 
+/*Valeurs offensives*/
+
+/*Aggresivité, attirance pour les tetes des serpents*/
+#define PDS_MAX_ATTIRANCE_HEAD 1000
+
+/*Bonus strategie, Le bonus gagné lorsque que le serpent fait un coup strategique*/
 #define PDS_BONUS_COUP_STRATEGIQ 1500
 
+/*Application strategie, a quel distance le serpent doit etre au minimun pour appliquer des coups strategique*/
 #define DISTANCE_MAX_APPLICATION_STRATEG 5
 
 
@@ -289,7 +299,14 @@ direction defensiv_strat(snake cible,snake* snakes,int nombreSerpent,plateau p)
 
     return res;
 }
-
+/**
+ * @brief calculPoidsTete permet de calculer poids de la case a partir des tete des tetes des adversaires
+ * @param coor la case teste
+ * @param cible le serpents cible
+ * @param snakes la listes des serpents
+ * @param nombreSerpent le nombre de serpent
+ * @return le poids attribue
+ */
 int  calculPoidsTete(coord coor,snake cible,snake*snakes,int nombreSerpent)
 {
     int res = 0;
@@ -306,6 +323,13 @@ int  calculPoidsTete(coord coor,snake cible,snake*snakes,int nombreSerpent)
     return res;
 
 }
+/**
+ * @brief connaitreSnakeLePlusProche permet de connaitre le serpent ennemie le plus proche la cible
+ * @param cible le serpent cible
+ * @param snakes la listes des serpents
+ * @param nombreSerpent le nombre de serpent
+ * @return le snake le plus proche
+ */
 
 snake connaitreSnakeLePlusProche(snake cible,snake*snakes,int nombreSerpent)
 {
@@ -332,6 +356,12 @@ snake connaitreSnakeLePlusProche(snake cible,snake*snakes,int nombreSerpent)
 }
 
 
+/**
+ * @brief calculdirection permet de calculer la direction  du vecteur a partir de deux points de l origin a extremite
+ * @param origin coord d'origine
+ * @param exter coord de destination
+ * @return la direction du vecteur
+ */
 direction calculdirection(coord origin,coord exter)
 {
     direction res =up;
@@ -339,7 +369,7 @@ direction calculdirection(coord origin,coord exter)
     {
         if(exter.y-origin.y > abs(exter.x-origin.x))
         {
-            res=down;
+            res=up;
         }
         else if (exter.x>origin.x)
         {
@@ -354,7 +384,7 @@ direction calculdirection(coord origin,coord exter)
     {
         if(origin.y-exter.y > abs(exter.x-origin.x))
         {
-            res=up;
+            res=down;
         }
         else if (exter.x>origin.x)
         {
@@ -370,13 +400,21 @@ direction calculdirection(coord origin,coord exter)
     return res;
 
 }
-
+/**
+ * @brief calculStrategie analyse les cas de positionnement de l'adversaire et de cible et juge si un coup a une importance strategie ou non
+ * @param cible le serpent cible
+ * @param directiontest la direction teste
+ * @param snakeProche le serpent ennemi
+ * @return le bonus attribue nul ou egal a PDS_BONUS_COUP_STRATEGIQ
+ */
 int calculStrategie(snake cible, direction directiontest, snake snakeProche)
 {
     int res = 0;
     direction dirsnake;
     dirsnake = calculdirection(cible.pos[0],snakeProche.pos[0]);
 
+
+    /*Cas speciaux le serpent nest pas assez proche de sa victime*/
     if(calculDistanceTaxicab(cible.pos[0],snakeProche.pos[0]) > DISTANCE_MAX_APPLICATION_STRATEG)
     {
         /*cas special
@@ -397,9 +435,9 @@ int calculStrategie(snake cible, direction directiontest, snake snakeProche)
 
         }
 
-        /*cas special
+        /*cas special 2
          *
-         * rapprochement diagonale
+         *  croisement
          *
          *     +++++
          *              |
@@ -486,7 +524,17 @@ int calculStrategie(snake cible, direction directiontest, snake snakeProche)
 
 
 
-
+/**
+ * @brief offensive_strat la gestion de la strategie offensive
+ * *Les coefficients des constantes defensives sont reduites par rapport a la strategie defensive
+ * *Le serpent est attirées par les tetes de ces adversaires
+ * *Le serpent connait des coups strategiques a appliquer
+ * @param cible le serpent cible
+ * @param snakes la liste des serpents
+ * @param nombreSerpent le nombre de serpent
+ * @param p le plateau de jeu
+ * @return la direction adoptee par le serpent
+ */
 direction offensive_strat(snake cible,snake* snakes,int nombreSerpent,plateau p)
 {
     int poids = -1;

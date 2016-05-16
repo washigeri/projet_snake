@@ -86,16 +86,57 @@ unsigned int calculPoidsSerpent(coord pos,snake cible,snake * snakes,int nombreS
  */
 direction defensiv_strat(snake cible,snake* snakes,int nombreSerpent,plateau p);
 
-int  calculPoidsTete(coord coor, snake cible, snake*snakes, int nombreSerpent);
+/**
+ * @brief calculPoidsTete permet de calculer poids de la case a partir des tete des tetes des adversaires
+ * @param coor la case teste
+ * @param cible le serpents cible
+ * @param snakes la listes des serpents
+ * @param nombreSerpent le nombre de serpent
+ * @return le poids attribue
+ */
+int  calculPoidsTete(coord coor,snake cible,snake*snakes,int nombreSerpent);
+/**
+ * @brief connaitreSnakeLePlusProche permet de connaitre le serpent ennemie le plus proche la cible
+ * @param cible le serpent cible
+ * @param snakes la listes des serpents
+ * @param nombreSerpent le nombre de serpent
+ * @return le snake le plus proche
+ */
 
 snake connaitreSnakeLePlusProche(snake cible,snake*snakes,int nombreSerpent);
 
 
+/**
+ * @brief calculdirection permet de calculer la direction  du vecteur a partir de deux points de l origin a extremite
+ * @param origin coord d'origine
+ * @param exter coord de destination
+ * @return la direction du vecteur
+ */
 direction calculdirection(coord origin,coord exter);
+/**
+ * @brief calculStrategie analyse les cas de positionnement de l'adversaire et de cible et juge si un coup a une importance strategie ou non
+ * @param cible le serpent cible
+ * @param directiontest la direction teste
+ * @param snakeProche le serpent ennemi
+ * @return le bonus attribue nul ou egal a PDS_BONUS_COUP_STRATEGIQ
+ */
+int calculStrategie(snake cible, direction directiontest, snake snakeProche);
 
 
-int calculStrategie(snake cible,direction directiontest,snake snakeProche);
 
+
+/**
+ * @brief offensive_strat la gestion de la strategie offensive
+ * *Les coefficients des constantes defensives sont reduites par rapport a la strategie defensive
+ * *Le serpent est attirées par les tetes de ces adversaires
+ * *Le serpent connait des coups strategiques a appliquer
+ * @param cible le serpent cible
+ * @param snakes la liste des serpents
+ * @param nombreSerpent le nombre de serpent
+ * @param p le plateau de jeu
+ * @return la direction adoptee par le serpent
+ */
+direction offensive_strat(snake cible,snake* snakes,int nombreSerpent,plateau p);
 
 /**
  * \brief choix_strategie Fonction permettant de choisir la direction du serpent selon sa strategie mise en place
