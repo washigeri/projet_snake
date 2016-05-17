@@ -180,12 +180,13 @@ void init_sprites(){
  * \param nb_ser le nombre de serpents en jeu
  * \param p le plateau de jeu
  * \param temps_debut temps entre le lancement du programme et le debut de la partie actuelle
+ * \param difficulte vitesse de deplacement des serpents
  * \param taille_px nombre de pixels representant une case d un plateau
  * \param position_scoreboard endroit où on doit afficher le score
  * \return void
  */
 
-void score_snakes_sdl(SDL_Surface* screen, snake* s, int nb_ser, plateau p,int tps_debut, int taille_px, SDL_Rect position_scoreboard){
+void score_snakes_sdl(SDL_Surface* screen, snake* s, int nb_ser, plateau p,int tps_debut,int difficulte, int taille_px, SDL_Rect position_scoreboard){
     TTF_Font* police_score_snake=NULL;
     police_score_snake=TTF_OpenFont("others/m01/m01.TTF",taille_px/2);
     SDL_Surface* texte_score=NULL;
@@ -229,7 +230,7 @@ void score_snakes_sdl(SDL_Surface* screen, snake* s, int nb_ser, plateau p,int t
                 break;
         }
         if(!s[i].dead[0]){
-            s[i].score[0]=(SDL_GetTicks()-tps_debut)/10;
+            s[i].score[0]=difficulte*(SDL_GetTicks()-tps_debut)/10;
         }
         sprintf(texte,"Snake(%s): %06d",type,s[i].score[0]);
         texte_score=TTF_RenderText_Solid(police_score_snake,texte,couleur_score);
@@ -247,10 +248,11 @@ void score_snakes_sdl(SDL_Surface* screen, snake* s, int nb_ser, plateau p,int t
  * \param nbs le nombre de serpents en jeu
  * \param p le plateau de jeu
  * \param temps_debut temps entre le lancement du programme et le debut de la partie actuelle
+ * \param difficulte vitesse de deplacement des serpents
  * \return void
  */
 
-void affiche_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p,int temps_debut){
+void affiche_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p,int temps_debut, int difficulte){
     taille_cases_px=screen->h/p.taille;
     SDL_Rect position_objet;
     SDL_Surface* snake=NULL;
@@ -320,7 +322,7 @@ void affiche_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p,int temps_deb
     position_score.x=position_score_board.x+taille_cases_px;
     position_score.y=taille_cases_px;
     SDL_BlitSurface(score,NULL,screen,&position_score);
-    score_snakes_sdl(screen,s,nbs,p,temps_debut,taille_cases_px,position_score_board);
+    score_snakes_sdl(screen,s,nbs,p,temps_debut,difficulte,taille_cases_px,position_score_board);
     SDL_FreeSurface(snake);
     SDL_FreeSurface(score);
     SDL_FreeSurface(score_board);
@@ -552,11 +554,11 @@ int load_options_sdl(SDL_Surface* screen, snake* snakes, plateau p, int* difficu
                             selecteur_position=0;
                             break;
                         case SDLK_LEFT:
-                            if(vitesse>1 && vitesse<=3)
+                            if(vitesse>1 && vitesse<=10)
                                 vitesse--;
                             break;
                         case SDLK_RIGHT:
-                            if(vitesse>=1 && vitesse<3)
+                            if(vitesse>=1 && vitesse<10)
                                 vitesse++;
                             break;
                         default:
@@ -884,13 +886,13 @@ int load_pause_sdl(SDL_Surface* screen,int taille_plateau,int* temps_debut, int*
  * \param nbs le nombre de serpents
  * \param p le plateau de jeu
  * \param temps_debut temps entre le lancement du programme et le debut de la partie actuelle
+ * \param difficulte vitesse des serpents
  * \param continuer variable globale definie dans le main permettant de se deplacer dans ce dernier
  * \return un entier servant a modifier une variable definie dans le main. Si cet entier vaut 1, alors le joueur recommence une partie et si il vaut 0, il retourne au menu
  */
 
-
-int fin_partie_sdl(SDL_Surface* screen, bools resultat_partie, snake* snakes,int nbs, plateau p,int temps_debut, int* continuer){
-    affiche_sdl(screen,snakes,nbs,p,temps_debut);
+int fin_partie_sdl(SDL_Surface* screen, bools resultat_partie, snake* snakes,int nbs, plateau p,int temps_debut,int difficulte, int* continuer){
+    affiche_sdl(screen,snakes,nbs,p,temps_debut, difficulte);
     taille_cases_px=screen->h/p.taille;
     SDL_Surface* surface=SDL_CreateRGBSurface(SDL_HWSURFACE,(screen->h)/2,(screen->h)/3,32,0,0,0,0);
     SDL_Rect position;

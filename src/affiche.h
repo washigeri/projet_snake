@@ -72,11 +72,11 @@ void init_sprites();
  * \param nbs le nombre de serpents en jeu
  * \param p le plateau de jeu
  * \param temps_debut temps entre le lancement du programme et le debut de la partie actuelle
+ * \param difficulte vitesse de deplacement des serpents
  * \return void
  */
 
-
-void affiche_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p,int temps_debut);
+void affiche_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p,int temps_debut, int difficulte);
 
 /**
  * \brief score_snakes_sdl Permet d'affiche les scores de tous les serpents en jeu a un instant donne
@@ -85,13 +85,13 @@ void affiche_sdl(SDL_Surface* screen, snake* s, int nbs, plateau p,int temps_deb
  * \param nb_ser le nombre de serpents en jeu
  * \param p le plateau de jeu
  * \param temps_debut temps entre le lancement du programme et le debut de la partie actuelle
+ * \param difficulte vitesse de deplacement des serpents
  * \param taille_px nombre de pixels representant une case d un plateau
  * \param position_scoreboard endroit où on doit afficher le score
  * \return void
  */
 
-
-void score_snakes_sdl(SDL_Surface* screen,snake* s,int nb_ser, plateau p, int tps_debut,int taille_px,SDL_Rect position_scoreboard);
+void score_snakes_sdl(SDL_Surface* screen, snake* s, int nb_ser, plateau p,int tps_debut,int difficulte, int taille_px, SDL_Rect position_scoreboard);
 
 /**
  * \brief load_menu_sdl Affiche le menu du jeu
@@ -137,11 +137,12 @@ int load_pause_sdl(SDL_Surface* screen, int taille_cases_px, int* temps_debut, i
  * \param nbs le nombre de serpents
  * \param p le plateau de jeu
  * \param temps_debut temps entre le lancement du programme et le debut de la partie actuelle
+ * \param difficulte vitesse des serpents
  * \param continuer variable globale definie dans le main permettant de se deplacer dans ce dernier
  * \return un entier servant a modifier une variable definie dans le main. Si cet entier vaut 1, alors le joueur recommence une partie et si il vaut 0, il retourne au menu
  */
 
 
-int fin_partie_sdl(SDL_Surface* screen, bools resultat_partie, snake* snakes,int nbs, plateau p,int temps_debut,int* continuer);
+int fin_partie_sdl(SDL_Surface* screen, bools resultat_partie, snake* snakes,int nbs, plateau p,int temps_debut,int difficulte,int* continuer);
 
 #endif // AFFICHAGE_H_INCLUDED

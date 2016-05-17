@@ -132,6 +132,7 @@ void reset_partie(snake* snakes, int nbs,plateau *p){
 
 
 int main(){
+    srand(time(NULL));
     int nbs=2;
     int difficulte=2;
     init_tab_couleur();
@@ -217,7 +218,7 @@ int main(){
                 load_menu_sdl(ecran);
                 break;
             case 1:
-                affiche_sdl(ecran,snakes,nbs,*p,SDL_GetTicks());
+                affiche_sdl(ecran,snakes,nbs,*p,SDL_GetTicks(),difficulte);
                 while(demarrer_jeu){
                     SDL_Flip(ecran);
                     SDL_WaitEvent(&event_debut_partie);
@@ -232,7 +233,7 @@ int main(){
                 bools jouer=win(jouer_sdl(ecran,snakes,nbs,p,touche,difficulte,temps_debut),snakes,nbs);
                 if(!jouer.b){
                     demarrer_jeu=1;
-                    selecteur=fin_partie_sdl(ecran,jouer,snakes,nbs,*p,temps_debut,&continuer);
+                    selecteur=fin_partie_sdl(ecran,jouer,snakes,nbs,*p,temps_debut,difficulte,&continuer);
                     reset_partie(snakes,nbs,p);
                 }
                 break;

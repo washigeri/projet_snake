@@ -315,10 +315,10 @@ bools* jouer_sdl(SDL_Surface* screen, snake* s, int nb_ser, plateau *p, SDLKey t
             }
         }
     }
-    affiche_sdl(screen,s,nb_ser,*p,temps_debut);
+    affiche_sdl(screen,s,nb_ser,*p,temps_debut,difficulte);
     bools* res=collisions(*p,s,nb_ser);
     placerFruit(p);
-    SDL_Delay(100/difficulte);
+    SDL_Delay(150/difficulte);
 
     return res;
 }
