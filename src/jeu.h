@@ -92,8 +92,12 @@ bools* jouer_test_collisions(snake* s,int n, plateau p);
  * @param screen pointeur sur une SDL_Surface, representant ici la fenetre de jeu creee par SDL_SetVideoMode
  * @param s Tableau contenant tous les serpents en jeu
  * @param p plateau de jeu
+ * @param touche la touche détecté au clavier pour le deplacement du joueur
+ * @param difficulte vitesse du jeu
+ * @param temps_debut temps en seconde depuis le début de la partie
  * @return Tableau de bools indiquant si chaque serpent a gagne ou perdu la partie
  */
+
 
 
 bools* jouer_sdl(SDL_Surface* screen,snake* s,int nb_ser,plateau *p,SDLKey touche,int difficulte,int temps_debut);
