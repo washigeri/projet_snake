@@ -164,7 +164,7 @@ int main(){
     int selecteur=0;
     int selecteur_options=0;
     int demarrer_jeu=1;
-    SDLKey touche;
+    SDLKey touche,input;
     placement_serpent(snakes,nbs,p->taille);
     int temps_debut;
     while(continuer){
@@ -221,14 +221,28 @@ int main(){
                 affiche_sdl(ecran,snakes,nbs,*p,SDL_GetTicks(),difficulte);
                 while(demarrer_jeu){
                     SDL_Flip(ecran);
-                    SDL_WaitEvent(&event_debut_partie);
-                    SDLKey input=event_debut_partie.key.keysym.sym;
-                    if(input==SDLK_DOWN || input==SDLK_s || input==SDLK_UP || input==SDLK_z || input==SDLK_LEFT || input==SDLK_q || input==SDLK_RIGHT || input==SDLK_d)
-                    {
-                        touche=event_debut_partie.key.keysym.sym;
+
+                    if(SDL_WaitEvent(&event_debut_partie)){
+                    switch(event_debut_partie.type){
+                    case SDL_QUIT:
                         demarrer_jeu=0;
-                        temps_debut=SDL_GetTicks();
+                        continuer=0;
+
+                        break;
+                    case SDL_KEYDOWN:
+                         input=event_debut_partie.key.keysym.sym;
+                        if(input==SDLK_DOWN || input==SDLK_s || input==SDLK_UP || input==SDLK_z || input==SDLK_LEFT || input==SDLK_q || input==SDLK_RIGHT || input==SDLK_d)
+                        {
+                            touche=event_debut_partie.key.keysym.sym;
+                            demarrer_jeu=0;
+                            temps_debut=SDL_GetTicks();
+                        }
+                        break;
+                        default:
+                            break;
+
                     }
+                }
                 }
                 bools jouer=win(jouer_sdl(ecran,snakes,nbs,p,touche,difficulte,temps_debut),snakes,nbs);
                 if(!jouer.b){

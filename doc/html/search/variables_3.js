@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['playtype',['playType',['../structsnake.html#ae725e9768f562a8eca2ca6e6c625c4d7',1,'snake']]],
-  ['pos',['pos',['../structsnake.html#aa4dbbc4e525b5868e7574fe7c37f43f2',1,'snake']]]
+  ['nombreitem',['nombreItem',['../structplateau.html#a8e558cf55a521393ef26ee26a0a8085e',1,'plateau']]],
+  ['nombretroudever',['nombreTroudever',['../structplateau.html#a1ca1d11c0d9411e3b49b5cee37194a88',1,'plateau']]]
 ];

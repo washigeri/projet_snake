@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['nombreserpent',['NOMBRESERPENT',['../_testmain_8c.html#a213341e7a2f8f075f1bc8041afc355b6',1,'Testmain.c']]]
+  ['distance_5fmax_5fapplication_5fstrateg',['DISTANCE_MAX_APPLICATION_STRATEG',['../strategie_8c.html#ab8e0a1fee1aaadd9ad982c949d6f203e',1,'strategie.c']]]
 ];

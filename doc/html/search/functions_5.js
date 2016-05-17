@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['idle_5fstrat',['idle_strat',['../snake_8c.html#a5121f50d4e28ac73660384ce641b4b16',1,'idle_strat(snake cible, snake *snakes, int nombreSerpent, plateau p):&#160;snake.c'],['../snake_8h.html#a5121f50d4e28ac73660384ce641b4b16',1,'idle_strat(snake cible, snake *snakes, int nombreSerpent, plateau p):&#160;snake.c']]],
-  ['init_5fbools_5ftab',['init_bools_tab',['../jeu_8c.html#aacd89ce873bc4edd04cc22223a3975e5',1,'init_bools_tab(int n):&#160;jeu.c'],['../jeu_8h.html#aacd89ce873bc4edd04cc22223a3975e5',1,'init_bools_tab(int n):&#160;jeu.c']]],
-  ['init_5fplateau',['init_plateau',['../jeu_8c.html#aebdfcb7668a89748d19c2ee047b2b04f',1,'init_plateau(int n):&#160;jeu.c'],['../jeu_8h.html#aebdfcb7668a89748d19c2ee047b2b04f',1,'init_plateau(int n):&#160;jeu.c']]],
-  ['init_5fsnake',['init_snake',['../snake_8c.html#ad215963d1fb162106af1416bfaea606e',1,'init_snake(int len, type typesnake):&#160;snake.c'],['../snake_8h.html#ad215963d1fb162106af1416bfaea606e',1,'init_snake(int len, type typesnake):&#160;snake.c']]]
+  ['fin_5fpartie_5fsdl',['fin_partie_sdl',['../affiche_8c.html#ad7a0f982ae32f9faa6181c887f26b654',1,'fin_partie_sdl(SDL_Surface *screen, bools resultat_partie, snake *snakes, int nbs, plateau p, int temps_debut, int difficulte, int *continuer):&#160;affiche.c'],['../affiche_8h.html#ad7a0f982ae32f9faa6181c887f26b654',1,'fin_partie_sdl(SDL_Surface *screen, bools resultat_partie, snake *snakes, int nbs, plateau p, int temps_debut, int difficulte, int *continuer):&#160;affiche.c']]],
+  ['fruit_5fstrategie',['fruit_strategie',['../fruit_8c.html#aaba2a0c7990a2f3ce2d71300aa45d0fc',1,'fruit_strategie(plateau *p, snake *s, coord caseFruit, direction dserpent):&#160;fruit.c'],['../fruit_8h.html#aaba2a0c7990a2f3ce2d71300aa45d0fc',1,'fruit_strategie(plateau *p, snake *s, coord caseFruit, direction dserpent):&#160;fruit.c']]]
 ];

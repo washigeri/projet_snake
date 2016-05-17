@@ -1,0 +1,25 @@
+var strategie_8c =
+[
+    [ "COEFF_DEFENSIV", "strategie_8c.html#a8a994b0cde8028e868b633d30e4cf166", null ],
+    [ "COEFF_HEAD", "strategie_8c.html#a5d9082eb766805f8ab18f4d47ecbb830", null ],
+    [ "COEFF_OFFENSIV", "strategie_8c.html#a761bf9a91db691f0fd8741fc74c89e96", null ],
+    [ "COEFF_OTHERSNAKE", "strategie_8c.html#a48a7e4ea72941cb9de009b480ce9b890", null ],
+    [ "COEFF_PLATEAU", "strategie_8c.html#a8c8cb9d5ed070c6d40f931812256ee2c", null ],
+    [ "COEFF_TARGETSNAKE", "strategie_8c.html#a8659f0ecb3558d244d523fa4c85c5638", null ],
+    [ "DISTANCE_MAX_APPLICATION_STRATEG", "strategie_8c.html#ab8e0a1fee1aaadd9ad982c949d6f203e", null ],
+    [ "PDS_BONUS_COUP_STRATEGIQ", "strategie_8c.html#af4c15482138e612efea34c0c55403395", null ],
+    [ "PDS_MAX_ATTIRANCE_HEAD", "strategie_8c.html#a9b2e1670bc5a79b9e5d67aeff3aeb57d", null ],
+    [ "calculdirection", "strategie_8c.html#a54a6977058d3ef03e0ceaf172a5d7dc8", null ],
+    [ "calculDistanceTaxicab", "strategie_8c.html#a2b6592a1d2443bf49f6035c6f5da626e", null ],
+    [ "calculPoidsSerpent", "strategie_8c.html#a9c190f2beafa9af6f75e8fd7ca493bcd", null ],
+    [ "calculPoidsTableau", "strategie_8c.html#a3dcf8730206e2e82f9e3cbf61b421460", null ],
+    [ "calculPoidsTete", "strategie_8c.html#ad1a4c3c10875aa932ded0c40451be4f7", null ],
+    [ "calculStrategie", "strategie_8c.html#ad0a7349b35eb3bc13fd5733b34562646", null ],
+    [ "choix_strategie", "strategie_8c.html#ad9eeae9367b4868677874daf82ff159b", null ],
+    [ "connaitreSnakeLePlusProche", "strategie_8c.html#ad962767e3e03ed46578f17538c3ae1f3", null ],
+    [ "defensiv_strat", "strategie_8c.html#a0bad36fea9348adaf6590edaa740b590", null ],
+    [ "idle_strat", "strategie_8c.html#a5121f50d4e28ac73660384ce641b4b16", null ],
+    [ "joueur_strat", "strategie_8c.html#a75c4383b41941d77c815506ac8713eca", null ],
+    [ "offensive_strat", "strategie_8c.html#a8834ff3ff8b367b14a62b419f7db215c", null ],
+    [ "tournerAntiHoraire", "strategie_8c.html#a3507a844cd394486bb81726fca988de1", null ]
+];
