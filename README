@@ -1,6 +1,7 @@
 Ce jeu consiste en l'affrontement de plusieurs serpents, le snake, controlé par l'utilisateur,
 et des Schlangà controlés par l'IA.
-Pour le moment, deux modes d'IA sont disponibles:
+
+Trois modes d'IA sont disponibles:
 	-une IA "idle": IA passive, qui ne fait que faire le tour
 	du plateau et éviter le joueur
 	-une IA "défensive" : IA qui évite le joueur et tente de
@@ -8,15 +9,23 @@ Pour le moment, deux modes d'IA sont disponibles:
 	de se faire coincer). Lors de chaque mouvement, l'IA attribue
 	un poids à chaque direction/choix possible, et se dirige 
 	dans la direction de plus gros poids (direction la moins
-	dangereuse).
+	dangereuse)
+	- une IA "offensive" : cette IA conserve les même propriétés que 
+	l'IA défensive mais elle en rajoute des nouvelles qui sont
+	prépondérantes devant les premières. L'IA offensive va
+	généralement chercher à entrer en contact avec la tête des
+	serpents en le collant et en le bloquant. Elle attaque
+	systématiquement le serpent le plus proche.
 
 
-Le jeu s'éxecute dans la console.
+
 L'IA est prioritaire sur le joueur au niveau des collisions (i.e si les deux serpents entrent en collisions tête contre
 tête, l'IA est considérée gagnante).
-Le contrôle du serpent s'effectue à l'aide des touches 'z' (haut), 'q'(gauche), 's'(bas) et 'd'(droite).
 
 
+Le jeu peut se lancer de deux façon différentes:
+-un exécutable pour jouer dans le terminal
+-un exécutable pour jouer dans une fenêtre graphique (SDL) (conseilé pour des raisons de plaisir occulaire)
 
 
 Prérequis:
@@ -25,12 +34,57 @@ Prérequis:
 Instructions d'installation:
 
 	-Ouvrir un terminal dans le dossier racine du jeu
-	-Taper make pour compiler le jeu (si une erreur survient, taper 'make dir && make clean && make remove'
-	-Taper './bin/Snake_Schlangà' pour lancer le jeu
+	-Taper make pour compiler le jeu (si une erreur survient, taper 'make dir && make clean && make remove' ) 
+	(- Pour les utilisateurs de MacOS taper 'make mac' il faut compléter le 'LFFLAGS_MAC')
+	-Taper './bin/Snake_Schlangà_cmd(_mac)' pour lancer le jeu en mode console
+	-Taper './bin/Snake_Schlangà_SDL(_mac)' pour lancer le jeu en mode console
 	-Jouer !
-	-Pour lancer les tests, executer './bin/Tests_Snake'
+	-Pour lancer les tests, executer './bin/Tests_Snake(_mac)'
 
-Fonctions non mises au point:
-	-Affichage dans une fenêtre graphique en utilisant la bibliothèque SDL.
-	-Mise au point de l'IA offensive
-	-Ajout d'un système pour agrandir les serpents en mangeant des bonus
+
+		################ GUIDE MODE NON-GRAPHIQUE ################
+
+		Déplacement du serpent : z(haut),q(gauche),s(bas) et d(droite)
+
+		################ GUIDE MODE GRAPHIQUE ################
+	/!\ Ne pas réduire la taille de la fenêtre (sinon problème d'affichage) /!\
+	=> Ecran principal :
+		-un appui sur 1 du pavé numérique, ou sur '&' passera sur l'écran de jeu
+		-un appui sur 2 du pavé numérique, ou sur 'é' passera sur l'écran des options
+		-un appui sur 3 du pavé numérique, ou sur ' " ' quittera le jeu	
+	=> Options :
+		-pour changer de catégorie dans les options, utiliser ↑ et ↓
+		-pour changer la valeur d'un paramètre, utiliser les ← et →
+	=> Début de jeu :
+		-lors de l'arrivée sur l'écran de jeu, la partie est arrétée tant qu'il n'y pas eu
+		de premier appui sur l'une des touches de direction
+		-le serpent du joueur est le serpent vert
+		- les contrôles s'effectuent avec les touches z(haut),q(gauche),s(bas) et d(droite)
+		ou avec les flèches : ← ↑ ↓ →
+		- un appui sur la touche 'Echap' en plein jeu fera apparaitre le menu de pause
+		- la fin de la partie (mort du joueur ou de tous les serpents AI) affiche le menu
+		fin de partie.
+	=> Menu pause :
+		-un appui sur 1 du pavé numérique, ou sur '&' reprendra la partie
+		-un appui sur 2 du pavé numérique, ou sur 'é' retournera au menu principal
+	=> Menu fin de partie :
+		-un appui sur 1 du pavé numérique, ou sur '&' relancer la partie
+		-un appui sur 2 du pavé numérique, ou sur 'é' retournera au menu principal
+
+
+		################  Guide des bonus à ramasser  ################
+		=> Mode graphique:
+		-pomme rouge : bonus qui augmente de une unité la taille du serpent qui le mangera
+		-pomme 'Apple' : malus qui diminue de une unité la taille du serpent qui le mangera
+		-portail bleu : tout serpent qui entre par se portail ressort par un portail orange
+		-portail orange : sortie du portail bleu, un serpent ne peut rentrer par le portail orange
+		=> Mode non-graphique:
+		-'@-' : bonus qui augmente de une unité la taille du serpent qui le mangera
+		-'&-' : malus qui diminue de une unité la taille du serpent qui le mangera*
+		-'()' :	tout serpent qui entre par se portail ressort par un portail ')(' 
+		-')(' : sortie du portail '()', un serpent ne peut rentrer par le portail ')('
+		
+		
+
+
+
