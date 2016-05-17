@@ -18,8 +18,10 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_ttf.h>
 #include <SDL/SDL_image.h>
+#include <SDL/SDL_mixer.h>
 
 #define NB_MAX_SERPENT 8
+#define FREQUENCY 44100
 
 /**
  *
@@ -146,6 +148,11 @@ int main(){
         printf("Error ttf_init %s\n",TTF_GetError());
         return 1;
     }
+    if(Mix_OpenAudio(FREQUENCY,MIX_DEFAULT_FORMAT,MIX_DEFAULT_CHANNELS,1024)){
+        printf("Error startix mix %s\n",Mix_GetError());
+        return 1;
+        }
+    Mix_Music* musique=Mix_LoadMUS("others/F-Zero_X_-_Big_Blue.mp3");
     init_sprites();
     const SDL_VideoInfo* videoInfo;
     videoInfo=SDL_GetVideoInfo();
@@ -167,6 +174,8 @@ int main(){
     SDLKey touche,input;
     placement_serpent(snakes,nbs,p->taille);
     int temps_debut;
+    Mix_PlayMusic(musique,-1);
+    Mix_VolumeMusic(MIX_MAX_VOLUME);
     while(continuer){
         while(SDL_PollEvent(&event)){
             switch(event.type){
@@ -269,8 +278,10 @@ int main(){
     SDL_Flip(ecran);
 
     }
+    Mix_FreeMusic(musique);
     TTF_Quit();
     SDL_Quit();
+    Mix_CloseAudio();
     effacer_Partie(p,snakes,nbs);
     return 0;
 }

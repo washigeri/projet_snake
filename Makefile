@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -std=c99 -lm
-LFLAGS = `pkg-config --libs --cflags sdl` -lSDL_ttf -lSDL_image
+LFLAGS = `pkg-config --libs --cflags sdl` -lSDL_ttf -lSDL_image -lSDL_mixer
 LINKER = gcc -o
 LFFLAGS_MAC =
 
