@@ -1,0 +1,4 @@
+<map id="bools" name="bools">
+<area shape="rect" id="node2" href="$structsnake.html" title="Structure permettant de créer un serpent. " alt="" coords="5,95,63,121"/>
+<area shape="rect" id="node3" href="$structcoord.html" title="Structure permettant de stocker les coordonnées d&#39;un point dans l&#39;espace. " alt="" coords="7,5,61,32"/>
+</map>

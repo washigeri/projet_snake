@@ -1,0 +1,6 @@
+<map id="/home/malek/projet_snake/src/main.c" name="/home/malek/projet_snake/src/main.c">
+<area shape="rect" id="node2" href="$struct_8h.html" title="Ce fichier d&#39;en&#45;tête contient les structures et types utilisés pour la conception et l&#39;utilisation du..." alt="" coords="5,95,72,121"/>
+<area shape="rect" id="node4" href="$jeu_8h.html" title="Ce header contient les prototypes des fonctions implémentées dans jeu.c. " alt="" coords="147,95,197,121"/>
+<area shape="rect" id="node5" href="$snake_8h.html" title="Header contenant le prototype des fonctions implémentées dans snake.c. " alt="" coords="222,95,290,121"/>
+<area shape="rect" id="node6" href="$affiche_8h.html" title="Header contenant les prototypes des fonctions implémentées dans affiche.c. " alt="" coords="315,95,387,121"/>
+</map>

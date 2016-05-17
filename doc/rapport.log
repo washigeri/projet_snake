@@ -1,0 +1,37 @@
+Valgrind:
+Jouer avec IA idle:
+
+
+==10521== 
+==10521== HEAP SUMMARY:
+==10521==     in use at exit: 0 bytes in 0 blocks
+==10521==   total heap usage: 67,441 allocs, 67,441 frees, 169,464 bytes allocated
+==10521== 
+==10521== All heap blocks were freed -- no leaks are possible
+==10521== 
+==10521== For counts of detected and suppressed errors, rerun with: -v
+==10521== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
+
+Jouer avec IA defensive :
+
+==10651== HEAP SUMMARY:
+==10651==     in use at exit: 0 bytes in 0 blocks
+==10651==   total heap usage: 101,926 allocs, 101,926 frees, 254,208 bytes allocated
+==10651== 
+==10651== All heap blocks were freed -- no leaks are possible
+==10651== 
+==10651== For counts of detected and suppressed errors, rerun with: -v
+==10651== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
+
+Tests unitaires :
+
+==10802==     in use at exit: 0 bytes in 0 blocks
+==10802==   total heap usage: 12,351 allocs, 12,351 frees, 49,504 bytes allocated
+==10802== 
+==10802== All heap blocks were freed -- no leaks are possible
+==10802== 
+==10802== For counts of detected and suppressed errors, rerun with: -v
+==10802== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+

@@ -1,0 +1,7 @@
+<map id="/home/malek/projet_snake/src/snake.h" name="/home/malek/projet_snake/src/snake.h">
+<area shape="rect" id="node2" href="$affiche_8c.html" title="Ce fichier source contient les fonctions gerant l&#39;affichage du jeu. " alt="" coords="5,95,145,136"/>
+<area shape="rect" id="node3" href="$jeu_8c.html" title="Ce source contient l&#39;implémentation des fonctions gérant les fonctions prncipales du jeu..." alt="" coords="170,95,303,136"/>
+<area shape="rect" id="node4" href="$main_8c.html" title="Main d&#39;éxecution. " alt="" coords="327,95,461,136"/>
+<area shape="rect" id="node5" href="$snake_8c.html" title="Ce source contient l&#39;implémentation des fonctions permettant la manipulation des serpents. " alt="" coords="485,95,621,136"/>
+<area shape="rect" id="node6" href="$_testmain_8c.html" title="permet de tester les fonctions du jeu " alt="" coords="645,95,799,136"/>
+</map>

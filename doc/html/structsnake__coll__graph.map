@@ -1,0 +1,3 @@
+<map id="snake" name="snake">
+<area shape="rect" id="node2" href="$structcoord.html" title="Structure permettant de stocker les coordonnées d&#39;un point dans l&#39;espace. " alt="" coords="7,5,61,32"/>
+</map>
