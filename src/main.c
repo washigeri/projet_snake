@@ -38,7 +38,7 @@ snake* init_snakes(){
             res[i]=init_snake(taille_serpent,joueur);
             }
         else{
-            res[i]=init_snake(taille_serpent,idle);
+            res[i]=init_snake(taille_serpent,offensif);
             }
         }
     return res;
